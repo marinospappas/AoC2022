@@ -41,8 +41,13 @@ fun getPart1or2(args: Array<String>): Int {
     return 0
 }
 
+/** process 1 input line */
+fun processInputLine(firstLine: Boolean, line: String, input: MutableList<String>) {
+    input.add(line)
+}
+
 /** get puzzle input */
-fun getInput(args: Array<String>): MutableList<String> {
+fun getInput(args: Array<String>): Input {
     var filename = ""
     val inputData = mutableListOf<String>()
     for (i in args.indices) {
@@ -56,17 +61,12 @@ fun getInput(args: Array<String>): MutableList<String> {
     var firstLine = true
     try {
         File(filename).forEachLine {
-            if (firstLine) {
-                dataLength = it.length
-                firstLine = false
-            }
-            if (it.length != dataLength)
-                abort("bad data: $it")
-            inputData.add(it)
+            processInputLine(firstLine, it, inputData)
+            firstLine = false
         }
     }
     catch (e: Exception) {
         abort(e.toString())
     }
-    return inputData
+    return Input(inputData)
 }
