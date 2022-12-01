@@ -56,7 +56,7 @@ fun getInput(args: Array<String>): Input {
         break
     }
     if (filename == "") abort(USAGE)
-    println("input file: ${filename}")
+    println("input file: $filename")
     var firstLine = true
     try {
         File(filename).forEachLine {

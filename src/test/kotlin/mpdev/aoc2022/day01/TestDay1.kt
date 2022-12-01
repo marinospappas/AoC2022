@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Nested
-@DisplayName("Day 3 Test")
+@DisplayName("Day 1 Test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class TestDay1 {
 
@@ -28,11 +28,9 @@ class TestDay1 {
             Elf(4, 10000)
         )
         val testInput: Input = getInput(arrayOf("src/test/resources/day01/input.txt"))
+        println(testInput.inputList)
         assertEquals(expected.size, testInput.inputList.size)
-        testInput.inputList.forEach {
-            assertEquals(expected[it.id].id, it.id)
-            assertEquals(expected[it.id].calories, it.calories)
-        }
+        testInput.inputList.forEach { assertEquals(expected[it.id], it) }
     }
 
     @Test

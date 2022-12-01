@@ -1,11 +1,23 @@
 package mpdev.aoc2022.day02
 
-class Elf(var id: Int, var calories: Int = 0)
-
+// Input
+class Elf(var id: Int, var calories: Int = 0) {
+    override fun equals(other: Any?): Boolean {
+        return other is Elf && this.id == other.id && this.calories == other.calories
+    }
+    override fun hashCode(): Int {
+        var hash = 17
+        hash = hash * 31 + id
+        hash = hash * 31 + calories
+        return hash
+    }override fun toString(): String {
+        return "[${id}, ${calories}]"
+    }
+}
 class Input(var inputList: MutableList<Elf>)
 
+// Result
 class Result(var res: Int = 0)
-
 class Result2(var res: Int = 0)
 
 /** part 1 calculation */
