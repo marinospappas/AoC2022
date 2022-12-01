@@ -1,22 +1,16 @@
 package mpdev.aoc2022.day01
 
 import java.io.File
-import java.math.BigInteger
 import kotlin.system.exitProcess
 
 const val AOC = "AoC 2022"
 const val AUTHOR = "Marinos Pappas"
 const val DATE = "01.12.22"
 const val DAY = "Day1"
-const val PUZZLE = "Binary Diagnostic"
-const val RESULT_STRING = "Power consumption (epsilon x gamma)"
-const val RESULT_STRING2 = "Oxygen rating x CO2 rating"
+const val PUZZLE = "Calorie Counting"
+const val RESULT_STRING = "Calories carried by the Elf with the most calories"
+const val RESULT_STRING2 = "Total calories carried by the top 3 Elves"
 const val USAGE = "usage: Main -part1|-part2 Input_File"
-
-/** own power fun */
-fun power(n: Long, exp: Int): Int {
-    return BigInteger.valueOf(n).pow(exp).toInt()
-}
 
 /** exit program */
 fun exit(msg: String) {
@@ -42,14 +36,19 @@ fun getPart1or2(args: Array<String>): Int {
 }
 
 /** process 1 input line */
-fun processInputLine(firstLine: Boolean, line: String, input: MutableList<String>) {
-    input.add(line)
+fun processInputLine(firstLine: Boolean, line: String, input: MutableList<Elf>) {
+    if (firstLine || line.isEmpty()) {
+        val id = input.lastOrNull()?.id ?: -1
+        input.add(Elf(id+1))
+    }
+    if (line.isNotEmpty())
+        input[input.lastIndex].calories += line.toInt()
 }
 
 /** get puzzle input */
 fun getInput(args: Array<String>): Input {
     var filename = ""
-    val inputData = mutableListOf<String>()
+    val inputData = mutableListOf<Elf>()
     for (i in args.indices) {
         if (args[i].startsWith("-"))
             continue

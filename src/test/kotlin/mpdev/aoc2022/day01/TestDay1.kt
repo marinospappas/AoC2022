@@ -9,55 +9,48 @@ import org.junit.jupiter.api.Assertions.assertEquals
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class TestDay1 {
 
+    /*
+    The first Elf is carrying food with 1000, 2000, and 3000 Calories, a total of 6000 Calories.
+    The second Elf is carrying one food item with 4000 Calories.
+    The third Elf is carrying food with 5000 and 6000 Calories, a total of 11000 Calories.
+    The fourth Elf is carrying food with 7000, 8000, and 9000 Calories, a total of 24000 Calories.
+    The fifth Elf is carrying one food item with 10000 Calories.
+    */
+
     @Test
     @Order(1)
     fun `Test Get Input`() {
-        val expected = listOf("00100", "11110", "10110", "10111", "10101",
-            "01111", "00111", "11100", "10000", "11001", "00010", "01010")
-        diagnosticData = getInput(arrayOf("src/test/resources/day01/input.txt"))
-        println("data word length: $dataLength")
-        assertEquals(expected, diagnosticData)
-
+        val expected = listOf(
+            Elf(0, 6000),
+            Elf(1, 4000),
+            Elf(2, 11000),
+            Elf(3, 24000),
+            Elf(4, 10000)
+        )
+        val testInput: Input = getInput(arrayOf("src/test/resources/day01/input.txt"))
+        assertEquals(expected.size, testInput.inputList.size)
+        testInput.inputList.forEach {
+            assertEquals(expected[it.id].id, it.id)
+            assertEquals(expected[it.id].calories, it.calories)
+        }
     }
 
     @Test
     @Order(2)
-    fun `Test Process Diagnostics Part 1`() {
-        val expected1 = Integer.parseInt("10110", 2)
-        val expected2 = Integer.parseInt("01001", 2)
-        diagnosticData = getInput(arrayOf("src/test/resources/day01/input.txt"))
-        result = processDiagPart1(diagnosticData)
-        assertEquals(expected1, result.epsilon, "epsilon failed")
-        assertEquals(expected2, result.gamma, "gama failed")
+    fun `Test Calculate Part 1`() {
+        val expected = 24000
+        val testInput: Input = getInput(arrayOf("src/test/resources/day01/input.txt"))
+        val result = solvePart1(testInput)
+        assertEquals(expected, result.res)
     }
 
     @Test
     @Order(3)
-    fun `Test Produce Answer Part 1`() {
-        diagnosticData = getInput(arrayOf("src/test/resources/day01/input.txt"))
-        result = processDiagPart1(diagnosticData)
-        powerConsum = produceAnswerPart1(result)
-        assertEquals(198, powerConsum)
-    }
-
-    @Test
-    @Order(4)
-    fun `Test Process Diagnostics Part 2`() {
-        val expected1 = Integer.parseInt("10111", 2)
-        val expected2 = Integer.parseInt("01010", 2)
-        diagnosticData = getInput(arrayOf("src/test/resources/day01/input.txt"))
-        result2 = processDiagPart2(diagnosticData)
-        assertEquals(expected1, result2.oxygenRating, "oxygen rating failed")
-        assertEquals(expected2, result2.co2Rating, "co2 rating failed")
-    }
-
-    @Test
-    @Order(5)
-    fun `Test Produce Answer Part 2`() {
-        diagnosticData = getInput(arrayOf("src/test/resources/day01/input.txt"))
-        result2 = processDiagPart2(diagnosticData)
-        survivalRate = produceAnswerPart2(result2)
-        assertEquals(230, survivalRate)
+    fun `Test Calculate Part 2`() {
+        val expected = 45000
+        val testInput: Input = getInput(arrayOf("src/test/resources/day01/input.txt"))
+        val result = solvePart2(testInput)
+        assertEquals(expected, result.res)
     }
 }
 
