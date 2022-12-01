@@ -2,6 +2,8 @@ package mpdev.aoc2022.day01
 
 class Elf(var id: Int, var calories: Int = 0)
 
+class Input(var inputList: MutableList<Elf>)
+
 class Result(var res: Int = 0)
 
 class Result2(var res: Int = 0)

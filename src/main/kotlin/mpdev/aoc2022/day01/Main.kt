@@ -2,8 +2,6 @@ package mpdev.aoc2022.day01
 
 import kotlin.system.measureTimeMillis
 
-class Input(var inputList: MutableList<Elf>)
-
 fun main(args: Array<String>) {
 
     val part1_2 = getPart1or2(args)
