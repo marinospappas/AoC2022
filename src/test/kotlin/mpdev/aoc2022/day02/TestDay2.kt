@@ -31,7 +31,7 @@ class TestDay2 {
         val testInput: Input = getInput(arrayOf("src/test/resources/day02/input.txt"))
         assertEquals(expected.size, testInput.inputList.size)
         for (i in testInput.inputList.indices)
-            assertEquals(expected[i], rockPaperScisors(testInput.inputList[i].player2, testInput.inputList[i].player1))
+            assertEquals(expected[i], rockPaperScissors(testInput.inputList[i].player2, testInput.inputList[i].player1))
     }
 
     @Test

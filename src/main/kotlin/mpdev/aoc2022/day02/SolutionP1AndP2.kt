@@ -21,7 +21,7 @@ class Input(var inputList: MutableList<PlayData>)
 class Result(var res: Int = 0)
 class Result2(var res: Int = 0)
 
-fun rockPaperScisors(self: Char, opponent: Char): Int {
+fun rockPaperScissors(self: Char, opponent: Char): Int {
     /*
     he first column is what your opponent is going to play: A for Rock, B for Paper, and C for Scissors.
     The second column, must be what you should play in response: X for Rock, Y for Paper, and Z for Scissors.
@@ -51,10 +51,10 @@ fun calculateStrategy(self: Char, opponent: Char): Char {
 
 /** part 1 calculation */
 fun solvePart1(input: Input): Result {
-    return Result(input.inputList.sumOf { rockPaperScisors(it.player2, it.player1) })
+    return Result(input.inputList.sumOf { rockPaperScissors(it.player2, it.player1) })
 }
 
 /** part 2 calculation */
 fun solvePart2(input: Input): Result2 {
-    return Result2(input.inputList.sumOf { rockPaperScisors(calculateStrategy(it.player2, it.player1), it.player1) })
+    return Result2(input.inputList.sumOf { rockPaperScissors(calculateStrategy(it.player2, it.player1), it.player1) })
 }
