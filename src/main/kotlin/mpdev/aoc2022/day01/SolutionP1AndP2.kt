@@ -24,16 +24,19 @@ class Result2(var res: Int = 0)
 
 /** part 1 calculation */
 fun solvePart1(input: Input): Result {
-    input.inputList.sortBy { it.calories }
-    return Result(input.inputList.last().calories)
+    val caloriesList = input.inputList.groupingBy { it.id }.aggregate {
+            _, accumulator: Int?, element, first ->
+                if (first) element.calories else accumulator?.plus(element.calories)
+        }.values.toMutableList().sortedBy { it }
+    return Result(caloriesList.last()!!)
 }
 
 /** part 2 calculation */
 fun solvePart2(input: Input): Result2 {
-    input.inputList.sortBy { it.calories }
-    val myList = input.inputList
-    val last = myList.lastIndex
-    return Result2(
-        myList[last].calories + myList[last - 1].calories + myList[last - 2].calories
-    )
+    val caloriesList = input.inputList.groupingBy { it.id }.aggregate {
+            _, accumulator: Int?, element, first ->
+        if (first) element.calories else accumulator?.plus(element.calories)
+    }.values.toMutableList().sortedBy { it }
+    val lastIndex = caloriesList.lastIndex
+    return Result2(caloriesList[lastIndex]?.plus(caloriesList[lastIndex-1]!!)?.plus(caloriesList[lastIndex-2]!!) ?: 0)
 }

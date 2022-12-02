@@ -2,6 +2,7 @@ package mpdev.aoc2022.day01
 
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Nested
@@ -21,16 +22,22 @@ class TestDay1 {
     @Order(1)
     fun `Test Get Input`() {
         val expected = listOf(
-            Elf(0, 6000),
+            Elf(0, 1000),
+            Elf(0, 2000),
+            Elf(0, 3000),
             Elf(1, 4000),
-            Elf(2, 11000),
-            Elf(3, 24000),
+            Elf(2, 5000),
+            Elf(2, 6000),
+            Elf(3, 7000),
+            Elf(3, 8000),
+            Elf(3, 9000),
             Elf(4, 10000)
         )
         val testInput: Input = getInput(arrayOf("src/test/resources/day01/input.txt"))
         println(testInput.inputList)
         assertEquals(expected.size, testInput.inputList.size)
-        testInput.inputList.forEach { assertEquals(expected[it.id], it) }
+        for (i in testInput.inputList.indices)
+            assertEquals(expected[i], testInput.inputList[i])
     }
 
     @Test

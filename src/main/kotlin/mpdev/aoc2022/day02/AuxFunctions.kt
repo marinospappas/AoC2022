@@ -36,19 +36,15 @@ fun getPart1or2(args: Array<String>): Int {
 }
 
 /** process 1 input line */
-fun processInputLine(firstLine: Boolean, line: String, input: MutableList<Elf>) {
-    if (firstLine || line.isEmpty()) {
-        val id = input.lastOrNull()?.id ?: -1
-        input.add(Elf(id+1))
-    }
-    if (line.isNotEmpty())
-        input[input.lastIndex].calories += line.toInt()
+fun processInputLine(firstLine: Boolean, line: String, input: MutableList<PlayData>) {
+    val inputData = line.split(" ")
+        input.add(PlayData(inputData[0].first(), inputData[1].first()))
 }
 
 /** get puzzle input */
 fun getInput(args: Array<String>): Input {
     var filename = ""
-    val inputData = mutableListOf<Elf>()
+    val inputData = mutableListOf<PlayData>()
     for (i in args.indices) {
         if (args[i].startsWith("-"))
             continue
