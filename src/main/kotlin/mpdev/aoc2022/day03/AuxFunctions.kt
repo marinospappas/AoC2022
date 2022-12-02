@@ -7,9 +7,9 @@ const val AOC = "AoC 2022"
 const val AUTHOR = "Marinos Pappas"
 const val DATE = "03.12.22"
 const val DAY = "Day3"
-const val PUZZLE = "..."
-const val RESULT_STRING = "xxx"
-const val RESULT_STRING2 = "xxx"
+const val PUZZLE = "Rucksack Reorganization"
+const val RESULT_STRING = "Sum of priorities of items common across compartments"
+const val RESULT_STRING2 = "Sum of priorities of items common in group"
 const val USAGE = "usage: Main -part1|-part2 Input_File"
 
 /** exit program */
@@ -36,15 +36,15 @@ fun getPart1or2(args: Array<String>): Int {
 }
 
 /** process 1 input line */
-fun processInputLine(firstLine: Boolean, line: String, input: MutableList<PlayData>) {
-    val inputData = line.split(" ")
-    input.add(PlayData(inputData[0].first(), inputData[1].first()))
+fun processInputLine(firstLine: Boolean, line: String, input: MutableList<Rucksack>) {
+    val midLength = line.length / 2
+    input.add(Rucksack(line.substring(0,midLength), line.substring(midLength)))
 }
 
 /** get puzzle input */
 fun getInput(args: Array<String>): Input {
     var filename = ""
-    val inputData = mutableListOf<PlayData>()
+    val inputData = mutableListOf<Rucksack>()
     for (i in args.indices) {
         if (args[i].startsWith("-"))
             continue

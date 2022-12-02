@@ -14,7 +14,9 @@ fun rockPaperScissorsA(self: Char, opponent: Char): Int {
     val result: Int = if (mySelection == otherSelection)
         3
     else
-    if ((mySelection-otherSelection) == 1 || (mySelection-otherSelection) == -2)
+    if ((mySelection == 1 && otherSelection == 0)
+        || (mySelection == 2 && otherSelection == 1)
+        || (mySelection == 0 && otherSelection == 2))
         6
     else
         0
