@@ -7,9 +7,9 @@ const val AOC = "AoC 2022"
 const val AUTHOR = "Marinos Pappas"
 const val DATE = "02.12.22"
 const val DAY = "Day2"
-const val PUZZLE = "Calorie Counting"
-const val RESULT_STRING = "Calories carried by the Elf with the most calories"
-const val RESULT_STRING2 = "Total calories carried by the top 3 Elves"
+const val PUZZLE = "Rock Paper Scissors"
+const val RESULT_STRING = "Score if I played the recommendation"
+const val RESULT_STRING2 = "Score if I played to win/lose/draw as per recommendation"
 const val USAGE = "usage: Main -part1|-part2 Input_File"
 
 /** exit program */

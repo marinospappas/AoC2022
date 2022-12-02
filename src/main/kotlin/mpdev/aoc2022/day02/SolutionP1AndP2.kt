@@ -1,7 +1,5 @@
 package mpdev.aoc2022.day02
 
-import mpdev.aoc2022.day01.Result
-
 // Input
 class PlayData(var player1: Char, var player2: Char) {
     override fun equals(other: Any?): Boolean {
@@ -32,14 +30,11 @@ fun rockPaperScisors(self: Char, opponent: Char): Int {
      */
     val mySelection = self.code - 'X'.code
     val otherSelection = opponent.code - 'A'.code
-    val result: Int =
-        if (mySelection == otherSelection)  // draw
-            3
-        else
-        if (setOf(1, -2).contains(mySelection - otherSelection))    // win
-            6
-        else
-            0      // lose
+    val result: Int = when ((mySelection - otherSelection + 3) % 3) {
+        0 -> 3  // draw
+        1 -> 6  // win
+        else -> 0   // lose
+    }
     return result + mySelection + 1
 }
 
@@ -61,6 +56,5 @@ fun solvePart1(input: Input): Result {
 
 /** part 2 calculation */
 fun solvePart2(input: Input): Result2 {
-    return Result2(input.inputList.sumOf {
-        rockPaperScisors(calculateStrategy(it.player2, it.player1), it.player1) })
+    return Result2(input.inputList.sumOf { rockPaperScisors(calculateStrategy(it.player2, it.player1), it.player1) })
 }
