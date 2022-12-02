@@ -21,23 +21,6 @@ class Input(var inputList: MutableList<PlayData>)
 class Result(var res: Int = 0)
 class Result2(var res: Int = 0)
 
-fun rockPaperScissors(self: Char, opponent: Char): Int {
-    /*
-    he first column is what your opponent is going to play: A for Rock, B for Paper, and C for Scissors.
-    The second column, must be what you should play in response: X for Rock, Y for Paper, and Z for Scissors.
-    The score for a single round is the score for the shape you selected (1 for Rock, 2 for Paper, and 3 for Scissors)
-     plus the score for the outcome of the round (0 if you lost, 3 if the round was a draw, and 6 if you won).
-     */
-    val mySelection = self.code - 'X'.code
-    val otherSelection = opponent.code - 'A'.code
-    val result: Int = when ((mySelection - otherSelection + 3) % 3) {
-        0 -> 3  // draw
-        1 -> 6  // win
-        else -> 0   // lose
-    }
-    return result + mySelection + 1
-}
-
 fun calculateStrategy(self: Char, opponent: Char): Char {
     val myStrategy = self.code - 'X'.code
     val otherSelection = opponent.code - 'A'.code
@@ -51,10 +34,10 @@ fun calculateStrategy(self: Char, opponent: Char): Char {
 
 /** part 1 calculation */
 fun solvePart1(input: Input): Result {
-    return Result(input.inputList.sumOf { rockPaperScissors(it.player2, it.player1) })
+    return Result(input.inputList.sumOf { rockPaperScissorsB(it.player2, it.player1) })
 }
 
 /** part 2 calculation */
 fun solvePart2(input: Input): Result2 {
-    return Result2(input.inputList.sumOf { rockPaperScissors(calculateStrategy(it.player2, it.player1), it.player1) })
+    return Result2(input.inputList.sumOf { rockPaperScissorsB(calculateStrategy(it.player2, it.player1), it.player1) })
 }
