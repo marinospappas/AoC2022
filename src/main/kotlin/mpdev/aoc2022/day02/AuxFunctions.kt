@@ -38,7 +38,7 @@ fun getPart1or2(args: Array<String>): Int {
 /** process 1 input line */
 fun processInputLine(firstLine: Boolean, line: String, input: MutableList<PlayData>) {
     val inputData = line.split(" ")
-        input.add(PlayData(inputData[0].first(), inputData[1].first()))
+    input.add(PlayData(inputData[0].first(), inputData[1].first()))
 }
 
 /** get puzzle input */

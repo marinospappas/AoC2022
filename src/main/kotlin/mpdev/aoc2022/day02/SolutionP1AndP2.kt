@@ -32,36 +32,35 @@ fun rockPaperScisors(self: Char, opponent: Char): Int {
      */
     val mySelection = self.code - 'X'.code
     val otherSelection = opponent.code - 'A'.code
-    val result: Int
-    if (mySelection == otherSelection)  // draw
-        result = 3
-    else
-    if (setOf(1, -2).contains(mySelection - otherSelection))    // win
-        result = 6
-    else
-        result = 0      // lose
+    val result: Int =
+        if (mySelection == otherSelection)  // draw
+            3
+        else
+        if (setOf(1, -2).contains(mySelection - otherSelection))    // win
+            6
+        else
+            0      // lose
     return result + mySelection + 1
 }
 
 fun calculateStrategy(self: Char, opponent: Char): Char {
     val myStrategy = self.code - 'X'.code
     val otherSelection = opponent.code - 'A'.code
-    val result: Int
-    when (myStrategy) {
-        1 -> result = otherSelection     // draw
-        2 -> result = (otherSelection + 1) % 3  // win
-        else -> result = (otherSelection + 2) % 3  // lose
+    val result: Int = when (myStrategy) {
+        1 -> otherSelection     // draw
+        2 -> (otherSelection + 1) % 3  // win
+        else -> (otherSelection + 2) % 3  // lose
     }
     return (result+'X'.code).toChar()
 }
 
 /** part 1 calculation */
 fun solvePart1(input: Input): Result {
-    return Result(input.inputList.sumOf { it -> rockPaperScisors(it.player2, it.player1) })
+    return Result(input.inputList.sumOf { rockPaperScisors(it.player2, it.player1) })
 }
 
 /** part 2 calculation */
 fun solvePart2(input: Input): Result2 {
-    return Result2(input.inputList.sumOf { it -> rockPaperScisors(
-        calculateStrategy(it.player2, it.player1), it.player1) })
+    return Result2(input.inputList.sumOf {
+        rockPaperScisors(calculateStrategy(it.player2, it.player1), it.player1) })
 }
