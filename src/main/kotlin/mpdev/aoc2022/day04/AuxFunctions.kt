@@ -1,15 +1,15 @@
-package mpdev.aoc2022.day02
+package mpdev.aoc2022.day04
 
 import java.io.File
 import kotlin.system.exitProcess
 
 const val AOC = "AoC 2022"
 const val AUTHOR = "Marinos Pappas"
-const val DATE = "02.12.22"
-const val DAY = "Day2"
-const val PUZZLE = "Rock Paper Scissors"
-const val RESULT_STRING = "Score if I played the recommendation"
-const val RESULT_STRING2 = "Score if I played to win/lose/draw as per recommendation"
+const val DATE = "04.12.22"
+const val DAY = "Day4"
+const val PUZZLE = "..."
+const val RESULT_STRING = "xxx"
+const val RESULT_STRING2 = "xxx"
 const val USAGE = "usage: Main -part1|-part2 Input_File"
 
 /** exit program */
@@ -36,17 +36,15 @@ fun getPart1or2(args: Array<String>): Int {
 }
 
 /** process 1 input line */
-fun processInputLine(firstLine: Boolean, line: String, input: MutableList<PlayData>) {
-    val inputData = line.split(" ")
-    if (inputData.size != 2)
-        abort("bad input line $line")
-    input.add(PlayData(inputData[0].first(), inputData[1].first()))
+fun processInputLine(firstLine: Boolean, line: String, input: MutableList<Rucksack>) {
+    val midLength = line.length / 2
+    input.add(Rucksack("",""))
 }
 
 /** get puzzle input */
 fun getInput(args: Array<String>): Input {
     var filename = ""
-    val inputData = mutableListOf<PlayData>()
+    val inputData = mutableListOf<Rucksack>()
     for (i in args.indices) {
         if (args[i].startsWith("-"))
             continue

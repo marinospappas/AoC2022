@@ -37,6 +37,8 @@ fun getPart1or2(args: Array<String>): Int {
 
 /** process 1 input line */
 fun processInputLine(firstLine: Boolean, line: String, input: MutableList<Rucksack>) {
+    if (line.length % 2 != 0)
+        mpdev.aoc2022.day02.abort("bad input line $line")
     val midLength = line.length / 2
     input.add(Rucksack(line.substring(0,midLength), line.substring(midLength)))
 }
