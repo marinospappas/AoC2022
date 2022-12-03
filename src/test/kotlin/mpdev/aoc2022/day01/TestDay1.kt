@@ -1,14 +1,18 @@
 package mpdev.aoc2022.day01
 
+import mpdev.aoc2022.common.Input
+import mpdev.aoc2022.common.PuzzleSolution
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Nested
 @DisplayName("Day 1 Test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class TestDay1 {
+
+    val puzzleSolution = PuzzleSolution(1, 1, "", InputLineDay01(), ConstantsDay01(), SolutionDay01())
+    val solution = SolutionDay01()
 
     /*
     The first Elf is carrying food with 1000, 2000, and 3000 Calories, a total of 6000 Calories.
@@ -33,7 +37,7 @@ class TestDay1 {
             Elf(3, 9000),
             Elf(4, 10000)
         )
-        val testInput: Input = getInput(arrayOf("src/test/resources/day01/input.txt"))
+        val testInput: Input<Elf> = puzzleSolution.getInput("src/test/resources/day01/input.txt")
         println(testInput.inputList)
         assertEquals(expected.size, testInput.inputList.size)
         for (i in testInput.inputList.indices)
@@ -44,8 +48,8 @@ class TestDay1 {
     @Order(2)
     fun `Test Calculate Part 1`() {
         val expected = 24000
-        val testInput: Input = getInput(arrayOf("src/test/resources/day01/input.txt"))
-        val result = solvePart1(testInput)
+        val testInput: Input<Elf> = puzzleSolution.getInput("src/test/resources/day01/input.txt")
+        val result = solution.part1(testInput)
         assertEquals(expected, result.res)
     }
 
@@ -53,8 +57,8 @@ class TestDay1 {
     @Order(3)
     fun `Test Calculate Part 2`() {
         val expected = 45000
-        val testInput: Input = getInput(arrayOf("src/test/resources/day01/input.txt"))
-        val result = solvePart2(testInput)
+        val testInput: Input<Elf> = puzzleSolution.getInput("src/test/resources/day01/input.txt")
+        val result = solution.part2(testInput)
         assertEquals(expected, result.res)
     }
 }
