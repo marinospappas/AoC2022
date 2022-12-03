@@ -1,5 +1,7 @@
 package mpdev.aoc2022.day03
 
+import mpdev.aoc2022.common.Input
+import mpdev.aoc2022.common.PuzzleSolution
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 
@@ -8,6 +10,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 @DisplayName("Day 3 Test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class TestDay3 {
+
+    val puzzleSolution = PuzzleSolution(1, 3, "", InputLineDay03(), ConstantsDay03(), SolutionDay03())
+    val solution = SolutionDay03()
 
     @Test
     @Order(1)
@@ -20,7 +25,7 @@ class TestDay3 {
             Rucksack("ttgJtRGJ", "QctTZtZT"),
             Rucksack("CrZsJsPPZsGz", "wwsLwLmpwMDw"),
         )
-        val testInput: Input = getInput(arrayOf("src/test/resources/day03/input.txt"))
+        val testInput: Input<Rucksack> = puzzleSolution.getInput("src/test/resources/day03/input.txt")
         println(testInput.inputList)
         assertEquals(expected.size, testInput.inputList.size)
         for (i in testInput.inputList.indices)
@@ -38,20 +43,19 @@ class TestDay3 {
             listOf('t'),
             listOf('s'),
         )
-        val testInput: Input = getInput(arrayOf("src/test/resources/day03/input.txt"))
-        println(testInput.inputList)
+        val testInput: Input<Rucksack> = puzzleSolution.getInput("src/test/resources/day03/input.txt")
         assertEquals(expected.size, testInput.inputList.size)
         for (i in testInput.inputList.indices)
-            assertEquals(expected[i], getCommonItems(testInput.inputList[i].comp1, testInput.inputList[i].comp2))
+            assertEquals(expected[i], solution.getCommonItems(testInput.inputList[i].comp1, testInput.inputList[i].comp2))
     }
 
     @Test
     @Order(3)
     fun `Test Priorities`() {
         for (c in 'a'..'z')
-            assertEquals(c.code-'a'.code+1, getPriority(c))
+            assertEquals(c.code-'a'.code+1, solution.getPriority(c))
         for (c in 'A'..'Z')
-            assertEquals(c.code-'A'.code+27, getPriority(c))
+            assertEquals(c.code-'A'.code+27, solution.getPriority(c))
     }
 
     @Test
@@ -65,29 +69,27 @@ class TestDay3 {
                     Rucksack("ttgJtRGJ", "QctTZtZT"),
                     Rucksack("CrZsJsPPZsGz", "wwsLwLmpwMDw")),
         )
-        val testInput: Input = getInput(arrayOf("src/test/resources/day03/input.txt"))
-        println(testInput.inputList)
+        val testInput: Input<Rucksack> = puzzleSolution.getInput("src/test/resources/day03/input.txt")
         for (i in expected.keys)
-            assertEquals(expected[i], getGroups(testInput)[i])
+            assertEquals(expected[i], solution.getGroups(testInput)[i])
     }
 
     @Test
     @Order(5)
     fun `Test Common Across Group`() {
         val expected = listOf('r', 'Z')
-        val testInput: Input = getInput(arrayOf("src/test/resources/day03/input.txt"))
-        println(testInput.inputList)
-        val groupsList = getGroups(testInput)
+        val testInput: Input<Rucksack> = puzzleSolution.getInput("src/test/resources/day03/input.txt")
+        val groupsList = solution.getGroups(testInput)
         for (i in groupsList.keys)
-            assertEquals(expected[i], getCommonInGroup(groupsList[i]!!))
+            assertEquals(expected[i], solution.getCommonInGroup(groupsList[i]!!))
     }
 
     @Test
     @Order(10)
     fun `Test Calculate Part 1`() {
         val expected = 157
-        val testInput: Input = getInput(arrayOf("src/test/resources/day03/input.txt"))
-        val result = solvePart1(testInput)
+        val testInput: Input<Rucksack> = puzzleSolution.getInput("src/test/resources/day03/input.txt")
+        val result = solution.part1(testInput)
         assertEquals(expected, result.res)
     }
 
@@ -95,8 +97,8 @@ class TestDay3 {
     @Order(11)
     fun `Test Calculate Part 2`() {
         val expected = 70
-        val testInput: Input = getInput(arrayOf("src/test/resources/day03/input.txt"))
-        val result = solvePart2(testInput)
+        val testInput: Input<Rucksack> = puzzleSolution.getInput("src/test/resources/day03/input.txt")
+        val result = solution.part2(testInput)
         assertEquals(expected, result.res)
     }
 }
