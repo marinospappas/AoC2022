@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class TestDay3 {
 
-    val puzzleSolution = PuzzleSolution(1, 3, "", InputLineDay03(), ConstantsDay03(), SolutionDay03())
-    val solution = SolutionDay03()
+    private val puzzleSolution = PuzzleSolution(1, 3, "", InputLineDay03(), ConstantsDay03(), SolutionDay03())
+    private val solution = SolutionDay03()
 
     @Test
     @Order(1)

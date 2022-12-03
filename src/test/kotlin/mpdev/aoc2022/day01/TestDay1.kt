@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class TestDay1 {
 
-    val puzzleSolution = PuzzleSolution(1, 1, "", InputLineDay01(), ConstantsDay01(), SolutionDay01())
-    val solution = SolutionDay01()
+    private val puzzleSolution = PuzzleSolution(1, 1, "", InputLineDay01(), ConstantsDay01(), SolutionDay01())
+    private val solution = SolutionDay01()
 
     /*
     The first Elf is carrying food with 1000, 2000, and 3000 Calories, a total of 6000 Calories.

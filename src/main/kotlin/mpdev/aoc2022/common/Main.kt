@@ -9,6 +9,9 @@ import mpdev.aoc2022.day02.SolutionDay02
 import mpdev.aoc2022.day03.ConstantsDay03
 import mpdev.aoc2022.day03.InputLineDay03
 import mpdev.aoc2022.day03.SolutionDay03
+import mpdev.aoc2022.day04.ConstantsDay04
+import mpdev.aoc2022.day04.InputLineDay04
+import mpdev.aoc2022.day04.SolutionDay04
 
 fun main(args: Array<String>) {
 
@@ -22,6 +25,7 @@ fun main(args: Array<String>) {
         1 -> PuzzleSolution(part1_2, day, filename, InputLineDay01(), ConstantsDay01(), SolutionDay01())
         2 -> PuzzleSolution(part1_2, day, filename, InputLineDay02(), ConstantsDay02(), SolutionDay02())
         3 -> PuzzleSolution(part1_2, day, filename, InputLineDay03(), ConstantsDay03(), SolutionDay03())
+        4 -> PuzzleSolution(part1_2, day, filename, InputLineDay04(), ConstantsDay04(), SolutionDay04())
         else -> null
     }
     if (puzzleSolution == null)

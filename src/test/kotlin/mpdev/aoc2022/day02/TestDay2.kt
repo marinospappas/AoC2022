@@ -16,8 +16,8 @@ import kotlin.system.measureTimeMillis
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class TestDay2 {
 
-    val puzzleSolution = PuzzleSolution(1, 2, "", InputLineDay02(), ConstantsDay02(), SolutionDay02())
-    val solution = SolutionDay02()
+    private val puzzleSolution = PuzzleSolution(1, 2, "", InputLineDay02(), ConstantsDay02(), SolutionDay02())
+    private val solution = SolutionDay02()
 
     @Test
     @Order(1)
