@@ -16,5 +16,6 @@ class SolutionProcessorDay04: SolutionProcessor<GroupedSections, Input<GroupedSe
     override fun part2(input: Input<GroupedSections>): Result2 {
         return Result2(input.inputList.count {
             it.sectionList[0].overlaps(it.sectionList[1]) || it.sectionList[1].overlaps(it.sectionList[0])
-        })    }
+        })
+    }
 }

@@ -1,17 +1,10 @@
 package mpdev.aoc2022.common
 
-import mpdev.aoc2022.day01.ConstantsDay01
-import mpdev.aoc2022.day01.InputProcessorDay01
-import mpdev.aoc2022.day01.SolutionProcessorDay01
-import mpdev.aoc2022.day02.ConstantsDay02
-import mpdev.aoc2022.day02.InputProcessorDay02
-import mpdev.aoc2022.day02.SolutionProcessorDay02
-import mpdev.aoc2022.day03.ConstantsDay03
-import mpdev.aoc2022.day03.InputProcessorDay03
-import mpdev.aoc2022.day03.SolutionProcessorDay03
-import mpdev.aoc2022.day04.ConstantsDay04
-import mpdev.aoc2022.day04.InputProcessorDay04
-import mpdev.aoc2022.day04.SolutionProcessorDay04
+import mpdev.aoc2022.day01.*
+import mpdev.aoc2022.day02.*
+import mpdev.aoc2022.day03.*
+import mpdev.aoc2022.day04.*
+import mpdev.aoc2022.day05.*
 import kotlin.system.measureTimeMillis
 
 fun main(args: Array<String>) {
@@ -29,6 +22,7 @@ fun main(args: Array<String>) {
         2 -> PuzzleProcessor(part1Or2, day, ConstantsDay02(), getInput(filename), InputProcessorDay02(), SolutionProcessorDay02())
         3 -> PuzzleProcessor(part1Or2, day, ConstantsDay03(), getInput(filename), InputProcessorDay03(), SolutionProcessorDay03())
         4 -> PuzzleProcessor(part1Or2, day, ConstantsDay04(), getInput(filename), InputProcessorDay04(), SolutionProcessorDay04())
+        5 -> PuzzleProcessor(part1Or2, day, ConstantsDay05(), getInput(filename), InputProcessorDay05(), SolutionProcessorDay05())
         else -> null
     }
     if (puzzle == null)

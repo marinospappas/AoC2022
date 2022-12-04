@@ -15,6 +15,21 @@ class TestDay4 {
     private val filename = "src/test/resources/day04/input.txt"
     private val inputProcessor = InputProcessorDay04()
     private val solution = SolutionProcessorDay04()
+    private lateinit var testInput: Input<GroupedSections>
+    private lateinit var puzzleProcessor1: PuzzleProcessor<GroupedSections>
+    private lateinit var puzzleProcessor2: PuzzleProcessor<GroupedSections>
+
+    @BeforeEach
+    fun testSetup() {
+        val inputLines = getInput(filename)
+        testInput = inputProcessor.process(getInput(filename))
+        puzzleProcessor1 = PuzzleProcessor(
+            1, 4, ConstantsDay04(), inputLines, InputProcessorDay04(), SolutionProcessorDay04()
+        )
+        puzzleProcessor2 = PuzzleProcessor(
+            2, 4, ConstantsDay04(), inputLines, InputProcessorDay04(), SolutionProcessorDay04()
+        )
+    }
 
     /*
     2-4,6-8
@@ -23,7 +38,8 @@ class TestDay4 {
     2-8,3-7
     6-6,4-6
     2-6,4-8
-     */
+    */
+
     @Test
     @Order(1)
     fun `Test Get Input`() {
@@ -35,8 +51,6 @@ class TestDay4 {
             GroupedSections(listOf(Section(6,6), Section(4,6))),
             GroupedSections(listOf(Section(2,6), Section(4,8))),
         )
-        val inputLines = getInput(filename)
-        val testInput: Input<GroupedSections> = inputProcessor.process(inputLines)
         println(testInput.inputList)
         assertEquals(expected.size, testInput.inputList.size)
         for (i in testInput.inputList.indices)
@@ -46,8 +60,6 @@ class TestDay4 {
     @Test
     @Order(4)
     fun `Test Section contains`() {
-        val inputLines = getInput(filename)
-        val testInput: Input<GroupedSections> = inputProcessor.process(inputLines)
         assertFalse(testInput.inputList[0].sectionList[0]
             .contains(testInput.inputList[0].sectionList[1]))
         assertFalse(testInput.inputList[1].sectionList[0]
@@ -65,8 +77,6 @@ class TestDay4 {
     @Test
     @Order(5)
     fun `Test Section overlaps`() {
-        val inputLines = getInput(filename)
-        val testInput: Input<GroupedSections> = inputProcessor.process(inputLines)
         assertFalse(testInput.inputList[0].sectionList[0]
             .overlaps(testInput.inputList[0].sectionList[1]))
         assertFalse(testInput.inputList[1].sectionList[0]
@@ -85,26 +95,18 @@ class TestDay4 {
     @Order(10)
     fun `Test Calculate Part 1`() {
         val expected = 2
-        val inputLines = getInput(filename)
-        val testInput: Input<GroupedSections> = inputProcessor.process(inputLines)
         val result = solution.part1(testInput)
         assertEquals(expected, result.res)
-        val puzzleProcessor = PuzzleProcessor(
-            1, 4, ConstantsDay04(), inputLines, InputProcessorDay04(), SolutionProcessorDay04())
-        assertEquals(expected, puzzleProcessor.process())
+        assertEquals(expected, puzzleProcessor1.process())
     }
 
     @Test
     @Order(12)
     fun `Test Calculate Part 2`() {
         val expected = 4
-        val inputLines = getInput(filename)
-        val testInput: Input<GroupedSections> = inputProcessor.process(inputLines)
         val result = solution.part2(testInput)
         assertEquals(expected, result.res)
-        val puzzleProcessor = PuzzleProcessor(
-            2, 4, ConstantsDay04(), inputLines, InputProcessorDay04(), SolutionProcessorDay04())
-        assertEquals(expected, puzzleProcessor.process())
+        assertEquals(expected, puzzleProcessor2.process())
     }
 }
 
