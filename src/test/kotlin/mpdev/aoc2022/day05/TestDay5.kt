@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Nested
-@DisplayName("Day 4 Test")
+@DisplayName("Day 5 Test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class TestDay5 {
 

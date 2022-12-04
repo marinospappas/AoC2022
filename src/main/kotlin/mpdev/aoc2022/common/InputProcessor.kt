@@ -1,6 +1,12 @@
 package mpdev.aoc2022.common
 
-interface InputProcessor<T> {
+abstract class InputProcessor<T> {
     /** process input into Input Class */
-    fun process(input: List<String>): Input<T>
+    abstract fun processLine(inputLine: String, dataList: MutableList<T>)
+
+    fun process(input: List<String>): Input<T> {
+        val dataList = mutableListOf<T>()
+        input.forEach { processLine(it, dataList) }
+        return Input(dataList)
+    }
 }
