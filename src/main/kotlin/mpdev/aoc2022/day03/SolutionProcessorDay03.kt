@@ -1,12 +1,9 @@
 package mpdev.aoc2022.day03
 
-import mpdev.aoc2022.common.Input
-import mpdev.aoc2022.common.Result1
-import mpdev.aoc2022.common.Result2
-import mpdev.aoc2022.common.Solution
+import mpdev.aoc2022.common.*
 import java.util.*
 
-class SolutionDay03: Solution<Rucksack> {
+class SolutionProcessorDay03: SolutionProcessor<Rucksack, Input<Rucksack>> {
 
     /** priorities */
     fun getPriority(item: Char): Int {

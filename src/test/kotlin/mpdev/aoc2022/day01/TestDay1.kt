@@ -1,7 +1,8 @@
 package mpdev.aoc2022.day01
 
 import mpdev.aoc2022.common.Input
-import mpdev.aoc2022.common.PuzzleSolution
+import mpdev.aoc2022.common.PuzzleProcessor
+import mpdev.aoc2022.common.getInput
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 
@@ -11,8 +12,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class TestDay1 {
 
-    private val puzzleSolution = PuzzleSolution(1, 1, "", InputLineDay01(), ConstantsDay01(), SolutionDay01())
-    private val solution = SolutionDay01()
+    private val filename = "src/test/resources/day01/input.txt"
+    private val inputProcessor = InputProcessorDay01()
+    private val solution = SolutionProcessorDay01()
 
     /*
     The first Elf is carrying food with 1000, 2000, and 3000 Calories, a total of 6000 Calories.
@@ -37,7 +39,8 @@ class TestDay1 {
             Elf(3, 9000),
             Elf(4, 10000)
         )
-        val testInput: Input<Elf> = puzzleSolution.getInput("src/test/resources/day01/input.txt")
+        val inputLines = getInput(filename)
+        val testInput: Input<Elf> = inputProcessor.process(inputLines)
         println(testInput.inputList)
         assertEquals(expected.size, testInput.inputList.size)
         for (i in testInput.inputList.indices)
@@ -48,18 +51,26 @@ class TestDay1 {
     @Order(2)
     fun `Test Calculate Part 1`() {
         val expected = 24000
-        val testInput: Input<Elf> = puzzleSolution.getInput("src/test/resources/day01/input.txt")
+        val inputLines = getInput(filename)
+        val testInput: Input<Elf> = inputProcessor.process(inputLines)
         val result = solution.part1(testInput)
         assertEquals(expected, result.res)
+        val puzzleProcessor = PuzzleProcessor(
+            1, 1, ConstantsDay01(), inputLines, InputProcessorDay01(), SolutionProcessorDay01())
+        assertEquals(expected, puzzleProcessor.process())
     }
 
     @Test
     @Order(3)
     fun `Test Calculate Part 2`() {
         val expected = 45000
-        val testInput: Input<Elf> = puzzleSolution.getInput("src/test/resources/day01/input.txt")
+        val inputLines = getInput(filename)
+        val testInput: Input<Elf> = inputProcessor.process(inputLines)
         val result = solution.part2(testInput)
         assertEquals(expected, result.res)
+        val puzzleProcessor = PuzzleProcessor(
+            2, 1, ConstantsDay01(), inputLines, InputProcessorDay01(), SolutionProcessorDay01())
+        assertEquals(expected, puzzleProcessor.process())
     }
 }
 

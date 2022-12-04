@@ -1,12 +1,8 @@
 package mpdev.aoc2022.day01
 
-import mpdev.aoc2022.common.Input
-import mpdev.aoc2022.common.Result1
-import mpdev.aoc2022.common.Result2
-import mpdev.aoc2022.common.Solution
-import java.util.*
+import mpdev.aoc2022.common.*
 
-class SolutionDay01: Solution<Elf> {
+class SolutionProcessorDay01: SolutionProcessor<Elf, Input<Elf>> {
 
     /** part 1 calculation */
     override fun part1(input: Input<Elf>): Result1 {

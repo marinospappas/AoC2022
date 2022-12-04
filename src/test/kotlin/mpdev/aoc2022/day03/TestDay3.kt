@@ -1,7 +1,8 @@
 package mpdev.aoc2022.day03
 
 import mpdev.aoc2022.common.Input
-import mpdev.aoc2022.common.PuzzleSolution
+import mpdev.aoc2022.common.PuzzleProcessor
+import mpdev.aoc2022.common.getInput
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 
@@ -11,8 +12,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class TestDay3 {
 
-    private val puzzleSolution = PuzzleSolution(1, 3, "", InputLineDay03(), ConstantsDay03(), SolutionDay03())
-    private val solution = SolutionDay03()
+    private val filename = "src/test/resources/day03/input.txt"
+    private val inputProcessor = InputProcessorDay03()
+    private val solution = SolutionProcessorDay03()
 
     @Test
     @Order(1)
@@ -25,7 +27,8 @@ class TestDay3 {
             Rucksack("ttgJtRGJ", "QctTZtZT"),
             Rucksack("CrZsJsPPZsGz", "wwsLwLmpwMDw"),
         )
-        val testInput: Input<Rucksack> = puzzleSolution.getInput("src/test/resources/day03/input.txt")
+        val inputLines = getInput(filename)
+        val testInput: Input<Rucksack> = inputProcessor.process(inputLines)
         println(testInput.inputList)
         assertEquals(expected.size, testInput.inputList.size)
         for (i in testInput.inputList.indices)
@@ -43,7 +46,8 @@ class TestDay3 {
             listOf('t'),
             listOf('s'),
         )
-        val testInput: Input<Rucksack> = puzzleSolution.getInput("src/test/resources/day03/input.txt")
+        val inputLines = getInput(filename)
+        val testInput: Input<Rucksack> = inputProcessor.process(inputLines)
         assertEquals(expected.size, testInput.inputList.size)
         for (i in testInput.inputList.indices)
             assertEquals(expected[i], solution.getCommonItems(testInput.inputList[i].comp1, testInput.inputList[i].comp2))
@@ -69,7 +73,8 @@ class TestDay3 {
                     Rucksack("ttgJtRGJ", "QctTZtZT"),
                     Rucksack("CrZsJsPPZsGz", "wwsLwLmpwMDw")),
         )
-        val testInput: Input<Rucksack> = puzzleSolution.getInput("src/test/resources/day03/input.txt")
+        val inputLines = getInput(filename)
+        val testInput: Input<Rucksack> = inputProcessor.process(inputLines)
         for (i in expected.keys)
             assertEquals(expected[i], solution.getGroups(testInput)[i])
     }
@@ -78,7 +83,8 @@ class TestDay3 {
     @Order(5)
     fun `Test Common Across Group`() {
         val expected = listOf('r', 'Z')
-        val testInput: Input<Rucksack> = puzzleSolution.getInput("src/test/resources/day03/input.txt")
+        val inputLines = getInput(filename)
+        val testInput: Input<Rucksack> = inputProcessor.process(inputLines)
         val groupsList = solution.getGroups(testInput)
         for (i in groupsList.keys)
             assertEquals(expected[i], solution.getCommonInGroup(groupsList[i]!!))
@@ -88,18 +94,26 @@ class TestDay3 {
     @Order(10)
     fun `Test Calculate Part 1`() {
         val expected = 157
-        val testInput: Input<Rucksack> = puzzleSolution.getInput("src/test/resources/day03/input.txt")
+        val inputLines = getInput(filename)
+        val testInput: Input<Rucksack> = inputProcessor.process(inputLines)
         val result = solution.part1(testInput)
         assertEquals(expected, result.res)
+        val puzzleProcessor = PuzzleProcessor(
+            1, 3, ConstantsDay03(), inputLines, InputProcessorDay03(), SolutionProcessorDay03())
+        assertEquals(expected, puzzleProcessor.process())
     }
 
     @Test
     @Order(11)
     fun `Test Calculate Part 2`() {
         val expected = 70
-        val testInput: Input<Rucksack> = puzzleSolution.getInput("src/test/resources/day03/input.txt")
+        val inputLines = getInput(filename)
+        val testInput: Input<Rucksack> = inputProcessor.process(inputLines)
         val result = solution.part2(testInput)
         assertEquals(expected, result.res)
+        val puzzleProcessor = PuzzleProcessor(
+            2, 3, ConstantsDay03(), inputLines, InputProcessorDay03(), SolutionProcessorDay03())
+        assertEquals(expected, puzzleProcessor.process())
     }
 }
 

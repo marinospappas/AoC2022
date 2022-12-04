@@ -1,5 +1,6 @@
 package mpdev.aoc2022.common
 
+import java.io.File
 import kotlin.system.exitProcess
 
 /** exit program */
@@ -31,4 +32,16 @@ fun getDay(args: Array<String>): Int {
         if (args[i].startsWith("-day"))
             return args[i].substring(4).toInt()
     return 0
+}
+
+/** get input from file */
+fun getInput(filename: String): List<String> {
+    println("input file: $filename")
+    try {
+        return File(filename).readLines()
+    }
+    catch (e: Exception) {
+        abort(e.toString())
+    }
+    return emptyList()
 }

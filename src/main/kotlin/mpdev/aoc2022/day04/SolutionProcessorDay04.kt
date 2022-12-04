@@ -1,12 +1,8 @@
 package mpdev.aoc2022.day04
 
-import mpdev.aoc2022.common.Input
-import mpdev.aoc2022.common.Result1
-import mpdev.aoc2022.common.Result2
-import mpdev.aoc2022.common.Solution
-import java.util.*
+import mpdev.aoc2022.common.*
 
-class SolutionDay04: Solution<GroupedSections> {
+class SolutionProcessorDay04: SolutionProcessor<GroupedSections, Input<GroupedSections>> {
 
     /** part 1 calculation */
     override fun part1(input: Input<GroupedSections>): Result1 {
