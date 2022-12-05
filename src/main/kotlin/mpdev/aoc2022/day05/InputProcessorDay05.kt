@@ -16,7 +16,7 @@ class InputProcessorDay05: InputProcessor<InputDay05>() {
     }
 
     private fun processMove(inputLine: String, dataList: MutableList<Move>) {
-        val matches = """move (\d+) from (\d+) to (\d+)""".toRegex().find(inputLine)
+        val matches = Regex("""move (\d+) from (\d+) to (\d+)""").find(inputLine)
         try {
             val (cnt, from, to) = matches!!.destructured
             dataList.add(Move(cnt.toInt(), from.toInt(), to.toInt()))
@@ -28,7 +28,7 @@ class InputProcessorDay05: InputProcessor<InputDay05>() {
         val stacks = mutableListOf<String>()
         val moves = mutableListOf<Move>()
 
-        val numStacks = input.stream().filter { it.matches(Regex("^[0-9+\\s*]+\$")) }
+        val numStacks = input.stream().filter { it.matches(Regex("""^[0-9+\s*]+$""")) }
             .toList()[0].split(" ").last().toInt()
         for (i in 1..numStacks)
             stacks.add("")
