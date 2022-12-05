@@ -11,7 +11,7 @@ class SolutionProcessorDay05: SolutionProcessor<InputDay05> {
         for (i in 0 until cnt) {
             val charToMove = resSrc.last()
             resSrc = resSrc.substring(0, resSrc.length-1)
-            resDest = resDest + charToMove
+            resDest += charToMove
         }
         return listOf(resSrc, resDest)
     }
