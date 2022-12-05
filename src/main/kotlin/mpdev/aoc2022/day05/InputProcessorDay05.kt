@@ -5,7 +5,7 @@ import mpdev.aoc2022.common.abort
 
 class InputProcessorDay05: InputProcessor<InputDay05>() {
 
-    fun processLine1(inputLine: String, dataList: MutableList<String>, numStacks: Int) {
+    private fun processLine1(inputLine: String, dataList: MutableList<String>, numStacks: Int) {
         for (i in 1..numStacks) {
             val index = (i - 1) * 4 + 1
             if (index < inputLine.length)
@@ -14,7 +14,7 @@ class InputProcessorDay05: InputProcessor<InputDay05>() {
         }
     }
 
-    fun processLine2(inputLine: String, dataList: MutableList<Move>) {
+    private fun processLine2(inputLine: String, dataList: MutableList<Move>) {
         val split = inputLine.split(" ")
         if (split.size != 6)
             abort("bad input line $inputLine")
@@ -25,8 +25,8 @@ class InputProcessorDay05: InputProcessor<InputDay05>() {
         val stacks = mutableListOf<String>()
         val moves = mutableListOf<Move>()
 
-        val numStacksLine = input.stream().filter { it.matches(Regex("^[0-9\\s]*\$")) }.toList()[0]
-        val numStacks = numStacksLine.split(" ").last().toInt()
+        val numStacks = input.stream().filter { it.matches(Regex("^[0-9\\s]+\$")) }
+            .toList()[0].split(" ").last().toInt()
         for (i in 1..numStacks)
             stacks.add("")
         var inputPart1 = true

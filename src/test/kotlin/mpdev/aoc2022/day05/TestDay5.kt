@@ -1,5 +1,6 @@
 package mpdev.aoc2022.day05
 
+import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
@@ -14,19 +15,17 @@ class TestDay5 {
     private val inputProcessor = InputProcessorDay05()
     private val solution = SolutionProcessorDay05()
     private lateinit var testInput: InputDay05
-    //private lateinit var puzzleProcessor1: PuzzleProcessor<Stack>
-    //private lateinit var puzzleProcessor2: PuzzleProcessor<Stack>
+    private lateinit var puzzleProcessor1: PuzzleProcessor<InputDay05>
+    private lateinit var puzzleProcessor2: PuzzleProcessor<InputDay05>
 
     @BeforeEach
     fun testSetup() {
+        val inputLines = getInput(filename)
         testInput = inputProcessor.process(getInput(filename))
-        /*
         puzzleProcessor1 = PuzzleProcessor(
             1, 5, ConstantsDay05(), inputLines, InputProcessorDay05(), SolutionProcessorDay05())
         puzzleProcessor2 = PuzzleProcessor(
             2, 5, ConstantsDay05(), inputLines, InputProcessorDay05(), SolutionProcessorDay05())
-
-         */
     }
 
     /*
@@ -71,7 +70,7 @@ class TestDay5 {
         val expected = "CMZ"
         val result = solution.part1(testInput)
         assertEquals(expected, result)
-        //assertEquals(expected, puzzleProcessor1.process())
+        assertEquals(expected, puzzleProcessor1.process())
     }
 
     @Test
@@ -80,7 +79,7 @@ class TestDay5 {
         val expected = "MCD"
         val result = solution.part2(testInput)
         assertEquals(expected, result)
-        //assertEquals(expected, puzzleProcessor2.process())
+        assertEquals(expected, puzzleProcessor2.process())
     }
 
 }
