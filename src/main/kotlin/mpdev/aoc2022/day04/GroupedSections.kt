@@ -1,6 +1,6 @@
 package mpdev.aoc2022.day04
 
-class GroupedSections(var sectionList: List<Section>) {
+class GroupedSections(var sectionList: List<Pair<Int,Int>>) {
     override fun equals(other: Any?): Boolean {
         return other is GroupedSections && this.sectionList == other.sectionList
     }

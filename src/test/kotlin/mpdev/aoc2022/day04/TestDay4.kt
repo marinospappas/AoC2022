@@ -40,12 +40,12 @@ class TestDay4 {
     @Order(1)
     fun `Test Get Input`() {
         val expected = listOf(
-            GroupedSections(listOf(Section(2,4), Section(6,8))),
-            GroupedSections(listOf(Section(2,3), Section(4,5))),
-            GroupedSections(listOf(Section(5,7), Section(7,9))),
-            GroupedSections(listOf(Section(2,8), Section(3,7))),
-            GroupedSections(listOf(Section(6,6), Section(4,6))),
-            GroupedSections(listOf(Section(2,6), Section(4,8))),
+            GroupedSections(listOf(Pair(2,4), Pair(6,8))),
+            GroupedSections(listOf(Pair(2,3), Pair(4,5))),
+            GroupedSections(listOf(Pair(5,7), Pair(7,9))),
+            GroupedSections(listOf(Pair(2,8), Pair(3,7))),
+            GroupedSections(listOf(Pair(6,6), Pair(4,6))),
+            GroupedSections(listOf(Pair(2,6), Pair(4,8))),
         )
         println(testInput.inputList)
         assertEquals(expected.size, testInput.inputList.size)

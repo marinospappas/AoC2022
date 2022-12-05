@@ -8,12 +8,12 @@ class InputProcessorDay04: InputProcessor<InputDay04>() {
         val sections = inputLine.split(",")
         if (sections.size != 2)
             abort("bad input line $inputLine")
-        val sectionList = mutableListOf<Section>()
+        val sectionList = mutableListOf<Pair<Int,Int>>()
         sections.forEach {
             val startEnd = it.split("-")
             if (startEnd.size != 2)
                 abort("bad input line $inputLine")
-            sectionList.add(Section(startEnd[0].toInt(), startEnd[1].toInt()))
+            sectionList.add(Pair(startEnd[0].toInt(), startEnd[1].toInt()))
         }
         dataList.add(GroupedSections(sectionList))
     }

@@ -11,7 +11,6 @@ class SolutionProcessorDay04: SolutionProcessor<InputDay04> {
         }.toString()
     }
 
-
     /** part 2 calculation */
     override fun part2(input: InputDay04): String {
         return input.inputList.count {
