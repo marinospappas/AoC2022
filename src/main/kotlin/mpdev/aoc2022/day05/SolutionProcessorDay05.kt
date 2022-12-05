@@ -4,15 +4,7 @@ import mpdev.aoc2022.common.*
 
 class SolutionProcessorDay05: SolutionProcessor<InputDay05> {
 
-    fun executeMove2(count: Int, src: String, dest: String): List<String> {
-        val cnt = if (count > src.length) src.length else count
-        val strToMove = src.substring(src.length - cnt)
-        val resDest = dest + strToMove
-        val resSrc = src.substring(0, src.length - cnt)
-        return listOf(resSrc, resDest)
-    }
-
-    fun executeMove1(count: Int, src: String, dest: String): List<String> {
+    private fun executeMove1(count: Int, src: String, dest: String): List<String> {
         val cnt = if (count > src.length) src.length else count
         var resDest = dest
         var resSrc = src
@@ -21,6 +13,14 @@ class SolutionProcessorDay05: SolutionProcessor<InputDay05> {
             resSrc = resSrc.substring(0, resSrc.length-1)
             resDest = resDest + charToMove
         }
+        return listOf(resSrc, resDest)
+    }
+
+    private fun executeMove2(count: Int, src: String, dest: String): List<String> {
+        val cnt = if (count > src.length) src.length else count
+        val strToMove = src.substring(src.length - cnt)
+        val resDest = dest + strToMove
+        val resSrc = src.substring(0, src.length - cnt)
         return listOf(resSrc, resDest)
     }
 
