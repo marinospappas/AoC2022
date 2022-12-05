@@ -1,6 +1,5 @@
 package mpdev.aoc2022.day03
 
-import mpdev.aoc2022.common.Input
 import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
 import org.junit.jupiter.api.*
@@ -28,7 +27,7 @@ class TestDay3 {
             Rucksack("CrZsJsPPZsGz", "wwsLwLmpwMDw"),
         )
         val inputLines = getInput(filename)
-        val testInput: Input<Rucksack> = inputProcessor.process(inputLines)
+        val testInput: InputDay03 = inputProcessor.process(inputLines)
         println(testInput.inputList)
         assertEquals(expected.size, testInput.inputList.size)
         for (i in testInput.inputList.indices)
@@ -47,7 +46,7 @@ class TestDay3 {
             listOf('s'),
         )
         val inputLines = getInput(filename)
-        val testInput: Input<Rucksack> = inputProcessor.process(inputLines)
+        val testInput: InputDay03 = inputProcessor.process(inputLines)
         assertEquals(expected.size, testInput.inputList.size)
         for (i in testInput.inputList.indices)
             assertEquals(expected[i], solution.getCommonItems(testInput.inputList[i].comp1, testInput.inputList[i].comp2))
@@ -74,7 +73,7 @@ class TestDay3 {
                     Rucksack("CrZsJsPPZsGz", "wwsLwLmpwMDw")),
         )
         val inputLines = getInput(filename)
-        val testInput: Input<Rucksack> = inputProcessor.process(inputLines)
+        val testInput: InputDay03 = inputProcessor.process(inputLines)
         for (i in expected.keys)
             assertEquals(expected[i], solution.getGroups(testInput)[i])
     }
@@ -84,7 +83,7 @@ class TestDay3 {
     fun `Test Common Across Group`() {
         val expected = listOf('r', 'Z')
         val inputLines = getInput(filename)
-        val testInput: Input<Rucksack> = inputProcessor.process(inputLines)
+        val testInput: InputDay03 = inputProcessor.process(inputLines)
         val groupsList = solution.getGroups(testInput)
         for (i in groupsList.keys)
             assertEquals(expected[i], solution.getCommonInGroup(groupsList[i]!!))
@@ -93,11 +92,11 @@ class TestDay3 {
     @Test
     @Order(10)
     fun `Test Calculate Part 1`() {
-        val expected = 157
+        val expected = "157"
         val inputLines = getInput(filename)
-        val testInput: Input<Rucksack> = inputProcessor.process(inputLines)
+        val testInput: InputDay03 = inputProcessor.process(inputLines)
         val result = solution.part1(testInput)
-        assertEquals(expected, result.res)
+        assertEquals(expected, result)
         val puzzleProcessor = PuzzleProcessor(
             1, 3, ConstantsDay03(), inputLines, InputProcessorDay03(), SolutionProcessorDay03())
         assertEquals(expected, puzzleProcessor.process())
@@ -106,11 +105,11 @@ class TestDay3 {
     @Test
     @Order(11)
     fun `Test Calculate Part 2`() {
-        val expected = 70
+        val expected = "70"
         val inputLines = getInput(filename)
-        val testInput: Input<Rucksack> = inputProcessor.process(inputLines)
+        val testInput: InputDay03 = inputProcessor.process(inputLines)
         val result = solution.part2(testInput)
-        assertEquals(expected, result.res)
+        assertEquals(expected, result)
         val puzzleProcessor = PuzzleProcessor(
             2, 3, ConstantsDay03(), inputLines, InputProcessorDay03(), SolutionProcessorDay03())
         assertEquals(expected, puzzleProcessor.process())

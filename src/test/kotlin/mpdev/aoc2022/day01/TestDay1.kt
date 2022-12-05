@@ -1,6 +1,5 @@
 package mpdev.aoc2022.day01
 
-import mpdev.aoc2022.common.Input
 import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
 import org.junit.jupiter.api.*
@@ -40,7 +39,7 @@ class TestDay1 {
             Elf(4, 10000)
         )
         val inputLines = getInput(filename)
-        val testInput: Input<Elf> = inputProcessor.process(inputLines)
+        val testInput: InputDay01 = inputProcessor.process(inputLines)
         println(testInput.inputList)
         assertEquals(expected.size, testInput.inputList.size)
         for (i in testInput.inputList.indices)
@@ -52,12 +51,12 @@ class TestDay1 {
     fun `Test Calculate Part 1`() {
         val expected = 24000
         val inputLines = getInput(filename)
-        val testInput: Input<Elf> = inputProcessor.process(inputLines)
+        val testInput: InputDay01 = inputProcessor.process(inputLines)
         val result = solution.part1(testInput)
-        assertEquals(expected, result.res)
+        assertEquals(expected.toString(), result)
         val puzzleProcessor = PuzzleProcessor(
             1, 1, ConstantsDay01(), inputLines, InputProcessorDay01(), SolutionProcessorDay01())
-        assertEquals(expected, puzzleProcessor.process())
+        assertEquals(expected.toString(), puzzleProcessor.process())
     }
 
     @Test
@@ -65,12 +64,12 @@ class TestDay1 {
     fun `Test Calculate Part 2`() {
         val expected = 45000
         val inputLines = getInput(filename)
-        val testInput: Input<Elf> = inputProcessor.process(inputLines)
+        val testInput: InputDay01 = inputProcessor.process(inputLines)
         val result = solution.part2(testInput)
-        assertEquals(expected, result.res)
+        assertEquals(expected.toString(), result)
         val puzzleProcessor = PuzzleProcessor(
             2, 1, ConstantsDay01(), inputLines, InputProcessorDay01(), SolutionProcessorDay01())
-        assertEquals(expected, puzzleProcessor.process())
+        assertEquals(expected.toString(), puzzleProcessor.process())
     }
 }
 

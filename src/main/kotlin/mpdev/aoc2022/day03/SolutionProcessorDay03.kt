@@ -3,7 +3,7 @@ package mpdev.aoc2022.day03
 import mpdev.aoc2022.common.*
 import java.util.*
 
-class SolutionProcessorDay03: SolutionProcessor<Rucksack, Input<Rucksack>> {
+class SolutionProcessorDay03: SolutionProcessor<InputDay03> {
 
     /** priorities */
     fun getPriority(item: Char): Int {
@@ -25,10 +25,10 @@ class SolutionProcessorDay03: SolutionProcessor<Rucksack, Input<Rucksack>> {
     }
 
     /** part 1 calculation */
-    override fun part1(input: Input<Rucksack>): Result1 {
-        return Result1(input.inputList.sumOf {
+    override fun part1(input: InputDay03): String {
+        return input.inputList.sumOf {
             getCommonItems(it.comp1, it.comp2).sumOf { c -> getPriority(c) }
-        })
+        }.toString()
     }
 
     /**
@@ -42,12 +42,12 @@ class SolutionProcessorDay03: SolutionProcessor<Rucksack, Input<Rucksack>> {
         return commonItems[0]
     }
 
-    fun getGroups(input: Input<Rucksack>): Map<Int, List<Rucksack>> {
+    fun getGroups(input: InputDay03): Map<Int, List<Rucksack>> {
         return input.inputList.groupBy { input.inputList.indexOf(it) / 3 }
     }
 
     /** part 2 calculation */
-    override fun part2(input: Input<Rucksack>): Result2 {
-        return Result2(getGroups(input).values.sumOf { getPriority(getCommonInGroup(it)) })
+    override fun part2(input: InputDay03): String {
+        return getGroups(input).values.sumOf { getPriority(getCommonInGroup(it)) }.toString()
     }
 }

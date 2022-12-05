@@ -1,12 +1,13 @@
 package mpdev.aoc2022.day02
 
 import mpdev.aoc2022.common.*
+import mpdev.aoc2022.day01.InputDay01
 
-class SolutionProcessorDay02: SolutionProcessor<PlayData, Input<PlayData>> {
+class SolutionProcessorDay02: SolutionProcessor<InputDay02> {
 
     /** part 1 calculation */
-    override fun part1(input: Input<PlayData>): Result1 {
-        return Result1(input.inputList.sumOf { rockPaperScissorsB(it.player2, it.player1) })
+    override fun part1(input: InputDay02): String {
+        return input.inputList.sumOf { rockPaperScissorsB(it.player2, it.player1) }.toString()
 
     }
 
@@ -22,7 +23,7 @@ class SolutionProcessorDay02: SolutionProcessor<PlayData, Input<PlayData>> {
     }
 
     /** part 2 calculation */
-    override fun part2(input: Input<PlayData>): Result2 {
-        return Result2(input.inputList.sumOf { rockPaperScissorsB(calculateStrategy(it.player2, it.player1), it.player1) })
+    override fun part2(input: InputDay02): String {
+        return input.inputList.sumOf { rockPaperScissorsB(calculateStrategy(it.player2, it.player1), it.player1) }.toString()
     }
 }

@@ -1,6 +1,5 @@
 package mpdev.aoc2022.day04
 
-import mpdev.aoc2022.common.Input
 import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
 import org.junit.jupiter.api.*
@@ -15,9 +14,9 @@ class TestDay4 {
     private val filename = "src/test/resources/day04/input.txt"
     private val inputProcessor = InputProcessorDay04()
     private val solution = SolutionProcessorDay04()
-    private lateinit var testInput: Input<GroupedSections>
-    private lateinit var puzzleProcessor1: PuzzleProcessor<GroupedSections>
-    private lateinit var puzzleProcessor2: PuzzleProcessor<GroupedSections>
+    private lateinit var testInput: InputDay04
+    private lateinit var puzzleProcessor1: PuzzleProcessor<InputDay04>
+    private lateinit var puzzleProcessor2: PuzzleProcessor<InputDay04>
 
     @BeforeEach
     fun testSetup() {
@@ -94,18 +93,18 @@ class TestDay4 {
     @Test
     @Order(10)
     fun `Test Calculate Part 1`() {
-        val expected = 2
+        val expected = "2"
         val result = solution.part1(testInput)
-        assertEquals(expected, result.res)
+        assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor1.process())
     }
 
     @Test
     @Order(12)
     fun `Test Calculate Part 2`() {
-        val expected = 4
+        val expected = "4"
         val result = solution.part2(testInput)
-        assertEquals(expected, result.res)
+        assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor2.process())
     }
 }
