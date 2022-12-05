@@ -18,10 +18,11 @@ fun abort(errMsg: String) {
 /** get prt 1 or 2 from args */
 fun getPart1or2(args: Array<String>): Int {
     for (i in args.indices)
-        if (args[i].startsWith("-"))
-            when (args[i]) {
-                "-part1" -> return 1
-                "-part2" -> return 2
+        if (args[i].startsWith("-part"))
+            return when (args[i]) {
+                "-part1" -> 1
+                "-part2" -> 2
+                else -> -1
             }
     return 0
 }

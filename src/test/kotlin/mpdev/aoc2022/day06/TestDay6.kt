@@ -1,5 +1,6 @@
 package mpdev.aoc2022.day06
 
+import mpdev.aoc2022.common.DaySpecific
 import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
 import org.junit.jupiter.api.*
@@ -15,17 +16,15 @@ class TestDay6 {
     private val inputProcessor = InputProcessorDay06()
     private val solution = SolutionProcessorDay06()
     private lateinit var testInput: InputDay06
-    private lateinit var puzzleProcessor1: PuzzleProcessor<InputDay06>
-    private lateinit var puzzleProcessor2: PuzzleProcessor<InputDay06>
+    private lateinit var puzzleProcessor1: PuzzleProcessor<*>
+    private lateinit var puzzleProcessor2: PuzzleProcessor<*>
 
     @BeforeEach
     fun testSetup() {
         val inputLines = getInput(filename)
         testInput = inputProcessor.process(inputLines)
-        puzzleProcessor1 = PuzzleProcessor(
-            1, 5, ConstantsDay06(), inputLines, InputProcessorDay06(), SolutionProcessorDay06())
-        puzzleProcessor2 = PuzzleProcessor(
-            2, 5, ConstantsDay06(), inputLines, InputProcessorDay06(), SolutionProcessorDay06())
+        puzzleProcessor1 = DaySpecific.getProcessor(1, 6, inputLines)!!
+        puzzleProcessor2 = DaySpecific.getProcessor(2, 6, inputLines)!!
     }
 
     /*

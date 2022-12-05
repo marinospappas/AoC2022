@@ -10,16 +10,18 @@ class PuzzleProcessor<I> (var part1Or2: Int,
     /** get puzzle input */
 
     fun process(): String? {
-        println("${Constants.AOC} - Day $day, ${constants.PUZZLE}, Part $part1Or2 - ${Constants.AUTHOR} - ${constants.DATE}")
+        println("${Constants.AOC} - Day $day, ${constants.PUZZLE} - ${Constants.AUTHOR} - ${constants.DATE}")
         val inputData = inputProcessor.process(input)
         if (part1Or2 == 1) {
+            println("executing Part $part1Or2: ${constants.RESULT_STRING}")
             val result1 = solution.part1(inputData)
-            println("${constants.RESULT_STRING}: ${result1}")
+            println("result: ${result1}")
             return result1
         }
         if (part1Or2 == 2) {
+            println("executing Part $part1Or2: ${constants.RESULT_STRING}")
             val result2 = solution.part2(inputData)
-            println("${constants.RESULT_STRING2}: ${result2}")
+            println("result: ${result2}")
             return result2
         }
         return null
