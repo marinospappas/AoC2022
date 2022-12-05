@@ -1,6 +1,6 @@
 package mpdev.aoc2022.day06
 
-class InputDay05(var stacks: MutableList<String> = mutableListOf(), var moves: List<Move> = listOf() ) {
+class InputDay06(var stacks: MutableList<String> = mutableListOf(), var moves: List<Move> = listOf() ) {
 
     override fun toString(): String {
         var out1 = ""

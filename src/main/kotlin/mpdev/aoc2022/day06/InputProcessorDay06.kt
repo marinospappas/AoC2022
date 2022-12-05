@@ -3,7 +3,7 @@ package mpdev.aoc2022.day06
 import mpdev.aoc2022.common.InputProcessor
 import mpdev.aoc2022.common.abort
 
-class InputProcessorDay05: InputProcessor<InputDay05>() {
+class InputProcessorDay06: InputProcessor<InputDay06>() {
 
     private fun processLine1(inputLine: String, dataList: MutableList<String>, numStacks: Int) {
         for (i in 1..numStacks) {
@@ -21,7 +21,7 @@ class InputProcessorDay05: InputProcessor<InputDay05>() {
         dataList.add(Move(split[1].toInt(), split[3].toInt(), split[5].toInt()))
     }
 
-    override fun process(input: List<String>): InputDay05 {
+    override fun process(input: List<String>): InputDay06 {
         val stacks = mutableListOf<String>()
         val moves = mutableListOf<Move>()
 
@@ -41,7 +41,7 @@ class InputProcessorDay05: InputProcessor<InputDay05>() {
         for (i in 0 until stacks.size) {
             stacks[i] = stacks[i].reversed()
         }
-        return InputDay05(stacks, moves)
+        return InputDay06(stacks, moves)
     }
 
 }

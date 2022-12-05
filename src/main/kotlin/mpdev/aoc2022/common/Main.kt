@@ -5,6 +5,7 @@ import mpdev.aoc2022.day02.*
 import mpdev.aoc2022.day03.*
 import mpdev.aoc2022.day04.*
 import mpdev.aoc2022.day05.*
+import mpdev.aoc2022.day06.*
 import kotlin.system.measureTimeMillis
 
 fun main(args: Array<String>) {
@@ -23,6 +24,7 @@ fun main(args: Array<String>) {
         3 -> PuzzleProcessor(part1Or2, day, ConstantsDay03(), getInput(filename), InputProcessorDay03(), SolutionProcessorDay03())
         4 -> PuzzleProcessor(part1Or2, day, ConstantsDay04(), getInput(filename), InputProcessorDay04(), SolutionProcessorDay04())
         5 -> PuzzleProcessor(part1Or2, day, ConstantsDay05(), getInput(filename), InputProcessorDay05(), SolutionProcessorDay05())
+        6 -> PuzzleProcessor(part1Or2, day, ConstantsDay06(), getInput(filename), InputProcessorDay06(), SolutionProcessorDay06())
         else -> null
     }
     if (puzzle == null)

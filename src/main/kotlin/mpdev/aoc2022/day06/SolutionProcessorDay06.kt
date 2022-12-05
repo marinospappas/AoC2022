@@ -2,7 +2,7 @@ package mpdev.aoc2022.day06
 
 import mpdev.aoc2022.common.*
 
-class SolutionProcessorDay05: SolutionProcessor<InputDay05> {
+class SolutionProcessorDay06: SolutionProcessor<InputDay06> {
 
     private fun executeMove1(count: Int, src: String, dest: String): List<String> {
         val cnt = if (count > src.length) src.length else count
@@ -25,7 +25,7 @@ class SolutionProcessorDay05: SolutionProcessor<InputDay05> {
     }
 
     /** part 1 calculation */
-    override fun part1(input: InputDay05): String {
+    override fun part1(input: InputDay06): String {
         input.moves.forEach {
             val movResult = executeMove1(it.count, input.stacks[it.src-1], input.stacks[it.dest-1])
             input.stacks[it.src-1] = movResult[0]
@@ -38,7 +38,7 @@ class SolutionProcessorDay05: SolutionProcessor<InputDay05> {
 
 
     /** part 2 calculation */
-    override fun part2(input: InputDay05): String {
+    override fun part2(input: InputDay06): String {
         input.moves.forEach {
             val movResult = executeMove2(it.count, input.stacks[it.src-1], input.stacks[it.dest-1])
             input.stacks[it.src-1] = movResult[0]

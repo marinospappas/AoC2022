@@ -12,20 +12,20 @@ import org.junit.jupiter.api.Assertions.*
 class TestDay6 {
 
     private val filename = "src/test/resources/day05/input.txt"
-    private val inputProcessor = InputProcessorDay05()
-    private val solution = SolutionProcessorDay05()
-    private lateinit var testInput: InputDay05
-    private lateinit var puzzleProcessor1: PuzzleProcessor<InputDay05>
-    private lateinit var puzzleProcessor2: PuzzleProcessor<InputDay05>
+    private val inputProcessor = InputProcessorDay06()
+    private val solution = SolutionProcessorDay06()
+    private lateinit var testInput: InputDay06
+    private lateinit var puzzleProcessor1: PuzzleProcessor<InputDay06>
+    private lateinit var puzzleProcessor2: PuzzleProcessor<InputDay06>
 
     @BeforeEach
     fun testSetup() {
         val inputLines = getInput(filename)
         testInput = inputProcessor.process(inputLines)
         puzzleProcessor1 = PuzzleProcessor(
-            1, 5, ConstantsDay05(), inputLines, InputProcessorDay05(), SolutionProcessorDay05())
+            1, 5, ConstantsDay06(), inputLines, InputProcessorDay06(), SolutionProcessorDay06())
         puzzleProcessor2 = PuzzleProcessor(
-            2, 5, ConstantsDay05(), inputLines, InputProcessorDay05(), SolutionProcessorDay05())
+            2, 5, ConstantsDay06(), inputLines, InputProcessorDay06(), SolutionProcessorDay06())
     }
 
     /*
