@@ -21,7 +21,7 @@ class TestDay4 {
     @BeforeEach
     fun testSetup() {
         val inputLines = getInput(filename)
-        testInput = inputProcessor.process(getInput(filename))
+        testInput = inputProcessor.process(inputLines)
         puzzleProcessor1 = PuzzleProcessor(
             1, 4, ConstantsDay04(), inputLines, InputProcessorDay04(), SolutionProcessorDay04()
         )

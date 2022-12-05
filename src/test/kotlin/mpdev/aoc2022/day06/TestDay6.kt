@@ -1,4 +1,4 @@
-package mpdev.aoc2022.day05
+package mpdev.aoc2022.day06
 
 import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Assertions.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Nested
-@DisplayName("Day 5 Test")
+@DisplayName("Day 6 Test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-class TestDay5 {
+class TestDay6 {
 
     private val filename = "src/test/resources/day05/input.txt"
     private val inputProcessor = InputProcessorDay05()
