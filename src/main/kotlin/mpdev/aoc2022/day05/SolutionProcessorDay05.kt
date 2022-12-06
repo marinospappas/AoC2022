@@ -1,6 +1,7 @@
 package mpdev.aoc2022.day05
 
 import mpdev.aoc2022.common.*
+import java.lang.StringBuilder
 
 class SolutionProcessorDay05: SolutionProcessor<InputDay05> {
 
@@ -17,9 +18,7 @@ class SolutionProcessorDay05: SolutionProcessor<InputDay05> {
             input.stacks[it.src-1] = movResult.first
             input.stacks[it.dest-1] = movResult.second
         }
-        var result = ""
-        input.stacks.forEach { result += it.last() }
-        return result
+        return StringBuilder().also { input.stacks.forEach { stack -> it.append(stack.last()) } }.toString()
     }
 
     /** part 2 calculation */
@@ -29,8 +28,6 @@ class SolutionProcessorDay05: SolutionProcessor<InputDay05> {
             input.stacks[it.src-1] = movResult.first
             input.stacks[it.dest-1] = movResult.second
         }
-        var result = ""
-        input.stacks.forEach { result += it.last() }
-        return result
+        return StringBuilder().also { input.stacks.forEach { stack -> it.append(stack.last()) } }.toString()
     }
 }

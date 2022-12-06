@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Assertions.*
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class TestDay6 {
 
-    private val filename = "src/test/resources/day05/input.txt"
+    private val filename = "src/test/resources/day06/input.txt"
     private val inputProcessor = InputProcessorDay06()
     private val solution = SolutionProcessorDay06()
     private lateinit var testInput: InputDay06
@@ -27,45 +27,47 @@ class TestDay6 {
         puzzleProcessor2 = DaySpecific.getProcessor(2, 6, inputLines)!!
     }
 
-    /*
-        [D]
-    [N] [C]
-    [Z] [M] [P]
-     1   2   3
+    val exmplBuffer = listOf(
+        "bvwbjplbgvbhsrlpgdmjqwftvncz",
+        "nppdvjthqldpwncqszvftbrmjlhg",
+        "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg",
+        "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"
+    )
 
-    move 1 from 2 to 1
-    move 3 from 1 to 3
-    move 2 from 2 to 1
-    move 1 from 1 to 2
-     */
+    /*
+    mjqjpqmgbljsphdztnvjfqwrcgsmlb
+    */
 
     @Test
     @Order(1)
     fun `Test Get Input`() {
-        val expectedStacks = listOf(
-            "ZN",
-            "MCD",
-            "P",
-        )
-        val expectedMoves = listOf(
-            Move(1,2,1),
-            Move(3,1,3),
-            Move(2,2,1),
-            Move(1,1,2),
-        )
+        val expected = "mjqjpqmgbljsphdztnvjfqwrcgsmlb"
         println(testInput.toString())
-        assertEquals(expectedStacks.size, testInput.stacks.size)
-        for (i in testInput.stacks.indices)
-            assertEquals(expectedStacks[i], testInput.stacks[i])
-        assertEquals(expectedMoves.size, testInput.moves.size)
-        for (i in testInput.moves.indices)
-            assertEquals(expectedMoves[i], testInput.moves[i])
+        assertEquals(expected, testInput.dataBuffer)
+    }
+
+    @Test
+    @Order(5)
+    fun `Test All Chars Different`() {
+        assertTrue("abcd".allCharsDifferent())
+        assertFalse("adcd".allCharsDifferent())
+        assertFalse("abdd".allCharsDifferent())
+        assertFalse("aacd".allCharsDifferent())
+    }
+
+    @Test
+    @Order(8)
+    fun `Test Buffer Examples Part 1`() {
+        assertEquals("5", solution.part1(InputDay06(exmplBuffer[0])))
+        assertEquals("6", solution.part1(InputDay06(exmplBuffer[1])))
+        assertEquals("10", solution.part1(InputDay06(exmplBuffer[2])))
+        assertEquals("11", solution.part1(InputDay06(exmplBuffer[3])))
     }
 
     @Test
     @Order(10)
     fun `Test Calculate Part 1`() {
-        val expected = "CMZ"
+        val expected = "7"
         val result = solution.part1(testInput)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor1.process())
@@ -74,11 +76,19 @@ class TestDay6 {
     @Test
     @Order(12)
     fun `Test Calculate Part 2`() {
-        val expected = "MCD"
+        val expected = "19"
         val result = solution.part2(testInput)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor2.process())
     }
 
+    @Test
+    @Order(14)
+    fun `Test Buffer Examples Part 2`() {
+        assertEquals("23", solution.part2(InputDay06(exmplBuffer[0])))
+        assertEquals("23", solution.part2(InputDay06(exmplBuffer[1])))
+        assertEquals("29", solution.part2(InputDay06(exmplBuffer[2])))
+        assertEquals("26", solution.part2(InputDay06(exmplBuffer[3])))
+    }
 }
 

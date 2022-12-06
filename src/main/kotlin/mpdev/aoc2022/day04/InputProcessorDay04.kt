@@ -4,7 +4,7 @@ import mpdev.aoc2022.common.InputProcessor
 import mpdev.aoc2022.common.abort
 
 class InputProcessorDay04: InputProcessor<InputDay04>() {
-    fun processLine(inputLine: String, dataList: MutableList<GroupedSections>) {
+    private fun processLine(inputLine: String, dataList: MutableList<GroupedSections>) {
         val sections = inputLine.split(",")
         if (sections.size != 2)
             abort("bad input line $inputLine")
@@ -19,8 +19,6 @@ class InputProcessorDay04: InputProcessor<InputDay04>() {
     }
 
     override fun process(input: List<String>): InputDay04 {
-        val dataList = mutableListOf<GroupedSections>()
-        input.forEach { processLine(it, dataList) }
-        return InputDay04(dataList)
+        return InputDay04(mutableListOf<GroupedSections>().also { input.forEach { line -> processLine(line, it) } })
     }
 }
