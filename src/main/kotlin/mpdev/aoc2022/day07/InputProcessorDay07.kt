@@ -1,10 +1,10 @@
-package mpdev.aoc2022.day05
+package mpdev.aoc2022.day07
 
 import mpdev.aoc2022.common.InputProcessor
 import mpdev.aoc2022.common.abort
 import java.lang.Exception
 
-class InputProcessorDay05: InputProcessor<InputDay05>() {
+class InputProcessorDay07: InputProcessor<InputDay05>() {
 
     private fun processStack(inputLine: String, dataList: MutableList<String>, numStacks: Int) {
         for (i in 1..numStacks) {
