@@ -2,10 +2,10 @@ package mpdev.aoc2022.day07
 
 import mpdev.aoc2022.common.InputProcessor
 
-var regexMatch: MatchResult? = null
-fun String.matchRegExp(regexp: String) = regexp.toRegex().find(this).also { regexMatch = it } != null
-
 class InputProcessorDay07: InputProcessor<InputDay07>() {
+
+    var regexMatch: MatchResult? = null
+    fun String.matchRegExp(regexp: String) = regexp.toRegex().find(this).also { regexMatch = it } != null
 
     override fun process(input: List<String>): InputDay07 {
         val rootDir = ADirectoryEntry("/", "dir")
