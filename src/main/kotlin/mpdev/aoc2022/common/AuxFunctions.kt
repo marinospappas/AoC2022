@@ -27,7 +27,7 @@ fun getPart1or2(args: Array<String>): Int {
     return 0
 }
 
-/** get prt 1 or 2 from args */
+/** get day from args */
 fun getDay(args: Array<String>): Int {
     for (i in args.indices)
         if (args[i].startsWith("-day"))
