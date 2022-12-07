@@ -11,8 +11,7 @@ class InputProcessorDay07: InputProcessor<InputDay07>() {
         val dirStructure = ADirectoryEntry("/", "dir")
 
         input.forEach { line ->
-            when {
-                line.matchRegExp(Regex("""^\$ ls$""")) -> {}
+            when {      // line "$ ls" is ignored
                 line.matchRegExp(Regex("""^\$ cd (.+)$""")) -> {
                     val (dirName) = regexMatch!!.destructured
                     dirStructure.changeCurDir(dirName)
