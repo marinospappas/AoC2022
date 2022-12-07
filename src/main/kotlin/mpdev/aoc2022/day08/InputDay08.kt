@@ -1,8 +1,8 @@
-package mpdev.aoc2022.day07
+package mpdev.aoc2022.day08
 
 import java.lang.StringBuilder
 
-class InputDay07(var root: ADirectoryEntry) {
+class InputDay08(var root: ADirectoryEntry) {
 
     override fun toString(): String {
         return root.toString()

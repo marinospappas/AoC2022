@@ -1,13 +1,13 @@
-package mpdev.aoc2022.day07
+package mpdev.aoc2022.day08
 
 import mpdev.aoc2022.common.InputProcessor
 
-class InputProcessorDay07: InputProcessor<InputDay07>() {
+class InputProcessorDay08: InputProcessor<InputDay08>() {
 
     var regexMatch: MatchResult? = null
     private fun String.matchRegExp(regex: Regex) = regex.find(this).also { regexMatch = it } != null
 
-    override fun process(input: List<String>): InputDay07 {
+    override fun process(input: List<String>): InputDay08 {
         val dirStructure = ADirectoryEntry("/", "dir")
 
         input.forEach { line ->
@@ -27,6 +27,6 @@ class InputProcessorDay07: InputProcessor<InputDay07>() {
             }
         }
         dirStructure.updateDirSizes()
-        return InputDay07(dirStructure)
+        return InputDay08(dirStructure)
     }
 }
