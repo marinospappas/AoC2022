@@ -41,9 +41,8 @@ class ADirectoryEntry(var name: String, var type: String, var parent: ADirectory
     }
 
     fun getDirSize(): Int {
-        var totalSize = entries.stream().filter { it.type == "file" }.toList().sumOf{it.size}
-        entries.stream().filter { it.type == "dir" }.toList().forEach { totalSize += it.getDirSize() }
-        return totalSize
+        return entries.stream().filter { it.type == "file" }.toList().sumOf{ it.size } +
+                entries.stream().filter { it.type == "dir" }.toList().sumOf{ it.getDirSize() }
     }
 
     fun updateDirSizes() {
