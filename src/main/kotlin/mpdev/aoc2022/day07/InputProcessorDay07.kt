@@ -5,31 +5,31 @@ import mpdev.aoc2022.common.InputProcessor
 class InputProcessorDay07: InputProcessor<InputDay07>() {
 
     var regexMatch: MatchResult? = null
-    fun String.matchRegExp(regexp: String) = regexp.toRegex().find(this).also { regexMatch = it } != null
+    private fun String.matchRegExp(regex: Regex) = regex.find(this).also { regexMatch = it } != null
 
     override fun process(input: List<String>): InputDay07 {
-        val rootDir = ADirectoryEntry("/", "dir")
+        val dirStructure = ADirectoryEntry("/", "dir")
 
         input.forEach { line ->
             when {
-                line.matchRegExp("""^\$ ls$""") -> {}
-                line.matchRegExp("""^\$ cd /$""") -> rootDir.makeRootCurrent()
-                line.matchRegExp("""^\$ cd \.\.$""") -> rootDir.makeParentCurrent()
-                line.matchRegExp("""cd ([a-zA-Z\d.\-]+)""") -> {
+                line.matchRegExp(Regex("""^\$ ls$""")) -> {}
+                line.matchRegExp(Regex("""^\$ cd /$""")) -> dirStructure.makeRootCurrent()
+                line.matchRegExp(Regex("""^\$ cd \.\.$""")) -> dirStructure.makeParentCurrent()
+                line.matchRegExp(Regex("""cd ([a-zA-Z\d.\-]+)""")) -> {
                     val (dirName) = regexMatch!!.destructured
-                    rootDir.changeCurDir(dirName)
+                    dirStructure.changeCurDir(dirName)
                 }
-                line.matchRegExp("""dir ([a-zA-Z\d.\-]+)""") -> {
+                line.matchRegExp(Regex("""dir ([a-zA-Z\d.\-]+)""")) -> {
                     val (dirName) = regexMatch!!.destructured
-                    rootDir.createDir(dirName)
+                    dirStructure.createDir(dirName)
                 }
-                line.matchRegExp("""(\d+) ([a-zA-Z\d.\-]+)""") -> {
+                line.matchRegExp(Regex("""(\d+) ([a-zA-Z\d.\-]+)""")) -> {
                     val (fileSize, fileName) = regexMatch!!.destructured
-                    rootDir.createFile(fileName, fileSize.toInt())
+                    dirStructure.createFile(fileName, fileSize.toInt())
                 }
             }
         }
-        rootDir.updateDirSizes()
-        return InputDay07(rootDir)
+        dirStructure.updateDirSizes()
+        return InputDay07(dirStructure)
     }
 }
