@@ -15,7 +15,7 @@ class SolutionProcessorDay07: SolutionProcessor<InputDay07> {
         val reqFreeSpace = 30000000
         val requiredToFree = reqFreeSpace - (totalSpace - input.root.getDirSize())
         val (dirName, dirSize) =
-            input.root.getDirSizes().filterValues { it > requiredToFree }.toList().minByOrNull { (_, value) -> value }!!
+            input.root.getDirSizes().filterValues { it > requiredToFree }.minByOrNull { (_, value) -> value }!!
         println ("$dirName: $dirSize")
         return dirSize.toString()
     }
