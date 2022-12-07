@@ -12,7 +12,6 @@ class InputProcessorDay07: InputProcessor<InputDay07>() {
                 it.matches(Regex("""^\$ ls$""")) -> Unit
                 it.matches(Regex("""^\$ cd [a-zA-Z].*$""")) -> changeCurrentDir(it, rootDir)
                 it.matches(Regex("""^\$ cd \.\.$""")) -> rootDir.makeParentCurrent()
-                it.matches(Regex("""^\$ cd \.\.$""")) -> rootDir.makeParentCurrent()
                 it.matches(Regex("""^dir [a-zA-Z].*$""")) -> createDir(it, rootDir)
                 it.matches(Regex("""^[0-9]+ [a-zA-Z].*$""")) -> createFile(it, rootDir)
             }
