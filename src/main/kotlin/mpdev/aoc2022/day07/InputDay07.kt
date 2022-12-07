@@ -18,18 +18,13 @@ class ADirectoryEntry(var name: String, var type: String, var parent: ADirectory
 
     var inode = seqNum++
 
-    fun makeRootCurrent() {
-        // must be called at the top of the tree (root dir)
-        curDir = this
-    }
-
-    fun makeParentCurrent() {
-        curDir = curDir.parent!!
-    }
-
     fun changeCurDir(name: String) {
-        curDir.entries.stream().filter { it.name == name && it.type == "dir" }.toList().first()
-            .also { curDir = it }
+        when (name) {
+            "/" -> curDir = this        // must be called at the top of the tree (root dir)
+            ".." -> curDir = curDir.parent!!
+            else -> curDir.entries.stream().filter { it.name == name && it.type == "dir" }.toList().first()
+                .also { curDir = it }
+        }
     }
 
     fun createDir(name: String) {
