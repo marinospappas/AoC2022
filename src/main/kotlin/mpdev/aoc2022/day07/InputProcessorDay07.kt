@@ -17,6 +17,7 @@ class InputProcessorDay07: InputProcessor<InputDay07>() {
                 it.matches(Regex("""^[0-9]+ [a-zA-Z].*$""")) -> createFile(it, rootDir)
             }
         }
+        rootDir.updateDirSizes()
         return InputDay07(rootDir)
     }
 
