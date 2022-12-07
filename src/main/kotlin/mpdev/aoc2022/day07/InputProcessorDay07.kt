@@ -19,11 +19,11 @@ class InputProcessorDay07: InputProcessor<InputDay07>() {
                     val (dirName) = regexMatch!!.destructured
                     dirStructure.changeCurDir(dirName)
                 }
-                line.matchRegExp(Regex("""dir ([a-zA-Z\d.\-]+)""")) -> {
+                line.matchRegExp(Regex("""dir ([a-zA-Z]+[\d._\-]*)""")) -> {
                     val (dirName) = regexMatch!!.destructured
                     dirStructure.createDir(dirName)
                 }
-                line.matchRegExp(Regex("""(\d+) ([a-zA-Z\d.\-]+)""")) -> {
+                line.matchRegExp(Regex("""(\d+) ([a-zA-Z]+[\d._\-]*)""")) -> {
                     val (fileSize, fileName) = regexMatch!!.destructured
                     dirStructure.createFile(fileName, fileSize.toInt())
                 }
