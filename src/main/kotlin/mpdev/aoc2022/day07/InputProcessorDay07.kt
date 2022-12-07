@@ -13,15 +13,15 @@ class InputProcessorDay07: InputProcessor<InputDay07>() {
         input.forEach { line ->
             when {
                 line.matchRegExp(Regex("""^\$ ls$""")) -> {}
-                line.matchRegExp(Regex("""cd (.+)""")) -> {
+                line.matchRegExp(Regex("""^\$ cd (.+)$""")) -> {
                     val (dirName) = regexMatch!!.destructured
                     dirStructure.changeCurDir(dirName)
                 }
-                line.matchRegExp(Regex("""dir ([a-zA-Z]+[a-zA-Z\d._\-]*)""")) -> {
+                line.matchRegExp(Regex("""^dir ([a-zA-Z]+[a-zA-Z\d._\-]*)$""")) -> {
                     val (dirName) = regexMatch!!.destructured
                     dirStructure.createDir(dirName)
                 }
-                line.matchRegExp(Regex("""(\d+) ([a-zA-Z]+[a-zA-Z\d._\-]*)""")) -> {
+                line.matchRegExp(Regex("""^(\d+) ([a-zA-Z]+[a-zA-Z\d._\-]*)$""")) -> {
                     val (fileSize, fileName) = regexMatch!!.destructured
                     dirStructure.createFile(fileName, fileSize.toInt())
                 }
