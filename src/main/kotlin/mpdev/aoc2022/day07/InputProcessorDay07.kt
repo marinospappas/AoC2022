@@ -13,8 +13,6 @@ class InputProcessorDay07: InputProcessor<InputDay07>() {
         input.forEach { line ->
             when {
                 line.matchRegExp(Regex("""^\$ ls$""")) -> {}
-                //line.matchRegExp(Regex("""^\$ cd /$""")) -> dirStructure.makeRootCurrent()
-                //line.matchRegExp(Regex("""^\$ cd \.\.$""")) -> dirStructure.makeParentCurrent()
                 line.matchRegExp(Regex("""cd (.+)""")) -> {
                     val (dirName) = regexMatch!!.destructured
                     dirStructure.changeCurDir(dirName)
