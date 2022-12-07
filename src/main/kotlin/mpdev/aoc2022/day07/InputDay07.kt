@@ -10,59 +10,40 @@ class InputDay07(var root: ADirectoryEntry) {
 }
 
 var seqNum: Int = 0
+lateinit var curDir: ADirectoryEntry
 
 /** Directory entry class - type can be either File or Directory */
-class ADirectoryEntry(var name: String, var type: String, var parent: ADirectoryEntry? = null, var isCurrent: Boolean = false,
+class ADirectoryEntry(var name: String, var type: String, var parent: ADirectoryEntry? = null,
                       var entries: MutableList<ADirectoryEntry> = mutableListOf(), var size: Int = 0) {
 
-    var inode = seqNum++;
+    var inode = seqNum++
 
-    fun findCurrent(): ADirectoryEntry? {
-        if (type == "dir" && isCurrent)
-            return this
-        else
-            entries.stream().filter { it.type == "dir" }.toList().forEach {
-                val cur = it.findCurrent()
-                if (cur != null)
-                    return cur
-            }
-        return null
+    fun makeRootCurrent() {
+        // must be called at the top of the tree (root dir)
+        curDir = this
     }
 
     fun makeParentCurrent() {
-        val curDir = findCurrent()!!
-        curDir.isCurrent = false
-        curDir.parent?.isCurrent = true
+        curDir = curDir.parent!!
     }
 
     fun changeCurDir(name: String) {
-        val curDir = findCurrent()!!
-        curDir.entries.stream().filter { it.name == name && it.type == "dir" }.toList().first().isCurrent = true
-        curDir.isCurrent = false
+        curDir.entries.stream().filter { it.name == name && it.type == "dir" }.toList().first()
+            .also { curDir = it }
     }
 
     fun createDir(name: String) {
-        val curDir = findCurrent()!!
         curDir.entries.add(ADirectoryEntry(name, "dir", curDir))
     }
 
     fun createFile(name: String, size: Int) {
-        val curDir = findCurrent()!!
         curDir.entries.add(ADirectoryEntry(name, "file", size = size))
     }
 
-    fun getFileSizes(): List<Int> {
-        val sizes = mutableListOf<Int>()
-        entries.stream().filter { it.type == "file" }.toList().forEach { sizes.add(it.size) }
-        entries.stream().filter { it.type == "dir" }.toList().forEach { sizes.addAll(it.getFileSizes()) }
-        return sizes
-    }
-
     fun getDirSize(): Int {
-        var size: Int
-        size = entries.stream().filter { it.type == "file" }.toList().sumOf{it.size}
-        entries.stream().filter { it.type == "dir" }.toList().forEach { size += it.getDirSize() }
-        return size
+        var totalSize = entries.stream().filter { it.type == "file" }.toList().sumOf{it.size}
+        entries.stream().filter { it.type == "dir" }.toList().forEach { totalSize += it.getDirSize() }
+        return totalSize
     }
 
     fun updateDirSizes() {
@@ -72,13 +53,13 @@ class ADirectoryEntry(var name: String, var type: String, var parent: ADirectory
 
     fun getDirSizes(): Map<String, Int> {
         val sizes = mutableMapOf<String, Int>()
-        sizes["$name/$inode"] = size
+        sizes["${name}_$inode"] = size
         entries.stream().filter { it.type == "dir" }.toList().forEach { sizes.putAll(it.getDirSizes()) }
         return sizes
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is ADirectoryEntry && this.name == other.name && this.isCurrent == other.isCurrent &&
+        return other is ADirectoryEntry && this.name == other.name &&
                 this.parent == other && this.entries == other.entries && this.size == other.size
     }
 
@@ -86,7 +67,6 @@ class ADirectoryEntry(var name: String, var type: String, var parent: ADirectory
         var hash = 17
         hash = hash * 31 + name.hashCode()
         hash = hash * 31 + type.hashCode()
-        hash = hash * 31 + isCurrent.hashCode()
         hash = hash * 31 + parent.hashCode()
         hash = hash * 31 + entries.hashCode()
         return hash
@@ -101,7 +81,7 @@ class ADirectoryEntry(var name: String, var type: String, var parent: ADirectory
         }
         else
         if (type == "dir") {
-            out = "$padding- $name (dir, parent=${parent?.name} current=$isCurrent, total size=$size, inode=$inode)\n"
+            out = "$padding- $name (dir, parent=${parent?.name}, total size=$size, inode=$inode)\n"
             out += StringBuilder().also {
                 entries.forEach { entry -> it.append(entry.toString("$padding  ")) }
             }

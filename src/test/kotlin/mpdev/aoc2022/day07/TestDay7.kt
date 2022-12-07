@@ -28,17 +28,27 @@ class TestDay7 {
     }
 
     /*
-
+- / (dir)
+  - a (dir)
+    - e (dir)
+      - i (file, size=584)
+    - f (file, size=29116)
+    - g (file, size=2557)
+    - h.lst (file, size=62596)
+  - b.txt (file, size=14848514)
+  - c.dat (file, size=8504156)
+  - d (dir)
+    - j (file, size=4060174)
+    - d.log (file, size=8033020)
+    - d.ext (file, size=5626152)
+    - k (file, size=7214296)
      */
 
     @Test
     @Order(1)
     fun `Test Get Input`() {
-        val expected = listOf(
-            "",
-        )
+        // just visual check
         println(testInput.toString())
-
     }
 
     @Test
@@ -54,7 +64,7 @@ class TestDay7 {
     @Test
     @Order(12)
     fun `Test Calculate Part 2`() {
-        val expected = "MCD"
+        val expected = "24933642"
         val result = solution.part2(testInput)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor2.process())
