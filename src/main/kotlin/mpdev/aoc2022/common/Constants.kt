@@ -8,6 +8,6 @@ interface Constants {
     }
     val DATE: String
     val PUZZLE: String
-    val RESULT_STRING: String
+    val RESULT_STRING1: String
     val RESULT_STRING2: String
 }
