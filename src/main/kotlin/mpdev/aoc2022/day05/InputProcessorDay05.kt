@@ -16,9 +16,9 @@ class InputProcessorDay05: InputProcessor<InputDay05>() {
     }
 
     private fun processMove(inputLine: String, dataList: MutableList<Move>) {
-        val matches = Regex("""move (\d+) from (\d+) to (\d+)""").find(inputLine)
+        val match = Regex("""move (\d+) from (\d+) to (\d+)""").find(inputLine)
         try {
-            val (cnt, from, to) = matches!!.destructured
+            val (cnt, from, to) = match!!.destructured
             dataList.add(Move(cnt.toInt(), from.toInt(), to.toInt()))
         }
         catch (e: Exception) { abort("bad input line $inputLine") }

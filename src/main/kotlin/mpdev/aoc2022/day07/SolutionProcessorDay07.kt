@@ -2,32 +2,28 @@ package mpdev.aoc2022.day07
 
 import mpdev.aoc2022.common.*
 import java.lang.StringBuilder
+import java.util.Comparator
 
-class SolutionProcessorDay07: SolutionProcessor<InputDay05> {
-
-    private fun executeMove(count: Int, src: String, dest: String, reverse: Boolean = false): Pair<String, String> {
-        val cnt = if (count > src.length) src.length else count
-        val strToMove = src.substring(src.length - cnt)
-        return Pair(src.substring(0, src.length - cnt), dest + if (reverse) strToMove.reversed() else strToMove)
-    }
+class SolutionProcessorDay07: SolutionProcessor<InputDay07> {
 
     /** part 1 calculation */
-    override fun part1(input: InputDay05): String {
-        input.moves.forEach {
-            val movResult = executeMove(it.count, input.stacks[it.src-1], input.stacks[it.dest-1], true)
-            input.stacks[it.src-1] = movResult.first
-            input.stacks[it.dest-1] = movResult.second
-        }
-        return StringBuilder().also { input.stacks.forEach { stack -> it.append(stack.last()) } }.toString()
+    override fun part1(input: InputDay07): String {
+        input.root.updateDirSizes()
+        val dirSizes = input.root.getDirSizes()
+        val res = dirSizes.values.sorted().stream().filter { it <= 100000 }.toList().sum()
+        return res.toString()
     }
 
     /** part 2 calculation */
-    override fun part2(input: InputDay05): String {
-        input.moves.forEach {
-            val movResult = executeMove(it.count, input.stacks[it.src-1], input.stacks[it.dest-1])
-            input.stacks[it.src-1] = movResult.first
-            input.stacks[it.dest-1] = movResult.second
-        }
-        return StringBuilder().also { input.stacks.forEach { stack -> it.append(stack.last()) } }.toString()
+    override fun part2(input: InputDay07): String {
+        val totalSpace = 70000000
+        val reqFreeSpace = 30000000
+        input.root.updateDirSizes()
+        val dirSizes = input.root.getDirSizes()
+        val totalSize = input.root.getDirSize()
+        val curFreeSpace = totalSpace - totalSize
+        val requiredToFree = reqFreeSpace - curFreeSpace
+        return println( dirSizes.filterValues { it > requiredToFree }.toList().sortedBy {  (_, value) -> value }
+            .minOf { (_, value) -> value  } ).toString()
     }
 }

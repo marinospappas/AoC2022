@@ -4,47 +4,46 @@ import mpdev.aoc2022.common.InputProcessor
 import mpdev.aoc2022.common.abort
 import java.lang.Exception
 
-class InputProcessorDay07: InputProcessor<InputDay05>() {
+class InputProcessorDay07: InputProcessor<InputDay07>() {
 
-    private fun processStack(inputLine: String, dataList: MutableList<String>, numStacks: Int) {
-        for (i in 1..numStacks) {
-            val index = (i - 1) * 4 + 1
-            if (index < inputLine.length)
-                if (inputLine[index] in 'A'..'Z')
-                    dataList[i - 1] = dataList[i-1] + (inputLine[index])
-        }
-    }
-
-    private fun processMove(inputLine: String, dataList: MutableList<Move>) {
-        val matches = Regex("""move (\d+) from (\d+) to (\d+)""").find(inputLine)
-        try {
-            val (cnt, from, to) = matches!!.destructured
-            dataList.add(Move(cnt.toInt(), from.toInt(), to.toInt()))
-        }
-        catch (e: Exception) { abort("bad input line $inputLine") }
-    }
-
-    override fun process(input: List<String>): InputDay05 {
-        val stacks = mutableListOf<String>()
-        val moves = mutableListOf<Move>()
-
-        val numStacks = input.stream().filter { it.matches(Regex("""^[0-9+\s*]+$""")) }
-            .toList()[0].split(" ").last().toInt()
-        for (i in 1..numStacks)
-            stacks.add("")
-        var inputPart1 = true
+    override fun process(input: List<String>): InputDay07 {
+        val rootDir = ADirectoryEntry("/", "dir", null, true)
         input.forEach {
-            if (inputPart1) {
-                processStack(it, stacks, numStacks)
-                if (it.isEmpty())
-                    inputPart1 = false
-            } else
-                processMove(it, moves)
+            if (it.matches(Regex("""^\$ cd /$""")))
+                ; // cd / is ignored as it only appears in the beginning
+            else
+            if (it.matches(Regex("""^\$ ls$""")))
+                ; // ls is ignored
+            else
+            if (it.matches(Regex("""^\$ cd [a-zA-Z].*$""")))
+                changeCurrentDir(it, rootDir)
+            if (it.matches(Regex("""^\$ cd \.\.$""")))
+                rootDir.makeParentCurrent()
+            else
+            if (it.matches(Regex("""^dir [a-zA-Z].*$""")))
+                createDir(it, rootDir)
+            else
+            if (it.matches(Regex("""^[0-9]+ [a-zA-Z].*$""")))
+                createFile(it, rootDir)
         }
-        for (i in 0 until stacks.size) {
-            stacks[i] = stacks[i].reversed()
-        }
-        return InputDay05(stacks, moves)
+        return InputDay07(rootDir)
     }
 
+    private fun changeCurrentDir(line: String, rootDir: ADirectoryEntry) {
+        val match = Regex("""cd ([a-zA-Z\d.\-]+)""").find(line)
+        val (dirName) = match!!.destructured
+        rootDir.changeCurDir(dirName)
+    }
+
+    private fun createDir(line: String, rootDir: ADirectoryEntry) {
+        val match = Regex("""dir ([a-zA-Z\d.\-]+)""").find(line)
+        val (dirName) = match!!.destructured
+        rootDir.createDir(dirName)
+    }
+
+    private fun createFile(line: String, rootDir: ADirectoryEntry) {
+        val match = Regex("""(\d+) ([a-zA-Z\d.\-]+)""").find(line)
+        val (fileSize, fileName) = match!!.destructured
+        rootDir.createFile(fileName, fileSize.toInt())
+    }
 }

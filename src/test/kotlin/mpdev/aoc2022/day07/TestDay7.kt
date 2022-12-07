@@ -15,7 +15,7 @@ class TestDay7 {
     private val filename = "src/test/resources/day07/input.txt"
     private val inputProcessor = InputProcessorDay07()
     private val solution = SolutionProcessorDay07()
-    private lateinit var testInput: InputDay05
+    private lateinit var testInput: InputDay07
     private lateinit var puzzleProcessor1: PuzzleProcessor<*>
     private lateinit var puzzleProcessor2: PuzzleProcessor<*>
 
@@ -38,15 +38,14 @@ class TestDay7 {
             "",
         )
         println(testInput.toString())
-        assertEquals(expected.size, testInput.stacks.size)
-        for (i in testInput.stacks.indices)
-            assertEquals(expected[i], testInput.stacks[i])
+
     }
 
     @Test
     @Order(10)
     fun `Test Calculate Part 1`() {
-        val expected = "CMZ"
+        val expected = "95437"
+        println()
         val result = solution.part1(testInput)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor1.process())
