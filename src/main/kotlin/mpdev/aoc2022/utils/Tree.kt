@@ -38,6 +38,21 @@ open class TreeNode<T>(var nodeData: T, var parent: TreeNode<T>? = null, var chi
             this.parent!!.findRoot()
     }
 
+    fun getPathFromRoot(getValue: (TreeNode<T>) -> String, separator: String = "."): String {
+        val path = getPathFromRoot(mutableListOf(), getValue)
+        if (path.last() == separator)
+            path.removeAt(path.lastIndex)
+        return separator + path.reversed().joinToString(separator)
+    }
+
+    private fun getPathFromRoot(path: MutableList<String>, getValue: (TreeNode<T>) -> String): MutableList<String> {
+        path.add(getValue(this))
+        if (this.parent == null)
+            return path
+        else
+            return this.parent!!.getPathFromRoot(path, getValue)
+    }
+
     fun sumOf(item: (TreeNode<T>) -> Int): Int {
         return item(this) + children.sumOf(item)
     }

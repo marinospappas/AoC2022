@@ -49,6 +49,7 @@ class TestDay7 {
     fun `Test Get Input`() {
         // just visual check
         println(testInput.toString())
+        testInput.root.walk { n -> println(n.getPathFromRoot({ entry -> entry.nodeData.name }, "/")) }
     }
 
     @Test
