@@ -1,6 +1,6 @@
-package mpdev.aoc2022.day08
+package mpdev.aoc2022.day09
 
-class InputDay08(var trees: List<List<Int>>, var numOfRows: Int, var numOfColumns: Int) {
+class InputDay09(var trees: List<List<Int>>, var numOfRows: Int, var numOfColumns: Int) {
 
     private fun getSurroundingList(row: Int, col: Int): List<List<Int>> {
         return listOf(
