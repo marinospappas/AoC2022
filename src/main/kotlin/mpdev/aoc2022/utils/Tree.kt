@@ -32,7 +32,7 @@ open class TreeNode<T>(var nodeData: T, var parent: TreeNode<T>? = null, var chi
     }
 
     fun findRoot(): TreeNode<T> {
-        return if (this.parent == null)
+        return if (parent == null)
             this
         else
             this.parent!!.findRoot()
@@ -47,10 +47,10 @@ open class TreeNode<T>(var nodeData: T, var parent: TreeNode<T>? = null, var chi
 
     private fun getPathFromRoot(path: MutableList<String>, getValue: (TreeNode<T>) -> String): MutableList<String> {
         path.add(getValue(this))
-        if (this.parent == null)
+        if (parent == null)
             return path
         else
-            return this.parent!!.getPathFromRoot(path, getValue)
+            return parent!!.getPathFromRoot(path, getValue)
     }
 
     fun sumOf(item: (TreeNode<T>) -> Int): Int {
@@ -96,7 +96,7 @@ open class TreeNode<T>(var nodeData: T, var parent: TreeNode<T>? = null, var chi
     override fun toString() = toString("")
 
     fun toString(padding: String): String {
-        var out = "$padding${this.nodeData.toString()}"
+        var out = "$padding${nodeData.toString()}"
         out += StringBuilder().also {
             children.forEach { entry -> it.append(entry.toString("$padding  ")) }
         }

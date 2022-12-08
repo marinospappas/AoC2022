@@ -2,25 +2,6 @@ package mpdev.aoc2022.utils
 
 import java.util.*
 
-/*
-interface NodeCost<T> {
-    var node: GraphNode<T>
-    var costFromPrev: Int
-}
-
-interface GraphNode<T> {
-    var id: T
-    fun getConnectedNodes(): List<NodeCost<T>>
-    fun heuristic(): Int
-}
-
-class MinCostPath<T> {
-    var path: List<T> = listOf()
-    var minCost: Int = Int.MAX_VALUE
-    var numberOfIterations: Int = 0
-}
-*/
-
 /**
  * A* implementation
  * T is the type of the Node ID in the Graph
@@ -28,7 +9,7 @@ class MinCostPath<T> {
 class Dijkstra<T> {
 
     class PathNode<T>(
-        val node: GraphNode<T>?,
+        val node: MinCostGraphNode<T>?,
         var costFromStart: Int,
         var updatedBy: T? = null): Comparable<PathNode<T>> {
         override fun compareTo(other: PathNode<T>): Int {
@@ -46,7 +27,7 @@ class Dijkstra<T> {
     /**
      * The Dijkstra algorithm implementation
      */
-    fun runIt(startState: GraphNode<T>, endState: GraphNode<T>): MinCostPath<T> {
+    fun runIt(startState: MinCostGraphNode<T>, endState: MinCostGraphNode<T>): MinCostPath<T> {
 
         // setup priority queue, visited set and minimum total costs for each node
         val toVisitQueue = PriorityQueue<PathNode<T>>().apply { add(PathNode(startState,0)) }
@@ -58,11 +39,11 @@ class Dijkstra<T> {
         while (toVisitQueue.isNotEmpty()) {
             val currentNode = toVisitQueue.poll()
             // if this is the endNode ID, we are done
-            if (currentNode.node?.id!! == endState.id) {
+            if (currentNode.node?.getId()!! == endState.getId()) {
                 val minCostPath = MinCostPath<T>()
                 minCostPath.minCost = currentNode.costFromStart
                 minCostPath.numberOfIterations = iterations
-                minCostPath.path = getMinCostPath(currentNode.node.id, startState.id, dijkstraCost)
+                minCostPath.path = getMinCostPath(currentNode.node.getId(), startState.getId(), dijkstraCost)
                 return minCostPath
             }
             // else for each connected node
@@ -76,16 +57,16 @@ class Dijkstra<T> {
                 val newCost = currentNode.costFromStart + connectedNode.costFromPrev
                 // if the new cost is less that what we have already recorded in the map of nodes/costs
                 // update the map with the new costs and "updatedBy" (to be able to back-track the min.cost path)
-                if (newCost < dijkstraCost.getValue(connectedNode.node.id).costFromStart) {
-                    nextPathNode.updatedBy = currentNode.node.id
+                if (newCost < dijkstraCost.getValue(connectedNode.node.getId()).costFromStart) {
+                    nextPathNode.updatedBy = currentNode.node.getId()
                     nextPathNode.costFromStart = newCost
-                    dijkstraCost[connectedNode.node.id] = nextPathNode
+                    dijkstraCost[connectedNode.node.getId()] = nextPathNode
                     // and put the updated new node back into the priority queue
                     toVisitQueue.add(nextPathNode)
                 }
             }
         }
-        throw DikstraException("no path found from ${startState.id} to ${endState.id}")
+        throw DikstraException("no path found from ${startState.getId()} to ${endState.getId()}")
     }
 
     fun getMinCostPath(minCostKey: T, startKey: T, dijkstraCost: Map<T, PathNode<T>>): List<T> {

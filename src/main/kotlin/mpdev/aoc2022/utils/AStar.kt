@@ -9,7 +9,7 @@ import java.util.*
 class AStar<T> {
 
     class PathNode<T>(
-        val node: GraphNode<T>?,
+        val node: MinCostGraphNode<T>?,
         var costFromStart: Int,
         var estTotCostToEnd: Int,
         var updatedBy: T? = null): Comparable<PathNode<T>> {
@@ -28,7 +28,7 @@ class AStar<T> {
     /**
      * The A* algorithm - improves the sesrch by adding estimated cost to end
      */
-    fun runIt(startState: GraphNode<T>, endState: GraphNode<T>): MinCostPath<T> {
+    fun runIt(startState: MinCostGraphNode<T>, endState: MinCostGraphNode<T>): MinCostPath<T> {
 
         // setup priority queue, visited set and minimum total costs for each node
         val toVisitQueue = PriorityQueue<PathNode<T>>().apply { add(PathNode(startState,0, 0)) }
@@ -40,11 +40,11 @@ class AStar<T> {
         while (toVisitQueue.isNotEmpty()) {
             val currentNode = toVisitQueue.poll()
             // if this is the endNode ID, we are done
-            if (currentNode.node?.id!! == endState.id) {
+            if (currentNode.node?.getId()!! == endState.getId()) {
                 val minCostPath = MinCostPath<T>()
                 minCostPath.minCost = currentNode.costFromStart
                 minCostPath.numberOfIterations = iterations
-                minCostPath.path = getMinCostPath(currentNode.node.id, startState.id, astarCost)
+                minCostPath.path = getMinCostPath(currentNode.node.getId(), startState.getId(), astarCost)
                 return minCostPath
             }
             // else for each connected node
@@ -59,17 +59,17 @@ class AStar<T> {
                 val newTotalCost = newCost + connectedNode.node.heuristic()
                 // if the new cost is less that what we have already recorded in the map of nodes/costs
                 // update the map with the new costs and "updatedBy" (to be able to back-track the min.cost path)
-                if (newCost < astarCost.getValue(connectedNode.node.id).costFromStart) {
-                    nextPathNode.updatedBy = currentNode.node.id
+                if (newCost < astarCost.getValue(connectedNode.node.getId()).costFromStart) {
+                    nextPathNode.updatedBy = currentNode.node.getId()
                     nextPathNode.costFromStart = newCost
                     nextPathNode.estTotCostToEnd = newTotalCost
-                    astarCost[connectedNode.node.id] = nextPathNode
+                    astarCost[connectedNode.node.getId()] = nextPathNode
                     // and put the updated new node back into the priority queue
                     toVisitQueue.add(nextPathNode)
                 }
             }
         }
-        throw AStarException("no path found from ${startState.id} to ${endState.id}")
+        throw AStarException("no path found from ${startState.getId()} to ${endState.getId()}")
     }
 
     fun getMinCostPath(minCostKey: T, startKey: T, astarCost: Map<T, PathNode<T>>): List<T> {
