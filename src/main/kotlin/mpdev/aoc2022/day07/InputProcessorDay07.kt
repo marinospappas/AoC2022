@@ -8,7 +8,7 @@ class InputProcessorDay07: InputProcessor<InputDay07>() {
     private fun String.matchRegExp(regex: Regex) = regex.find(this).also { regexMatch = it } != null
 
     override fun process(input: List<String>): InputDay07 {
-        val dirStructure = ADirectoryEntry(Node( "/", "dir", seqNum++))
+        val dirStructure = ADirectoryEntry(Node( "/", "dir", seqNum))
 
         input.forEach { line ->
             when {                        // line "$ ls" is ignored
