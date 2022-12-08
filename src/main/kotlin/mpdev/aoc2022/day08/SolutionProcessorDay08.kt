@@ -6,17 +6,8 @@ class SolutionProcessorDay08: SolutionProcessor<InputDay08> {
 
     /** part 1 calculation */
     override fun part1(input: InputDay08): String {
-        var totalVisible = 0
-        (0..input.numOfRows-1).forEach { row -> (0..input.numOfColumns-1).forEach { col ->
-            if (input.isVisible(row,col)) ++totalVisible } }
-
-        println (
-            (0..input.numOfRows - 1).forEach { row ->
-                (0..input.numOfColumns - 1).filter { col ->
-                    input.isVisible(row, col)
-                }.count()
-            }.toString())
-        return totalVisible.toString()
+        return mutableListOf<Boolean>().also { l -> (0..input.numOfRows-1).forEach { row -> (0..input.numOfColumns-1)
+            .forEach { col -> l.add(input.isVisible(row,col)) } } }.count{it}.toString()
     }
 
     /** part 2 calculation */
