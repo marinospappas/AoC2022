@@ -1,87 +1,61 @@
 package mpdev.aoc2022.day08
 
-import java.lang.StringBuilder
+class InputDay08(var trees: List<List<Int>>, var numOfRows: Int, var numColumns: Int) {
 
-class InputDay08(var root: ADirectoryEntry) {
+    fun getSurroundingList(row: Int, col: Int): List<List<Int>> {
+        val left = mutableListOf<Int>()
+        for (i in 0 until col)
+            left.add(trees[row][i])
+        val right = mutableListOf<Int>()
+        for (i in col+1 until numColumns)
+            right.add(trees[row][i])
+        val top = mutableListOf<Int>()
+        for (i in 0 until row)
+            top.add(trees[i][col])
+        val bottom = mutableListOf<Int>()
+        for (i in row+1 until numOfRows)
+            bottom.add(trees[i][col])
+        return mutableListOf(left.reversed(), right, top.reversed(), bottom)
+    }
+
+    fun isVisible(row: Int, col: Int): Boolean {
+        if (row == 0 || row == numOfRows-1 || col == 0 || col == numColumns-1)
+            return true
+        getSurroundingList(row, col).forEach { if (trees[row][col] > it.max()) return true }
+        return false
+    }
+
+    fun scenicScore(row: Int, col: Int): Int {
+        var score1 = 0
+        for (i in col-1 downTo 0) {
+            ++score1
+            if (trees[row][i] >= trees[row][col])
+                break
+        }
+        var score2 = 0
+        for (i in col+1 until numColumns) {
+            ++score2
+            if (trees[row][i] >= trees[row][col])
+                break
+        }
+
+        var score3 = 0
+        for (i in row-1 downTo 0) {
+            ++score3
+            if (trees[i][col] >= trees[row][col])
+                break
+        }
+        var score4 = 0
+        for (i in row+1 until numOfRows) {
+            ++score4
+            if (trees[i][col] >= trees[row][col])
+                break
+        }
+        return score1*score2*score3*score4
+    }
 
     override fun toString(): String {
-        return root.toString()
-    }
-}
-
-var FILE = "file"
-var DIR = "dir"
-var seqNum: Int = 0
-lateinit var curDir: ADirectoryEntry
-
-/** Directory entry class - type can be either File or Directory */
-class ADirectoryEntry(var name: String, var type: String, var parent: ADirectoryEntry? = null,
-                      var entries: MutableList<ADirectoryEntry> = mutableListOf(), var size: Int = 0) {
-
-    var inode = seqNum++
-
-    fun changeCurDir(name: String) {
-        when (name) {
-            "/" -> curDir = this        // must be called at the top of the tree (root dir)
-            ".." -> curDir = curDir.parent!!
-            else -> curDir.entries.stream().filter { it.name == name && it.type == DIR }.toList().first()
-                .also { curDir = it }
-        }
+        return trees.toString()
     }
 
-    fun createDir(name: String) {
-        curDir.entries.add(ADirectoryEntry(name, DIR, curDir))
-    }
-
-    fun createFile(name: String, size: Int) {
-        curDir.entries.add(ADirectoryEntry(name, FILE, size = size))
-    }
-
-    fun getDirSize(): Int {
-        return entries.stream().filter { it.type == FILE }.toList().sumOf{ it.size } +
-                entries.stream().filter { it.type == DIR }.toList().sumOf{ it.getDirSize() }
-    }
-
-    fun updateDirSizes() {
-        size = getDirSize()
-        entries.stream().filter { it.type == DIR }.toList().forEach { it.updateDirSizes() }
-    }
-
-    fun getDirSizes(): Map<String, Int> {
-        val sizes = mutableMapOf<String, Int>()
-        sizes["${name}_$inode"] = size
-        entries.stream().filter { it.type == DIR }.toList().forEach { sizes.putAll(it.getDirSizes()) }
-        return sizes
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return other is ADirectoryEntry && this.name == other.name &&
-                this.parent == other && this.entries == other.entries && this.size == other.size
-    }
-
-    override fun hashCode(): Int {
-        var hash = 17
-        hash = hash * 31 + name.hashCode()
-        hash = hash * 31 + type.hashCode()
-        hash = hash * 31 + parent.hashCode()
-        hash = hash * 31 + entries.hashCode()
-        return hash
-    }
-
-    override fun toString() = toString("")
-
-    private fun toString(padding: String): String {
-        var out = ""
-        if (type == FILE) {
-            out = "$padding- $name (file, size=$size, inode=$inode)\n"
-        }
-        else
-        if (type == DIR) {
-            out = "$padding- $name (dir, parent=${parent?.name}, total size=$size, inode=$inode)\n"
-            out += StringBuilder().also {
-                entries.forEach { entry -> it.append(entry.toString("$padding  ")) }
-            }
-        }
-        return out
-    }
 }

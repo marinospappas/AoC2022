@@ -55,7 +55,6 @@ class TestDay7 {
     @Order(10)
     fun `Test Calculate Part 1`() {
         val expected = "95437"
-        println()
         val result = solution.part1(testInput)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor1.process())

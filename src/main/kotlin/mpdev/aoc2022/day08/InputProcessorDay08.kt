@@ -7,26 +7,16 @@ class InputProcessorDay08: InputProcessor<InputDay08>() {
     var regexMatch: MatchResult? = null
     private fun String.matchRegExp(regex: Regex) = regex.find(this).also { regexMatch = it } != null
 
-    override fun process(input: List<String>): InputDay08 {
-        val dirStructure = ADirectoryEntry("/", "dir")
+    private fun processLine(line: String, treeGrid: MutableList<List<Int>>) {
+        val row = mutableListOf<Int>()
+        line.forEach { char -> row.add(char.digitToInt()) }
+        treeGrid.add(row)
+    }
 
-        input.forEach { line ->
-            when {                        // line "$ ls" is ignored
-                line.matchRegExp(Regex("""^\$ cd (.+)$""")) -> {
-                    val (dirName) = regexMatch!!.destructured
-                    dirStructure.changeCurDir(dirName)
-                }
-                line.matchRegExp(Regex("""^dir ([a-zA-Z]+[a-zA-Z\d._\-]*)$""")) -> {
-                    val (dirName) = regexMatch!!.destructured
-                    dirStructure.createDir(dirName)
-                }
-                line.matchRegExp(Regex("""^(\d+) ([a-zA-Z]+[a-zA-Z\d._\-]*)$""")) -> {
-                    val (fileSize, fileName) = regexMatch!!.destructured
-                    dirStructure.createFile(fileName, fileSize.toInt())
-                }
-            }
-        }
-        dirStructure.updateDirSizes()
-        return InputDay08(dirStructure)
+    override fun process(input: List<String>): InputDay08 {
+        val treeGrid: MutableList<List<Int>> = mutableListOf()
+
+        input.forEach { line -> processLine(line, treeGrid)}
+        return InputDay08(treeGrid, treeGrid.size, treeGrid[0].size)
     }
 }
