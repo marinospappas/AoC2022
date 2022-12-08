@@ -25,7 +25,7 @@ class Node(var name: String, var type: String, var inode: Int, var size: Int = 0
     }
 }
 
-class ADirectoryEntry(nodeData: Node) : TreeNode<Node>(nodeData) {
+class ADirectoryEntry(nodeData: Node): TreeNode<Node>(nodeData) {
 
     fun changeCurDir(name: String) {
         when (name) {
@@ -49,7 +49,7 @@ class ADirectoryEntry(nodeData: Node) : TreeNode<Node>(nodeData) {
     }
 
     fun updateDirSizes() {
-        this.walk({n -> n.nodeData.size = getDirSize(n)}, {n -> n.nodeData.type == DIR} )
+        this.walk({ n -> n.nodeData.size = getDirSize(n) }, { n -> n.nodeData.type == DIR } )
     }
 
     fun getDirSizes(): List<Int> {

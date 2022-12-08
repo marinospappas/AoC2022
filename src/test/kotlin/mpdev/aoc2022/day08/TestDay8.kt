@@ -61,8 +61,8 @@ class TestDay8 {
         assertTrue(testInput.isVisible(testInput.numOfRows-1,2))
         assertTrue(testInput.isVisible(2,0))
         assertTrue(testInput.isVisible(4,0))
-        assertTrue(testInput.isVisible(3,testInput.numColumns-1))
-        assertTrue(testInput.isVisible(1,testInput.numColumns-1))
+        assertTrue(testInput.isVisible(3,testInput.numOfColumns-1))
+        assertTrue(testInput.isVisible(1,testInput.numOfColumns-1))
 
     }
 
