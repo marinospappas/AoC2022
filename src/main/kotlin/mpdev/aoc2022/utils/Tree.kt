@@ -1,23 +1,90 @@
 package mpdev.aoc2022.utils
 
-abstract class TreeNode<T>(var nodaData: T, var parent: TreeNode<T>? = null, var children: MutableList<TreeNode<T>> = mutableListOf()) {
+import java.lang.StringBuilder
+
+open class TreeNode<T>(var nodeData: T, var parent: TreeNode<T>? = null, var children: MutableList<TreeNode<T>> = mutableListOf()) {
+
+    fun addChild(node: T) {
+        children.add(TreeNode(node, this))
+    }
 
     fun walk(f: (TreeNode<T>) -> Unit) {
         f(this)
         children.forEach { it.walk(f) }
     }
 
-    fun find(condition: (TreeNode<T>) -> Boolean): TreeNode<T>? {
-        return this
+    fun walk(f: (TreeNode<T>) -> Unit, condition: (TreeNode<T>) -> Boolean) {
+        if (condition(this))
+            f(this)
+        children.forEach { it.walk(f, condition) }
     }
 
-    fun <K,V>toMap(): Map<K,V> {
+    fun find(condition: (TreeNode<T>) -> Boolean): TreeNode<T>? {
+        if (condition(this))
+            return this
+        else
+            children.forEach {
+                val check = condition(it)
+                if (check)
+                    return it
+            }
+        return null
+    }
+
+    fun findRoot(): TreeNode<T> {
+        return if (this.parent == null)
+            this
+        else
+            this.parent!!.findRoot()
+    }
+
+    fun sumOf(item: (TreeNode<T>) -> Int): Int {
+        return item(this) + children.sumOf(item)
+    }
+
+    fun sumOf(item: (TreeNode<T>) -> Int, condition: (TreeNode<T>) -> Boolean): Int {
+        var sum = if (condition(this)) item(this) else 0
+        children.forEach { sum += it.sumOf(item, condition) }
+        return sum
+    }
+
+    fun <K,V>toMap(getKey: (TreeNode<T>) -> K, getValue: (TreeNode<T>) -> V): Map<K,V> {
         val resMap = mutableMapOf<K,V>()
+        resMap[getKey(this)] = getValue(this)
+        children.forEach { resMap.putAll(it.toMap(getKey, getValue)) }
         return resMap
     }
 
-    fun <V>toList(): List<V> {
+    fun <K,V>toMap(getKey: (TreeNode<T>) -> K, getValue: (TreeNode<T>) -> V, condition: (TreeNode<T>) -> Boolean): Map<K,V> {
+        val resMap = mutableMapOf<K,V>()
+        if (condition(this))
+            resMap[getKey(this)] = getValue(this)
+        children.forEach { resMap.putAll(it.toMap(getKey, getValue, condition)) }
+        return resMap
+    }
+
+    fun <V>toList(getValue: (TreeNode<T>) -> V): List<V> {
         val resList = mutableListOf<V>()
+        resList.add(getValue(this))
+        children.forEach { resList.addAll(it.toList(getValue)) }
         return resList
+    }
+
+    fun <V>toList(getValue: (TreeNode<T>) -> V, condition: (TreeNode<T>) -> Boolean): List<V> {
+        val resList = mutableListOf<V>()
+        if (condition(this))
+            resList.add(getValue(this))
+        children.forEach { resList.addAll(it.toList(getValue, condition)) }
+        return resList
+    }
+
+    override fun toString() = toString("")
+
+    fun toString(padding: String): String {
+        var out = "$padding${this.nodeData.toString()}"
+        out += StringBuilder().also {
+            children.forEach { entry -> it.append(entry.toString("$padding  ")) }
+        }
+        return out
     }
 }
