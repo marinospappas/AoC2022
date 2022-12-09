@@ -17,11 +17,11 @@ lateinit var curDir: TreeNode<Node>
 /** Directory entry class - type can be either File or Directory */
 class Node(var name: String, var type: String, var inode: Int, var size: Int = 0) {
 
-    override fun toString(): String { val padding = ""
+    override fun toString(): String {
         return if (type == FILE)
-            "$padding- $name (file, size=$size, inode=$inode)\n"
+            "- $name (file, size=$size, inode=$inode)\n"
         else
-            "$padding- $name (dir, parent=$name, total size=$size, inode=$inode)\n"
+            "- $name (dir, parent=$name, total size=$size, inode=$inode)\n"
     }
 }
 

@@ -1,7 +1,7 @@
 package mpdev.aoc2022.day05
 
+import mpdev.aoc2022.common.InputDataException
 import mpdev.aoc2022.common.InputProcessor
-import mpdev.aoc2022.common.abort
 import java.lang.Exception
 
 class InputProcessorDay05: InputProcessor<InputDay05>() {
@@ -21,7 +21,7 @@ class InputProcessorDay05: InputProcessor<InputDay05>() {
             val (cnt, from, to) = match!!.destructured
             dataList.add(Move(cnt.toInt(), from.toInt(), to.toInt()))
         }
-        catch (e: Exception) { abort("bad input line $inputLine") }
+        catch (e: Exception) { throw InputDataException("bad input line $inputLine") }
     }
 
     override fun process(input: List<String>): InputDay05 {

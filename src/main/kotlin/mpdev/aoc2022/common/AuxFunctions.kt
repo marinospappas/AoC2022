@@ -3,16 +3,12 @@ package mpdev.aoc2022.common
 import java.io.File
 import kotlin.system.exitProcess
 
+var testMode = false
+
 /** exit program */
 fun exit(msg: String) {
     println(msg)
     exitProcess(0)
-}
-
-/** abort */
-fun abort(errMsg: String) {
-    System.err.println(errMsg)
-    exitProcess(1)
 }
 
 /** get prt 1 or 2 from args */
@@ -38,11 +34,9 @@ fun getDay(args: Array<String>): Int {
 /** get input from file */
 fun getInput(filename: String): List<String> {
     println("input file: $filename")
-    try {
-        return File(filename).readLines()
-    }
-    catch (e: Exception) {
-        abort(e.toString())
-    }
-    return emptyList()
+    return File(filename).readLines()
 }
+
+/** Custom Exceptions */
+class ProgramArgException(override var message: String): Exception(message)
+class InputDataException(override var message: String): Exception(message)
