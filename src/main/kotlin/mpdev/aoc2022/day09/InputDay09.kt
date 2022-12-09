@@ -93,7 +93,7 @@ class Grid(var rope: MutableList<Pair<Int,Int>> = mutableListOf(Pair(0,0)), mode
                     if (mode == 'r')    // rope
                         when {
                             (Pair(x, y) == trail[0]) -> it.add('H')
-                            trail.indexOf(Pair(x, y)) >= 0 -> it.add(trail.indexOf(Pair(x, y)).toString().first())
+                            trail.indexOf(Pair(x, y)) >= 0 -> it.add((trail.indexOf(Pair(x, y))%10).toString().first())
                             Pair(x, y) == start -> it.add('s')
                             else -> it.add('.')
                         }
