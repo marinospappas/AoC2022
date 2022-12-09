@@ -11,16 +11,11 @@ class InputDay09(var rope: Rope, var moves: List<Pair<Char,Int>>) {
 
     /** executes given moves and returns tail trail */
     fun executeMoves(): List<Pair<Int, Int>> {
-        moves.forEach { rope.executeMove(it, tailTrail)
-            if (testMode) {
-                grid = Grid(rope.knots, 'r')
-                println("== move $it ==\n$grid")
-            }
+        moves.forEach {
+            rope.executeMove(it, tailTrail)
+            if (testMode) { grid = Grid(rope.knots, 'r'); println("== move $it ==\n$grid") }
         }
-        if (testMode) {
-            grid = Grid(tailTrail, 't')
-            println("== tail trail ==\n$grid")
-        }
+        if (testMode) { grid = Grid(tailTrail, 't'); println("== tail trail ==\n$grid") }
         return tailTrail
     }
 }
@@ -38,9 +33,8 @@ class Rope(var knots: MutableList<Pair<Int,Int>>) {
         if (knots.lastIndex > 0) {          // move rest of the rope recursively
             val nextMove = getNextMove(knots[0], knots[1], 0)
                 ?: throw TailPositionException("could not find tail move for head pos ${knots[0]} tail pos ${knots[1]}")
-
-            if (nextMove != Pair(0,0))      // would work without this check as move by 0 would do nothing
-                                            // however this reduces exec time by 2 for a 10-knot rope and by 10 for a 250-knot rope
+                                            // would work without this check as move by 0 would do nothing
+            if (nextMove != Pair(0,0))      // however this reduces exec time by 2 for a 10-knot rope and by 10 for a 250-knot rope
                 Rope(knots.subList(1, knots.lastIndex+1)).moveRope1Step(nextMove)
         }
         return knots[knots.lastIndex]
@@ -71,13 +65,13 @@ class Rope(var knots: MutableList<Pair<Int,Int>>) {
 }
 
 /** grid class - used only for visualisation */
-class Grid(var rope: MutableList<Pair<Int,Int>> = mutableListOf(Pair(0,0)), mode: Char = 'r' ) {
+class Grid(rope: MutableList<Pair<Int,Int>> = mutableListOf(Pair(0,0)), mode: Char = 'r' ) {
 
-    var dimensions = Pair(6,5)  // X, Y
-    val gridData = mutableListOf<MutableList<Char>>()
-    val trail = mutableListOf<Pair<Int,Int>>()
-    var shift = Pair(0,0)
-    var start = Pair(0,0)
+    private var dimensions = Pair(6,5)  // X, Y
+    private val gridData = mutableListOf<MutableList<Char>>()
+    private val trail = mutableListOf<Pair<Int,Int>>()
+    private var shift = Pair(0,0)
+    private var start = Pair(0,0)
 
     init {
         val minCoord = Pair((rope+start).minOf { it.first }, (rope+start).minOf { it.second })
@@ -103,7 +97,6 @@ class Grid(var rope: MutableList<Pair<Int,Int>> = mutableListOf(Pair(0,0)), mode
                             trail.indexOf(Pair(x, y)) >= 0 -> it.add('#')
                             else -> it.add('.')
                         }
-
                 }
                 gridData.add(it)
             }
