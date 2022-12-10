@@ -2,16 +2,17 @@ package mpdev.aoc2022.day10
 
 import java.lang.StringBuilder
 
-val NOP = "noop"
-val ADD = "addx"
+const val NOP = "noop"
+const val ADD = "addx"
+const val PIXELS_PER_LINE = 40
+const val NUMBER_OF_LINES = 40
 
-class InputDay10(var instrList: List<Pair<String,String>>, numOfLines: Int) {
-    val crt = Crt(numOfLines)
+class InputDay10(var instrList: List<Pair<String,String>>) {
+    val crt = Crt()
 }
 
-class Crt(var numOfLines: Int) {
+class Crt {
 
-    private val PIXELS_PER_LINE = 40
     val scanner = mutableListOf(0)     // clock 0 - start
     private val screen = mutableListOf<MutableList<Char>>()
 
@@ -29,7 +30,7 @@ class Crt(var numOfLines: Int) {
     }
 
     fun draw() {
-        (0 until numOfLines).forEach { line ->
+        (0 until NUMBER_OF_LINES).forEach { line ->
             val screenLine = mutableListOf<Char>()
             (0 until PIXELS_PER_LINE).forEach { pixel ->
                 val x = scanner[40 * line + pixel + 1]

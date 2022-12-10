@@ -19,6 +19,6 @@ class InputProcessorDay10: InputProcessor<InputDay10>() {
                 else -> throw InputDataException("bad input line: $line")
             }
         }
-        return InputDay10(dataList, 6)
+        return InputDay10(dataList)
     }
 }
