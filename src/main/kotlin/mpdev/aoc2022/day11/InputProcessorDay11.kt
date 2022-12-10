@@ -15,7 +15,7 @@ class InputProcessorDay11: InputProcessor<InputDay11>() {
                     val (instr, operand) = regexMatch!!.destructured
                     dataList.add(Pair(instr, operand))
                 }
-                else -> throw InputDataException("bad input line: $line")
+                else -> throw InputDataException("day 11: bad input line: $line")
             }
         }
         return InputDay11(dataList)

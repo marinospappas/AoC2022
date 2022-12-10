@@ -15,11 +15,11 @@ fun String.allCharsDifferent(): Boolean {
 
 
 /** Pair class extensions */
-fun Pair<Int,Int>.minus(b: Pair<Int,Int>): Pair<Int, Int> {
+operator fun Pair<Int,Int>.minus(b: Pair<Int,Int>): Pair<Int, Int> {
     return Pair(this.first - b.first, this.second - b.second)
 }
 
-fun Pair<Int,Int>.plus(b: Pair<Int,Int>): Pair<Int, Int> {
+operator fun Pair<Int,Int>.plus(b: Pair<Int,Int>): Pair<Int, Int> {
     return Pair(this.first + b.first, this.second + b.second)
 }
 

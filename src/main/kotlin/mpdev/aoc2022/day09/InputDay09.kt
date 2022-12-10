@@ -32,7 +32,7 @@ class Rope(var knots: MutableList<Pair<Int,Int>>) {
     }
 
     private fun moveRope1Step(move: Pair<Int,Int>):  Pair<Int,Int> {
-        knots[0] = knots[0].plus(move)      // move head
+        knots[0] = knots[0] + move          // move head
         if (knots.lastIndex > 0) {          // move rest of the rope recursively
             val nextMove = getNextMove(knots[0], knots[1], 0)
                 ?: throw RunTimeException("could not find tail move for head pos ${knots[0]} tail pos ${knots[1]}")
@@ -45,7 +45,7 @@ class Rope(var knots: MutableList<Pair<Int,Int>>) {
 
     private fun getNextMove(knot1: Pair<Int,Int>, knot2: Pair<Int,Int>, mode: Int): Pair<Int,Int>? {
         return when (mode) {
-            0 -> MovesMap.entry[knot1.minus(knot2)]       // map lookup
+            0 -> MovesMap.entry[knot1 - knot2]       // map lookup
             1 -> if (knot1.isAdjacent(knot2))
                     Pair(0,0)
                 else

@@ -15,7 +15,7 @@ class InputProcessorDay09: InputProcessor<InputDay09>() {
                     val (dir, dist) = regexMatch!!.destructured
                     dataList.add(Pair(dir.first(), dist.toInt()))
                 }
-                else -> throw InputDataException("bad input line: $line")
+                else -> throw InputDataException("day 9: bad input line: $line")
             }
         }
         return InputDay09(Rope(mutableListOf()), dataList)
