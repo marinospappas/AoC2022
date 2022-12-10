@@ -36,7 +36,3 @@ fun getInput(filename: String): List<String> {
     println("input file: $filename")
     return File(filename).readLines()
 }
-
-/** Custom Exceptions */
-class ProgramArgException(override var message: String): Exception(message)
-class InputDataException(override var message: String): Exception(message)

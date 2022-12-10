@@ -2,11 +2,10 @@ package mpdev.aoc2022.day09
 
 import mpdev.aoc2022.common.InputDataException
 import mpdev.aoc2022.common.InputProcessor
+import mpdev.aoc2022.utils.matchRegExp
+import mpdev.aoc2022.utils.regexMatch
 
 class InputProcessorDay09: InputProcessor<InputDay09>() {
-
-    private var regexMatch: MatchResult? = null
-    private fun String.matchRegExp(regex: Regex) = regex.find(this).also { regexMatch = it } != null
 
     override fun process(input: List<String>): InputDay09 {
         val dataList: MutableList<Pair<Char,Int>> = mutableListOf()

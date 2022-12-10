@@ -1,14 +1,7 @@
 package mpdev.aoc2022.day06
 
 import mpdev.aoc2022.common.*
-
-/** String class extension */
-fun String.allCharsDifferent(): Boolean {
-    for (i in 0..this.length-2)
-        if (this.substring(i+1, this.length).contains(this[i]))
-            return false
-    return true
-}
+import mpdev.aoc2022.utils.allCharsDifferent
 
 class SolutionProcessorDay06: SolutionProcessor<InputDay06> {
 
