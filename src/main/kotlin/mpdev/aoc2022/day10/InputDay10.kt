@@ -5,7 +5,7 @@ import java.lang.StringBuilder
 val NOP = "noop"
 val ADD = "addx"
 
-class InputDay10(var instrList: List<Pair<String,Int>>, numOfLines: Int) {
+class InputDay10(var instrList: List<Pair<String,String>>, numOfLines: Int) {
     val crt = Crt(numOfLines)
 }
 
@@ -13,16 +13,16 @@ class Crt(var numOfLines: Int) {
 
     private val PIXELS_PER_LINE = 40
     val scanner = mutableListOf(0)     // clock 0 - start
-    val screen = mutableListOf<MutableList<Char>>()
+    private val screen = mutableListOf<MutableList<Char>>()
 
-    fun scanScreen(instrList: List<Pair<String, Int>>) {
+    fun scanScreen(instrList: List<Pair<String, String>>) {
         scanner.add(1) // fist cycle
         instrList.forEach { instr ->
             when (instr.first) {
                 NOP -> scanner.add(scanner[scanner.lastIndex])
                 ADD -> {
                     scanner.add(scanner[scanner.lastIndex])
-                    scanner.add(scanner[scanner.lastIndex] + instr.second)
+                    scanner.add(scanner[scanner.lastIndex] + instr.second.toInt())
                 }
             }
         }

@@ -9,15 +9,12 @@ import mpdev.aoc2022.utils.regexMatch
 class InputProcessorDay10: InputProcessor<InputDay10>() {
 
     override fun process(input: List<String>): InputDay10 {
-        val dataList: MutableList<Pair<String,Int>> = mutableListOf()
-        input.forEach {line ->
+        val dataList: MutableList<Pair<String,String>> = mutableListOf()
+        input.forEach { line ->
             when {
-                line.matchRegExp(Regex("""^(noop)$""")) -> {
-                    dataList.add(Pair(NOP, 0))
-                }
-                line.matchRegExp(Regex("""^(addx) (-?\d+)$""")) -> {
-                    val (_, operand) = regexMatch!!.destructured
-                    dataList.add(Pair(ADD, operand.toInt()))
+                line.matchRegExp(Regex("""^(noop|addx) *(-?\d*)$""")) -> {
+                    val (instr, operand) = regexMatch!!.destructured
+                    dataList.add(Pair(instr, operand))
                 }
                 else -> throw InputDataException("bad input line: $line")
             }
