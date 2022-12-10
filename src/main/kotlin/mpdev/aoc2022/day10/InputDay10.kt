@@ -1,5 +1,7 @@
 package mpdev.aoc2022.day10
 
+import java.lang.StringBuilder
+
 val NOP = "noop"
 val ADD = "addx"
 
@@ -37,6 +39,11 @@ class Crt(var numOfLines: Int) {
         }
     }
 
+    override fun toString(): String {
+        return StringBuilder().also {
+            screen.forEach { line -> it.append(line.joinToString("")).append("\n") }
+        }.toString()
+    }
 }
 
 
