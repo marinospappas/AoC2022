@@ -20,9 +20,9 @@ class Crt {
         scanner.add(1) // fist clock cycle
         instrList.forEach { instr ->
             when (instr.first) {
-                NOP -> scanner.add(scanner.last())
+                NOP -> scanner.add(scanner.last())   // one clock cycle
                 ADD -> {
-                    scanner.add(scanner.last())
+                    scanner.add(scanner.last())      // two clock cycles
                     scanner.add(scanner.last() + instr.second.toInt())
                 }
             }
@@ -46,8 +46,3 @@ class Crt {
         }.toString()
     }
 }
-
-
-
-
-
