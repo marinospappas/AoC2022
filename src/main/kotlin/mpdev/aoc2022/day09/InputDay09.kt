@@ -40,7 +40,7 @@ class Rope(var knots: MutableList<Pair<Int,Int>>) {
             if (nextMove != Pair(0,0))      // however this reduces exec time by 2 for a 10-knot rope and by 10 for a 250-knot rope
                 Rope(knots.subList(1, knots.lastIndex+1)).moveRope1Step(nextMove)
         }
-        return knots[knots.lastIndex]
+        return knots.last()     // returns the position of tail
     }
 
     private fun getNextMove(knot1: Pair<Int,Int>, knot2: Pair<Int,Int>, mode: Int): Pair<Int,Int>? {
