@@ -3,6 +3,8 @@ package mpdev.aoc2022.day11
 import mpdev.aoc2022.common.DaySpecific
 import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
+import mpdev.aoc2022.common.testMode
+import mpdev.aoc2022.utils.ropeannimation.RopeFrame
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 
@@ -34,19 +36,18 @@ class TestDay11 {
     @Test
     @Order(1)
     fun `Test Get Input`() {
-        val expected = listOf(
-                ""
-            )
-        println(testInput.instrList)
-        assertEquals(expected.size, testInput.instrList.size)
-        for (i in expected.indices)
-            assertEquals(expected[i], testInput.instrList[i])
+        val expected = 4
+        println(testInput.monkeyList.convertToString())
+        assertEquals(expected, testInput.monkeyList.size)
     }
 
     @Test
     @Order(10)
     fun `Test Calculate Part 1`() {
-        val expected = ""
+        val expected = "10605"
+        testMode = true
+        println("initial state")
+        println(testInput.monkeyList.convertToString())
         val result = solution.part1(testInput)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor1.process())
@@ -55,10 +56,18 @@ class TestDay11 {
     @Test
     @Order(12)
     fun `Test Calculate Part 2`() {
-        val expected = ""
+        val expected = "2713310158"
+        testMode = true
+        println("initial state\n${testInput.monkeyList}")
         val result = solution.part2(testInput)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor2.process())
+    }
+
+    //@Test
+    fun testGraphics() {
+        //AwtControlDemo("Rope Movement", 800, 800, 1, 1).testCanvas()
+        RopeFrame()
     }
 
 }

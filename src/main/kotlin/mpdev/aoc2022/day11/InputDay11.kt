@@ -2,17 +2,36 @@ package mpdev.aoc2022.day11
 
 import java.lang.StringBuilder
 
-class InputDay11(var instrList: List<Pair<String,String>>) {
-    val crt = Crt()
+class InputDay11(var monkeyList: List<Monkey>) {
+
+    fun processMonkeyOutcome(outcome: List<Pair<Int,Long>>) =
+        outcome.forEach { monkeyList[it.first].itemList.add(it.second) }
 }
 
-class Crt {
+class Monkey (var id: Int, var itemList: MutableList<Long>, var operation: (Long) -> Long, var operationStr: String,
+              var divisibleBy: Int, var decision: Pair<Int,Int>) {
 
-    private val screen = mutableListOf<MutableList<Char>>()
+    var numberInspected = 0
 
-    override fun toString(): String {
-        return StringBuilder().also {
-            screen.forEach { line -> it.append(line.joinToString("")).append("\n") }
-        }.toString()
+    fun play(reduce: (Long)-> Long): List<Pair<Int,Long>> { // list of MonkeyId - Item
+        val outcome = mutableListOf<Pair<Int,Long>>()
+        itemList.forEach {
+            var new = operation(it)
+            new = reduce(new)
+            if (new % divisibleBy == 0L)
+                outcome.add(Pair(decision.first, new))
+            else
+                outcome.add(Pair(decision.second, new))
+        }
+        numberInspected += itemList.size
+        itemList.removeAll { true }
+        return outcome
     }
+
+    override fun toString(): String
+        = "$id: {[${itemList.joinToString(", ").removeSuffix(",")}] " +
+            "$operationStr, divisible by $divisibleBy: T->${decision.first} F->${decision.second}, inspected: $numberInspected}"
 }
+
+fun List<Monkey>.convertToString(): String
+    = StringBuilder().also { s-> (0 until this.size).forEach { s.append("${this[it]}\n") } }.toString()
