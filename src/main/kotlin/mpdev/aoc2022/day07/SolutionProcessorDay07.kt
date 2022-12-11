@@ -6,7 +6,7 @@ class SolutionProcessorDay07: SolutionProcessor<InputDay07> {
 
     /** part 1 calculation */
     override fun part1(input: InputDay07): String {
-        return input.root.getDirSizes().sorted().stream().filter { it <= 100000 }.toList().sum().toString()
+        return input.root.getDirSizes().sorted().filter { it <= 100000 }.sum().toString()
     }
 
     /** part 2 calculation */
@@ -14,6 +14,6 @@ class SolutionProcessorDay07: SolutionProcessor<InputDay07> {
         val totalSpace = 70000000
         val reqFreeSpace = 30000000
         val requiredToFree = reqFreeSpace - (totalSpace - input.root.getDirSize(input.root))
-        return input.root.getDirSizes().stream().filter { it > requiredToFree }.toList().min().toString()
+        return input.root.getDirSizes().filter { it > requiredToFree }.min().toString()
     }
 }

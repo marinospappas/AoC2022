@@ -31,8 +31,8 @@ class ADirectoryEntry(nodeData: Node): TreeNode<Node>(nodeData) {
         when (name) {
             "/" -> curDir = this        // must be called at the top of the tree (root dir)
             ".." -> curDir = curDir.parent!!
-            else -> curDir.children.stream().filter { it.nodeData.name == name && it.nodeData.type == DIR }
-                .toList().first().also { curDir = it }
+            else -> curDir.children.filter { it.nodeData.name == name && it.nodeData.type == DIR }
+                .first().also { curDir = it }
         }
     }
 
