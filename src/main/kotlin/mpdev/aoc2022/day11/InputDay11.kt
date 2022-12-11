@@ -16,8 +16,7 @@ class Monkey (var id: Int, var itemList: MutableList<Long>, var operation: (Long
     fun play(reduce: (Long)-> Long): List<Pair<Int,Long>> { // list of MonkeyId - Item
         val outcome = mutableListOf<Pair<Int,Long>>()
         itemList.forEach {
-            var new = operation(it)
-            new = reduce(new)
+            val new = reduce(operation(it))
             if (new % divisibleBy == 0L)
                 outcome.add(Pair(decision.first, new))
             else
