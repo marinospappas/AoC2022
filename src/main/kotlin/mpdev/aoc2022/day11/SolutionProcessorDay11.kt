@@ -22,7 +22,7 @@ class SolutionProcessorDay11: SolutionProcessor<InputDay11> {
         val moduloBy = divisors.reduce { acc, item -> acc * item }
         for (round in 1..10000) {
             input.monkeyList.forEach { monkey -> input.processMonkeyOutcome(monkey.play { x-> x % moduloBy }) }
-            if (testMode && setOf(1,2,3,20,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000).contains(round))
+            if (testMode && setOf(1,2,3,4,20,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000).contains(round))
                 if (testMode) println("after round $round\n${input.monkeyList.convertToString()}")
         }
         val inspectedList = input.monkeyList.map { it.numberInspected }.toList().sorted().reversed()
