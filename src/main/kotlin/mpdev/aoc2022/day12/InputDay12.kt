@@ -82,6 +82,18 @@ class InputDay12(var heightList: List<String>) {
         return ids
     }
 
+    fun verifyNeighbours() {
+        for (i in 0..maxX)
+            for (j in 0..maxY) {
+                graphData[Pair(i, j)].neighbours.forEach {
+                    if (Pair(i,j) != startId
+                        && heightList[it.getId().second][it.getId().first] - heightList[j][i] > 1)
+                        println("invalid neighbour from ${Pair(i,j)} '${heightList[j][i]}' " +
+                        "to ${it.getId()} '${heightList[it.getId().second][it.getId().first]}'")
+                }
+            }
+    }
+
     fun calculateHeuristcUp(nodeId: Pair<Int,Int>): Int {
         return  if (nodeId == endId) 0
                 else

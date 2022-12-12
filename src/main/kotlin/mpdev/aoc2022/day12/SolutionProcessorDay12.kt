@@ -10,6 +10,7 @@ class SolutionProcessorDay12: SolutionProcessor<InputDay12> {
     /** part 1 calculation */
     override fun part1(input: InputDay12): String {
         input.graphData = input.createGraph('U')
+        input.verifyNeighbours()
         val minPath = Dijkstra<Pair<Int,Int>>(input.graphData.costs)
         //val minPath = AStar<Pair<Int,Int>>(input.graphData.costs, input.graphData.heuristics)
         val res = minPath.runIt(input.graphData[input.startId], input.graphData[input.endId])
@@ -21,6 +22,7 @@ class SolutionProcessorDay12: SolutionProcessor<InputDay12> {
                     print(input.heightList[i][j])
             println()
         }
+        println(res.path)
         return (res.path.size - 1).toString()
     }
 
