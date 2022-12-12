@@ -22,6 +22,7 @@ class SolutionProcessorDay12: SolutionProcessor<InputDay12> {
                     print(input.heightList[i][j])
             println()
         }
+        println("number of iterations: ${res.numberOfIterations}")
         println(res.path)
         return (res.path.size - 1).toString()
     }

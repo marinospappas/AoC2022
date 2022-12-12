@@ -58,7 +58,7 @@ class InputDay12(var heightList: List<String>) {
                         ids.add(neighbour)
                     neighbour != endId && heightList[neighbour.second][neighbour.first] == heightList[thisId.second][thisId.first]+1 ->
                         ids.add(neighbour)
-                    neighbour == endId && heightList[thisId.second][thisId.first] == 'z' -> ids.add(neighbour)
+                    neighbour == endId && "zy".contains (heightList[thisId.second][thisId.first]) -> ids.add(neighbour)
                 }
             }
         return ids
