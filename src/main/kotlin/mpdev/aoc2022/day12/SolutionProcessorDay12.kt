@@ -53,9 +53,9 @@ class SolutionProcessorDay12: SolutionProcessor<InputDay12> {
         for (i in 0..input.maxY) {
             for (j in 0..input.maxX)
                 if (res.path.contains(Pair(j,i)))
-                    print(input.heightList[i][j])
+                    print(ConsoleColour.RED + input.heightList[i][j].uppercaseChar() + ConsoleColour.RESET)
                 else
-                    print(".")
+                    print(input.heightList[i][j])
             println()
         }
         println(res.path.size - 1)
