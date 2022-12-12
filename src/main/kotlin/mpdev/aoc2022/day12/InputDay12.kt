@@ -1,36 +1,92 @@
 package mpdev.aoc2022.day12
 
-import java.lang.StringBuilder
+import mpdev.aoc2022.utils.Graph
+import kotlin.math.abs
 
-class InputDay12(var monkeyList: List<Monkey>) {
+class InputDay12(var heightList: List<String>) {
 
-    fun processMonkeyOutcome(outcome: List<Pair<Int,Long>>) =
-        outcome.forEach { monkeyList[it.first].itemList.add(it.second) }
-}
+    val maxX = heightList.first().length - 1
+    val maxY = heightList.size - 1
 
-class Monkey (var id: Int, var itemList: MutableList<Long>, var operation: (Long) -> Long, var operationStr: String,
-              var divisibleBy: Int, var decision: Pair<Int,Int>) {
+    var graphData = Graph<Pair<Int,Int>>()
+    var startId = getPoint('S')
+    var endId = getPoint('E')
 
-    var numberInspected = 0
-
-    fun play(reduce: (Long)-> Long): List<Pair<Int,Long>> { // list of MonkeyId - Item
-        val outcome = mutableListOf<Pair<Int,Long>>()
-        itemList.forEach {
-            val new = reduce(operation(it))
-            if (new % divisibleBy == 0L)
-                outcome.add(Pair(decision.first, new))
-            else
-                outcome.add(Pair(decision.second, new))
-        }
-        numberInspected += itemList.size
-        itemList.removeAll { true }
-        return outcome
+    fun getPoint(c: Char): Pair<Int,Int> {
+        (0..maxX).forEach { i -> (0..maxY).forEach { j -> if (heightList[j][i] == c) return Pair(i,j) } }
+        return Pair(0,0)
     }
 
-    override fun toString(): String
-        = "$id: {[${itemList.joinToString(", ").removeSuffix(",")}] " +
-            "$operationStr, divisible by $divisibleBy: T->${decision.first} F->${decision.second}, inspected: $numberInspected}"
-}
+    fun getPoints(s: String): List<Pair<Int,Int>> {
+        var pointsList = mutableListOf<Pair<Int,Int>>()
+        (0..maxX).forEach { i -> (0..maxY).forEach { j -> if (s.contains(heightList[j][i])) pointsList.add(Pair(i,j)) } }
+        return pointsList
+    }
 
-fun List<Monkey>.convertToString(): String
-    = StringBuilder().also { s-> (0 until this.size).forEach { s.append("${this[it]}\n") } }.toString()
+    fun createGraph(direction: Char): Graph<Pair<Int, Int>> {
+        val graph = Graph<Pair<Int,Int>>()
+        // build graph
+        for (i in 0..maxX)
+            for (j in 0..maxY)
+                graph.addNode(Pair(i,j))
+        // update neighbours
+        for (i in 0..maxX)
+            for (j in 0..maxY) {
+                val thisId = Pair(i,j)
+                val neighbours = if (direction == 'U')
+                    getNeighbourIdsUp(thisId)
+                else
+                    getNeighbourIdsDown(thisId)
+                neighbours.forEach { neighbour ->
+                    graph.connect(thisId, neighbour)
+                    graph.updateCost(thisId, neighbour, 1)
+                }
+                graph.updateHeuristic(thisId, calculateHeuristcUp(thisId))
+            }
+        return graph
+    }
+
+    private fun getNeighbourIdsUp(thisId: Pair<Int,Int>): List<Pair<Int,Int>> {
+        val ids = mutableListOf<Pair<Int,Int>>()
+        val i = thisId.first
+        val j = thisId.second
+        for (neighbour in setOf(Pair(i,j-1),Pair(i-1,j),Pair(i+1,j),Pair(i,j+1)))
+            if (neighbour.first >= 0 && neighbour.second >= 0 && neighbour.first <= maxX && neighbour.second <= maxY) {
+                when {
+                    thisId == startId -> ids.add(neighbour)
+                    neighbour != endId && heightList[neighbour.second][neighbour.first] <= heightList[thisId.second][thisId.first] ->
+                        ids.add(neighbour)
+                    neighbour != endId && heightList[neighbour.second][neighbour.first] == heightList[thisId.second][thisId.first]+1 ->
+                        ids.add(neighbour)
+                    neighbour == endId && heightList[thisId.second][thisId.first] == 'z' -> ids.add(neighbour)
+                }
+            }
+        return ids
+    }
+
+    private fun getNeighbourIdsDown(thisId: Pair<Int,Int>): List<Pair<Int,Int>> {
+        val ids = mutableListOf<Pair<Int,Int>>()
+        val i = thisId.first
+        val j = thisId.second
+        for (neighbour in setOf(Pair(i,j-1),Pair(i-1,j),Pair(i+1,j),Pair(i,j+1)))
+            if (neighbour.first >= 0 && neighbour.second >= 0 && neighbour.first <= maxX && neighbour.second <= maxY) {
+                when {
+                    thisId == startId -> ids.add(neighbour)
+                    neighbour != endId && heightList[neighbour.second][neighbour.first] <= heightList[thisId.second][thisId.first] ->
+                        ids.add(neighbour)
+                    neighbour != endId && heightList[neighbour.second][neighbour.first] == heightList[thisId.second][thisId.first]+1 ->
+                        ids.add(neighbour)
+                    neighbour == endId && heightList[thisId.second][thisId.first] == 'a' -> ids.add(neighbour)
+                }
+            }
+        return ids
+    }
+
+    fun calculateHeuristcUp(nodeId: Pair<Int,Int>): Int {
+        return  if (nodeId == endId) 0
+                else
+                    abs(nodeId.first - endId.first) +
+                    abs(nodeId.second - endId.second) +
+                    abs(heightList[nodeId.second][nodeId.first] - 'z')
+    }
+}

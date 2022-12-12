@@ -1,6 +1,7 @@
 package mpdev.aoc2022.day11
 
 import mpdev.aoc2022.common.*
+import mpdev.aoc2022.utils.convertToString
 
 class SolutionProcessorDay11: SolutionProcessor<InputDay11> {
 

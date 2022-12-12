@@ -4,6 +4,7 @@ import mpdev.aoc2022.common.DaySpecific
 import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
 import mpdev.aoc2022.common.testMode
+import mpdev.aoc2022.utils.convertToString
 import mpdev.aoc2022.utils.ropeannimation.RopeFrame
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
@@ -30,33 +31,67 @@ class TestDay12 {
     }
 
     /*
-
+Sabqponm
+abcryxxl
+accszExk
+acctuvwj
+abdefghi
      */
 
     @Test
     @Order(1)
     fun `Test Get Input`() {
         val expected = listOf(
-            ""
+            "Sabqponm",
+            "abcryxxl",
+            "accszExk",
+            "acctuvwj",
+            "abdefghi"
         )
-        println(testInput.monkeyList.convertToString())
-        assertEquals(expected.size, testInput.monkeyList.size)
+        println(testInput.heightList.convertToString())
+        assertEquals(expected.size, testInput.heightList.size)
+        assertEquals(expected, testInput.heightList)
+    }
+
+    @Test
+    @Order(5)
+    fun `Test Create Graph Up`() {
+        testInput.graphData = testInput.createGraph('U')
+        println(testInput.graphData)
+        assertTrue(true)
+    }
+
+    @Test
+    @Order(6)
+    fun `Test Create Graph Down`() {
+        testInput.startId = testInput.getPoint('E')
+        testInput.endId = testInput.getPoint('S')
+        testInput.graphData = testInput.createGraph('D')
+        println(testInput.graphData)
+        assertTrue(true)
     }
 
     @Test
     @Order(10)
     fun `Test Calculate Part 1`() {
-        val expected = ""
-        println(testInput.monkeyList.convertToString())
+        val expected = "31"
         val result = solution.part1(testInput)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor1.process())
     }
 
     @Test
+    @Order(11)
+    fun `Test Calculate Part 1 Going Down`() {
+        val expected = "7"
+        val result = solution.part1_1(testInput)
+        assertEquals(expected, result)
+    }
+
+    @Test
     @Order(12)
     fun `Test Calculate Part 2`() {
-        val expected = ""
+        val expected = "29"
         val result = solution.part2(testInput)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor2.process())

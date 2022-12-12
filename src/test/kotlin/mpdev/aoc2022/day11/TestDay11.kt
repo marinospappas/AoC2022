@@ -4,6 +4,7 @@ import mpdev.aoc2022.common.DaySpecific
 import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
 import mpdev.aoc2022.common.testMode
+import mpdev.aoc2022.utils.convertToString
 import mpdev.aoc2022.utils.ropeannimation.RopeFrame
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
@@ -62,12 +63,6 @@ class TestDay11 {
         val result = solution.part2(testInput)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor2.process())
-    }
-
-    //@Test
-    fun testGraphics() {
-        //AwtControlDemo("Rope Movement", 800, 800, 1, 1).testCanvas()
-        RopeFrame()
     }
 
 }

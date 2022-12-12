@@ -31,6 +31,3 @@ class Monkey (var id: Int, var itemList: MutableList<Long>, var operation: (Long
         = "$id: {[${itemList.joinToString(", ").removeSuffix(",")}] " +
             "$operationStr, divisible by $divisibleBy: T->${decision.first} F->${decision.second}, inspected: $numberInspected}"
 }
-
-fun List<Monkey>.convertToString(): String
-    = StringBuilder().also { s-> (0 until this.size).forEach { s.append("${this[it]}\n") } }.toString()

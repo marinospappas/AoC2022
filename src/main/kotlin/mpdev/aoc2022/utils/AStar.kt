@@ -6,10 +6,10 @@ import java.util.*
  * A* implementation
  * T is the type of the Node ID in the Graph
  */
-class AStar<T> {
+class AStar<T>(var costMap: Map<Pair<T,T>,Int>, var heuristicMap: Map<T,Int>) {
 
     class PathNode<T>(
-        val node: MinCostGraphNode<T>?,
+        val node: Vertex<T>?,
         var costFromStart: Int,
         var estTotCostToEnd: Int,
         var updatedBy: T? = null): Comparable<PathNode<T>> {
@@ -25,10 +25,18 @@ class AStar<T> {
 
     class AStarException(override var message: String): Exception()
 
+    fun getCost(from: T, to: T): Int {
+        return costMap[Pair(from, to)] ?: throw AStarException("cost from $from to $to not defined")
+    }
+
+    fun getHeuristic(id: T): Int {
+        return heuristicMap[id] ?: throw AStarException("heuristic for $id not defined")
+    }
+
     /**
      * The A* algorithm - improves the sesrch by adding estimated cost to end
      */
-    fun runIt(startState: MinCostGraphNode<T>, endState: MinCostGraphNode<T>): MinCostPath<T> {
+    fun runIt(startState: Vertex<T>, endState: Vertex<T>): MinCostPath<T> {
 
         // setup priority queue, visited set and minimum total costs for each node
         val toVisitQueue = PriorityQueue<PathNode<T>>().apply { add(PathNode(startState,0, 0)) }
@@ -50,20 +58,20 @@ class AStar<T> {
             // else for each connected node
             currentNode.node.getConnectedNodes().forEach { connectedNode ->
                 ++iterations
-                val nextPathNode = PathNode(connectedNode.node, connectedNode.costFromPrev, Int.MAX_VALUE)
+                val nextPathNode = PathNode(connectedNode, getCost(currentNode.node.getId(),connectedNode.getId()), Int.MAX_VALUE)
                 //if (visitedNodes.contains(nextPathNode))
                   //  return@forEach
                 //visitedNodes.add(nextPathNode)
                 // calculate the new cost to that node and the new *estimated* total cost to the end node
-                val newCost = currentNode.costFromStart + connectedNode.costFromPrev
-                val newTotalCost = newCost + connectedNode.node.heuristic()
+                val newCost = currentNode.costFromStart + getCost(currentNode.node.getId(),connectedNode.getId())
+                val newTotalCost = newCost + getHeuristic(connectedNode.getId())
                 // if the new cost is less that what we have already recorded in the map of nodes/costs
                 // update the map with the new costs and "updatedBy" (to be able to back-track the min.cost path)
-                if (newCost < astarCost.getValue(connectedNode.node.getId()).costFromStart) {
+                if (newCost < astarCost.getValue(connectedNode.getId()).costFromStart) {
                     nextPathNode.updatedBy = currentNode.node.getId()
                     nextPathNode.costFromStart = newCost
                     nextPathNode.estTotCostToEnd = newTotalCost
-                    astarCost[connectedNode.node.getId()] = nextPathNode
+                    astarCost[connectedNode.getId()] = nextPathNode
                     // and put the updated new node back into the priority queue
                     toVisitQueue.add(nextPathNode)
                 }
