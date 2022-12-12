@@ -48,7 +48,7 @@ class SolutionProcessorDay12: SolutionProcessor<InputDay12> {
         input.startId = input.getPoint('E')
         input.endId = input.getPoint('S')
         input.graphData = input.createGraph('D')
-        val minPath = AStar<Pair<Int,Int>>(input.graphData.costs, input.graphData.heuristics)
+        val minPath = Dijkstra<Pair<Int,Int>>(input.graphData.costs)
         val res = minPath.runIt(input.graphData[input.startId], input.graphData[input.endId])
         for (i in 0..input.maxY) {
             for (j in 0..input.maxX)
