@@ -13,13 +13,10 @@ class InputDay13(var inputList: List<Pair<String,String>>) {
 }
 
 class Packet() {
-
     constructor(listofTs: List<Token>) : this() {
         data = listofTs
     }
-
     lateinit var data: List<Token>
-
     override fun toString(): String {
         return StringBuilder().also { s-> data.forEach { s.append(it) } }.toString()
     }

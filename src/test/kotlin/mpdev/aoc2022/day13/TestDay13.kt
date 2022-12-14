@@ -3,9 +3,9 @@ package mpdev.aoc2022.day13
 import mpdev.aoc2022.common.DaySpecific
 import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
-import mpdev.aoc2022.common.testMode
+import mpdev.aoc2022.day14.InputProcessorDay14
+import mpdev.aoc2022.day14.SolutionProcessorDay14
 import mpdev.aoc2022.utils.convertToString
-import mpdev.aoc2022.utils.ropeannimation.RopeFrame
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.CsvSource
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Nested
-@DisplayName("Day 12 Test")
+@DisplayName("Day 13 Test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class TestDay13 {
 

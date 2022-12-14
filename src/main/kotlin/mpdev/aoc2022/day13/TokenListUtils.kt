@@ -1,7 +1,6 @@
 package mpdev.aoc2022.day13
 
 import mpdev.aoc2022.common.RunTimeException
-import mpdev.aoc2022.day02.PlayData
 import java.util.Stack
 
 const val LEFT_BRACKET = 0
@@ -10,7 +9,6 @@ const val COMMA = 2
 const val NUMBER = 3
 
 class Token (var type: Int, var value: Int = -1) {
-
     override fun equals(other: Any?): Boolean {
         return other is Token && this.type == other.type && this.value == other.value
     }
@@ -20,7 +18,6 @@ class Token (var type: Int, var value: Int = -1) {
         hash = hash * 31 + value
         return hash
     }
-
     override fun toString(): String {
         return when(this.type) {
             LEFT_BRACKET -> "["
@@ -33,9 +30,7 @@ class Token (var type: Int, var value: Int = -1) {
 }
 
 class CompareTokens {
-
     companion object : Comparator<List<Token>> {
-
         override fun compare(a: List<Token>?, b: List<Token>?): Int {
             if (a == null && b == null) return 0
             if (a != null && b == null) return 1
@@ -166,20 +161,6 @@ object TokenListUtils {
     fun tokenToList(t: Token) =
         listOf(Token(LEFT_BRACKET), t, Token(RIGHT_BRACKET))
 
-    fun depth(l: List<Token>): Int {
-        var thisDepth = -1
-        var maxDepth = Integer.MIN_VALUE
-        l.forEach { token ->
-            if (token.type == LEFT_BRACKET)
-                ++thisDepth
-            if (token.type == RIGHT_BRACKET)
-                --thisDepth
-            if (thisDepth > maxDepth)
-                maxDepth = thisDepth
-        }
-        return maxDepth
-    }
-
     fun toString(tokenList: List<Token>): String {
         var s = ""
         tokenList.forEach { token -> s += token.toString() }
@@ -203,5 +184,4 @@ object TokenListUtils {
         }
         return number
     }
-
 }
