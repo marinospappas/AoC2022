@@ -82,7 +82,7 @@ class TestDay13 {
     }
 
     @ParameterizedTest
-    @Order(2)
+    @Order(3)
     @CsvSource(value = [
         "'[1,1,3,1,1]', '1', '[1,3,1,1]'",
         "'[[1],[2,3,4]]', '[1]', '[[2,3,4]]'",
@@ -95,14 +95,6 @@ class TestDay13 {
         "'[[]]', '[]', ''",
         "'[1,[2,[3,[4,[5,6,0]]]],8,9]', '1', '[[2,[3,[4,[5,6,0]]]],8,9]'"])
     fun `Test Split Token List`(list: String, resA: String, resB: String) {
-        println("first exp")
-        TokenListUtils.tokenise(resA).forEach { println(it) }
-        println("first actual")
-        TokenListUtils.getFirstObject(TokenListUtils.tokenise(list)).forEach { println(it) }
-        println("second exp")
-        TokenListUtils.tokenise(resB).forEach { println(it) }
-        println("second actual")
-        TokenListUtils.getNextPart(TokenListUtils.tokenise(list)).forEach { println(it) }
         assertEquals(TokenListUtils.tokenise(resA), TokenListUtils.getFirstObject(TokenListUtils.tokenise(list)))
         assertEquals(TokenListUtils.tokenise(resB), TokenListUtils.getNextPart(TokenListUtils.tokenise(list)))
     }
@@ -115,7 +107,6 @@ class TestDay13 {
     fun `Test Get Compare Token List`(a: String, b: String, res: Int) {
         assertEquals(res, TokenListUtils.compare(TokenListUtils.tokenise(a), TokenListUtils.tokenise(b)))
     }
-
 
     @Test
     @Order(10)

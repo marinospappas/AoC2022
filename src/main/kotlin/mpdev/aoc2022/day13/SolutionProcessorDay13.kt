@@ -21,7 +21,7 @@ class SolutionProcessorDay13: SolutionProcessor<InputDay13> {
         val packet6 = Packet("[[6]]")
         input.inputList.forEach { packets.add(Packet(it.first)); packets.add(Packet(it.second)) }
         packets.addAll(listOf(packet2, packet6))
-        packets.sortWith(PacketComparator::compare)
+        packets.sortWith(Packet::compare)
         return ((packets.indexOf(packet2)+1) * (packets.indexOf(packet6)+1)).toString()
     }
 

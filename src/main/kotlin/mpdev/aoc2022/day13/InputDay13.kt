@@ -8,6 +8,14 @@ class InputDay13(var inputList: List<Pair<String,String>>) {
 }
 
 class Packet() {
+    companion object : Comparator<Packet> {
+        override fun compare(a: Packet?, b: Packet?): Int {
+            if (a == null && b == null) return 0
+            if (a != null && b == null) return 1
+            if (a == null && b != null) return -1
+            return TokenListUtils.compare(a!!.data, b!!.data)
+        }
+    }
     constructor(listofTs: List<Token>) : this() {
         data = listofTs
     }
@@ -17,16 +25,5 @@ class Packet() {
     lateinit var data: List<Token>
     override fun toString(): String {
         return StringBuilder().also { s-> data.forEach { s.append(it) } }.toString()
-    }
-}
-
-class PacketComparator {
-    companion object : Comparator<Packet> {
-        override fun compare(a: Packet?, b: Packet?): Int {
-            if (a == null && b == null) return 0
-            if (a != null && b == null) return 1
-            if (a == null && b != null) return -1
-            return TokenListUtils.compare(a!!.data, b!!.data)
-        }
     }
 }
