@@ -6,10 +6,8 @@ import kotlin.math.min
 
 class InputDay14(var inputList: List<List<Pair<Int,Int>>>) {
 
-    val START = Pair(500,0)
+    private val START = Pair(500,0)
 
-    //var minPt: Pair<Int,Int>
-    //var maxPt: Pair<Int,Int>
     var grid: Array<CharArray>
     var dimensions: Pair<Int,Int>
     var shift: Int

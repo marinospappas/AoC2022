@@ -8,6 +8,7 @@ class SolutionProcessorDay14: SolutionProcessor<InputDay14> {
     override fun part1(input: InputDay14): String {
         while (input.dropOneGrain()) ;
         println(input.gridToString())
+        println("dimensions: ${input.dimensions.first} x ${input.dimensions.second}")
         return input.getGrainsCount().toString()
     }
 
@@ -16,7 +17,7 @@ class SolutionProcessorDay14: SolutionProcessor<InputDay14> {
         input.extendGrid2()
         while (input.dropOneGrain2()) ;
         println(input.gridToString())
-        return input.getGrainsCount().toString()
+        println("dimensions: ${input.dimensions.first} x ${input.dimensions.second}")
         return input.getGrainsCount().toString()
     }
 
