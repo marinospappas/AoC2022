@@ -29,17 +29,6 @@ class Token (var type: Int, var value: Int = -1) {
     }
 }
 
-class CompareTokens {
-    companion object : Comparator<List<Token>> {
-        override fun compare(a: List<Token>?, b: List<Token>?): Int {
-            if (a == null && b == null) return 0
-            if (a != null && b == null) return 1
-            if (a == null && b != null) return -1
-            return TokenListUtils.compare(a!!, b!!)
-        }
-    }
-}
-
 object TokenListUtils {
 
     private var inputString: String = ""

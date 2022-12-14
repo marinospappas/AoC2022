@@ -16,12 +16,12 @@ class SolutionProcessorDay13: SolutionProcessor<InputDay13> {
 
     /** part 2 calculation */
     override fun part2(input: InputDay13): String {
-        val packets = mutableListOf<List<Token>>()
-        val packet2 = TokenListUtils.tokenise("[[2]]")
-        val packet6 = TokenListUtils.tokenise("[[6]]")
-        input.inputList.forEach { packets.add(TokenListUtils.tokenise(it.first)); packets.add(TokenListUtils.tokenise(it.second)) }
+        val packets = mutableListOf<Packet>()
+        val packet2 = Packet("[[2]]")
+        val packet6 = Packet("[[6]]")
+        input.inputList.forEach { packets.add(Packet(it.first)); packets.add(Packet(it.second)) }
         packets.addAll(listOf(packet2, packet6))
-        packets.sortWith(CompareTokens::compare)
+        packets.sortWith(PacketComparator::compare)
         return ((packets.indexOf(packet2)+1) * (packets.indexOf(packet6)+1)).toString()
     }
 
