@@ -1,4 +1,4 @@
-package mpdev.aoc2022.utils.ropeannimation;
+package mpdev.aoc2022.utils.snake;
 
 public enum Directions {
     UP,

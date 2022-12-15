@@ -5,7 +5,6 @@ import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
 import mpdev.aoc2022.common.testMode
 import mpdev.aoc2022.utils.convertToString
-import mpdev.aoc2022.utils.ropeannimation.RopeFrame
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 

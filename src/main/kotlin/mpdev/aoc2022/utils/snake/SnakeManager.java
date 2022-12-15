@@ -1,21 +1,21 @@
-package mpdev.aoc2022.utils.ropeannimation;
+package mpdev.aoc2022.utils.snake;
 
 import java.awt.*;
 
-public class RopeManager {
+public class SnakeManager {
     private Color snakeColor;
     private Color snakeColorHead;
     private Color snakeColorTail;
-    private Rope rope;
-    private RopePanel ropePanel;
+    private Snake snake;
+    private SnakePanel snakePanel;
     private boolean running;
 
-    public RopeManager(RopePanel ropePanel) {
-        this.ropePanel = ropePanel;
+    public SnakeManager(SnakePanel snakePanel) {
+        this.snakePanel = snakePanel;
         snakeColor = Color.GREEN;
         snakeColorHead = Color.RED;
         snakeColorTail = Color.BLUE;
-        rope = new Rope();
+        snake = new Snake();
         running = true;
     }
 
@@ -28,20 +28,20 @@ public class RopeManager {
         Graphics2D graphics2D = (Graphics2D) graphics;
         Rectangle tile;
         graphics2D.setColor(snakeColorTail);
-        tile = rope.getBody().getLast();
+        tile = snake.getBody().getLast();
         graphics2D.fillRect(tile.x, tile.y, tile.width, tile.height);
         graphics2D.setColor(snakeColor);
-        for (int i = 1; i < rope.getBody().size()-1; ++i) {
-            tile = rope.getBody().get(i);
+        for (int i = 1; i < snake.getBody().size()-1; ++i) {
+            tile = snake.getBody().get(i);
             graphics2D.fillRect(tile.x, tile.y, tile.width, tile.height);
         }
         graphics2D.setColor(snakeColorHead);
-        tile = rope.getBody().get(0);
+        tile = snake.getBody().get(0);
         graphics2D.fillRect(tile.x, tile.y, tile.width, tile.height);
     }
 
     public void update() {
-        rope.move();
+        snake.move();
     }
 
     public boolean isRunning() {
@@ -49,23 +49,23 @@ public class RopeManager {
     }
 
     public void draw() {
-        ropePanel.repaint();
+        snakePanel.repaint();
     }
 
     public void moveSnakeUp() {
-        rope.setUpDirection();
+        snake.setUpDirection();
     }
 
     public void moveSnakeDown() {
-        rope.setDownDirection();
+        snake.setDownDirection();
     }
 
     public void moveSnakeRight() {
-        rope.setRightDirection();
+        snake.setRightDirection();
     }
 
     public void moveSnakeLeft() {
-        rope.setLeftDirection();
+        snake.setLeftDirection();
     }
 }
 

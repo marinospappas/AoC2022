@@ -1,15 +1,15 @@
-package mpdev.aoc2022.utils.ropeannimation;
+package mpdev.aoc2022.utils.snake;
 
 
 import javax.swing.*;
 import java.awt.*;
 
-public class RopeFrame extends JFrame {
-    private RopePanel ropePanel;
+public class SnakeFrame extends JFrame {
+    private SnakePanel snakePanel;
     private JLabel scoreLabel;
 
-    public RopeFrame() throws HeadlessException, InterruptedException {
-        this.setTitle("Rope Movement");
+    public SnakeFrame() throws HeadlessException, InterruptedException {
+        this.setTitle("Snake");
         this.setBounds(100, 100, 800, 800);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -22,12 +22,12 @@ public class RopeFrame extends JFrame {
         scoreLabel.setForeground(Color.WHITE);
         getContentPane().add(scoreLabel);
 
-        ropePanel = new RopePanel();
-        ropePanel.setBounds(20, 20, 760, 750);
-        this.add(ropePanel);
+        snakePanel = new SnakePanel();
+        snakePanel.setBounds(20, 20, 760, 750);
+        this.add(snakePanel);
 
         this.setVisible(true);
-        while(ropePanel.ropeManager.isRunning())
+        while(snakePanel.snakeManager.isRunning())
             Thread.sleep(100);
     }
 }

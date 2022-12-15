@@ -1,9 +1,9 @@
-package mpdev.aoc2022.utils.ropeannimation;
+package mpdev.aoc2022.utils.snake;
 
 import java.awt.*;
 import java.util.LinkedList;
 
-public class Rope {
+public class Snake {
     private final int BODY_WIDTH = 20;
     private final int SNAKE_SPEED = BODY_WIDTH;
     private final int startX = 200;
@@ -12,7 +12,7 @@ public class Rope {
     private LinkedList<Rectangle> body;
     private Directions direction;
 
-    public Rope() {
+    public Snake() {
         direction = Directions.RIGHT;
         body = new LinkedList<>();
         body.add(new Rectangle(startX, startY+3*BODY_WIDTH, BODY_WIDTH, BODY_WIDTH));
