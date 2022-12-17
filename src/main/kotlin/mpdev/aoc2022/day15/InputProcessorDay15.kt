@@ -4,35 +4,25 @@ import mpdev.aoc2022.common.InputDataException
 import mpdev.aoc2022.common.InputProcessor
 import mpdev.aoc2022.utils.matchRegExp
 import mpdev.aoc2022.utils.regexMatch
+import java.awt.Point
 
 /*
-
+Sensor at x=2, y=18: closest beacon is at x=-2, y=15
  */
 class InputProcessorDay15: InputProcessor<InputDay15>() {
 
-    private fun processLine(line: String, datalist: MutableList<String>) {
-        val pointsList = mutableListOf<String>()
-        var s = line
-        while (true) {
-            when {
-                s.matchRegExp(Regex("""^(\d+),(\d+) -> (.*)$""")) -> {
-                    val (n1, n2, rest) = regexMatch!!.destructured
-                    //pointsList.add(Pair(n1.toInt(), n2.toInt()))
-                    s = rest
-                }
-                s.matchRegExp(Regex("""^(\d+),(\d+)$""")) -> {
-                    val (n1, n2) = regexMatch!!.destructured
-                    //pointsList.add(Pair(n1.toInt(), n2.toInt()))
-                    break
-                }
-                else -> throw InputDataException("day 14 - bad line: $line")
+    private fun processLine(line: String, datalist: MutableList<Sensor>) {
+        when {
+            line.matchRegExp(Regex("""^Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)$""")) -> {
+                val (xs, ys, xb, yb) = regexMatch!!.destructured
+                datalist.add(Sensor(Point(xs.toInt(), ys.toInt()), Point(xb.toInt(), yb.toInt())))
             }
+            else -> throw InputDataException("day 14 - bad line: $line")
         }
-        datalist.add("aaaa")
     }
 
     override fun process(input: List<String>): InputDay15 {
-        val datalist = mutableListOf<String>()
+        val datalist = mutableListOf<Sensor>()
         input.forEach { line -> processLine(line, datalist) }
         return InputDay15(datalist)
     }

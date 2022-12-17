@@ -2,7 +2,7 @@ package mpdev.aoc2022.utils
 
 import java.lang.StringBuilder
 
-class Graph<T> {
+class Graph<T>(var getConnections: (id: T) -> List<GraphNode<T>>? = { null } ) {
 
     private val nodes = mutableMapOf<T, GraphNode<T>>()
 
@@ -12,10 +12,15 @@ class Graph<T> {
     operator fun get(id: T) = nodes[id] ?: throw IllegalArgumentException()
 
     fun addNode(id: T) {
-        nodes[id] = GraphNode(id)
+        nodes[id] = GraphNode(id, getConnections)
     }
 
     fun connect(first: T, second: T) = connect(this[first], this[second])
+
+    fun connectBothWays(first: T, second: T) {
+        connect(this[first], this[second])
+        connect(this[second], this[first])
+    }
 
     private fun connect(first: GraphNode<T>, second: GraphNode<T>) {
         if(!first.neighbours.contains(second))
@@ -37,22 +42,20 @@ class Graph<T> {
             nodes.keys.forEach { id ->
                 s.append("id: $id, connects to ").also {
                     getNeighbours(id)?.forEach { n -> s.append("  ${n.getId()}, cost: ${costs[Pair(id, n.getId())]}")
-                        .append("heuristic: ${heuristics[id]}") }
+                        .append(", heur: ${heuristics[id]}") }
                 }.also { s.append("\n") }
             }
-        }
-            .append("heuristics: $heuristics")
-            .toString()
+        }.toString()
     }
 }
 
-class GraphNode<T>(var nodeId: T): Vertex<T> {
+class GraphNode<T>(var nodeId: T, var getConnections: (id: T) -> List<GraphNode<T>>?): Vertex<T> {
 
     val neighbours = mutableListOf<GraphNode<T>>()
 
     override fun getId() = nodeId
 
-    override fun getConnectedNodes(): List<GraphNode<T>> = neighbours
+    override fun getConnectedNodes(): List<GraphNode<T>> = getConnections(nodeId) ?: neighbours
 
 }
 

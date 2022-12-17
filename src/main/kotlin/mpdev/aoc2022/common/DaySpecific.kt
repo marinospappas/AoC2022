@@ -45,6 +45,9 @@ import mpdev.aoc2022.day14.SolutionProcessorDay14
 import mpdev.aoc2022.day15.ConstantsDay15
 import mpdev.aoc2022.day15.InputProcessorDay15
 import mpdev.aoc2022.day15.SolutionProcessorDay15
+import mpdev.aoc2022.day16.ConstantsDay16
+import mpdev.aoc2022.day16.InputProcessorDay16
+import mpdev.aoc2022.day16.SolutionProcessorDay16
 
 class DaySpecific {
     companion object {
@@ -183,6 +186,15 @@ class DaySpecific {
                     inputlines,
                     InputProcessorDay15(),
                     SolutionProcessorDay15()
+                )
+
+                16 -> PuzzleProcessor(
+                    part1Or2,
+                    day,
+                    ConstantsDay16(),
+                    inputlines,
+                    InputProcessorDay16(),
+                    SolutionProcessorDay16()
                 )
 
                 else -> null

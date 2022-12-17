@@ -32,3 +32,11 @@ fun Pair<Int,Int>.isAdjacent(b: Pair<Int,Int>): Boolean {
 /** List extensions */
 fun List<*>.convertToString(): String
         = StringBuilder().also { s-> (0 until this.size).forEach { s.append("${this[it]}\n") } }.toString()
+
+/** IntRange extensions */
+fun IntRange.append(b: IntRange): IntRange? {
+    return if (b.first > this.last+1)
+        null
+    else
+        IntRange(this.first, if (this.last > b.last) this.last else b.last)
+}

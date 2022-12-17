@@ -14,10 +14,8 @@ class InputDay14(var inputList: List<List<Pair<Int,Int>>>) {
 
     init {
         val minx = inputList.minOf { l -> l.minOf { it.first } }
-        //minPt = Pair(minx, 0)
         val maxx = inputList.maxOf { l -> l.maxOf { it.first } }
         val maxy = inputList.maxOf { l -> l.maxOf { it.second } }
-        //maxPt = Pair(maxx, maxy)
         dimensions = Pair(maxx-minx+1 /*+4000*/, maxy+1)
         shift = -minx /* + 2000 */
         grid =  Array(dimensions.second) { CharArray(dimensions.first) { '.' } }
