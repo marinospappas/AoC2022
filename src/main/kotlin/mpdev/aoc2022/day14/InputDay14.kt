@@ -1,5 +1,9 @@
 package mpdev.aoc2022.day14
 
+import mpdev.aoc2022.common.animationObject
+import mpdev.aoc2022.utils.annimation.SHAPE_CIRCLE
+import java.awt.Color
+import java.awt.Point
 import java.lang.StringBuilder
 import kotlin.math.max
 import kotlin.math.min
@@ -20,6 +24,8 @@ class InputDay14(var inputList: List<List<Pair<Int,Int>>>) {
         shift = -minx /* + 2000 */
         grid =  Array(dimensions.second) { CharArray(dimensions.first) { '.' } }
         grid[0][500+shift] = '+'
+        animationObject.addItem()
+        animationObject.addItem()
         inputList.forEach { list ->
             for (i in 0 .. list.lastIndex-1)
                 drawLine(list[i], list[i+1])
@@ -58,8 +64,14 @@ class InputDay14(var inputList: List<List<Pair<Int,Int>>>) {
     fun dropOneGrain(): Boolean {
         var from = START
         var to: Pair<Int,Int>
-        while (moveGrainDown(from).also { to = it }.first > -1)
+        animationObject.copyLastItem()
+        animationObject.addPixel(Point(from.first+shift,from.second), SHAPE_CIRCLE, Color.YELLOW)
+        while (moveGrainDown(from).also { to = it }.first > -1) {
             from = to
+            animationObject.copyLastItem()
+            animationObject.removeLastPixel()
+            animationObject.addPixel(Point(from.first+shift,from.second), SHAPE_CIRCLE, Color.YELLOW)
+        }
         if (to.first < -1) {  // can't rest anywhere
             println("move from $from not possible")
             return false
@@ -141,13 +153,17 @@ class InputDay14(var inputList: List<List<Pair<Int,Int>>>) {
     }
 
     private fun drawHorLine(p1: Pair<Int,Int>, p2: Pair<Int,Int>) {
-        for (i in min(p1.first,p2.first) .. max(p1.first,p2.first))
-            grid[p1.second][i+shift] = '#'
+        for (i in min(p1.first,p2.first) .. max(p1.first,p2.first)) {
+            grid[p1.second][i + shift] = '#'
+            animationObject.addPixel(Point(i+shift, p1.second))
+        }
     }
 
     private fun drawVerLine(p1: Pair<Int,Int>, p2: Pair<Int,Int>) {
-        for (i in min(p1.second,p2.second) .. max(p1.second,p2.second))
-            grid[i][p1.first+shift] = '#'
+        for (i in min(p1.second,p2.second) .. max(p1.second,p2.second)) {
+            grid[i][p1.first + shift] = '#'
+            animationObject.addPixel(Point(p1.first + shift, i))
+        }
     }
 
     fun gridToString(): String {

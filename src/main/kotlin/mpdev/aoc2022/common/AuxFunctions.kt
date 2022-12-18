@@ -1,12 +1,15 @@
 package mpdev.aoc2022.common
 
+import mpdev.aoc2022.utils.annimation.AnimationObject
 import java.io.File
 import kotlin.system.exitProcess
 
 var testMode = false
+var doAnimation = false
+val animationObject = AnimationObject()
 
 /** exit program */
-fun exit(msg: String) {
+fun exit(msg: String = "") {
     println(msg)
     exitProcess(0)
 }
@@ -29,6 +32,14 @@ fun getDay(args: Array<String>): Int {
         if (args[i].startsWith("-day"))
             return args[i].substring(4).toInt()
     return 0
+}
+
+/** get day from args */
+fun getAnimation(args: Array<String>): Boolean {
+    for (i in args.indices)
+        if (args[i] == "-a")
+            return true
+    return false
 }
 
 /** get input from file */

@@ -3,6 +3,7 @@ package mpdev.aoc2022.day17
 import mpdev.aoc2022.common.*
 import mpdev.aoc2022.utils.Dijkstra
 import mpdev.aoc2022.utils.permutations
+import java.math.BigInteger
 
 class SolutionProcessorDay17: SolutionProcessor<InputDay17> {
 
@@ -15,7 +16,9 @@ class SolutionProcessorDay17: SolutionProcessor<InputDay17> {
 
     /** part 2 calculation */
     override fun part2(input: InputDay17): String {
-        return ""
+        val res = input.playTetris2("1000000000000")
+        println(input.gridToString(40))
+        return res
     }
 
 }

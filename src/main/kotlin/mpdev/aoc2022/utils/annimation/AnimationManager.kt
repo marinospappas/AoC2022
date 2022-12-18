@@ -31,20 +31,21 @@ class AnimationManager(private val animationPanel: AnimationPanel, animationObje
     val tileHeight = animationObject.tileSize
 
     fun renderObject(graphics: Graphics) {
-        if (firstRender) {
+        if (firstRender) {  // skip first time as this fun is called twice in the beginning
             firstRender = false
             return
         }
         println("${LocalTime.now()} animation Manager : renderObject called")
         println("${LocalTime.now()} animation index $animationObjIndx")
-        println("${LocalTime.now()} points: ${animationObject.items[animationObjIndx].data}")
-
-        val animationItem = animationObject.items[animationObjIndx]
-        if (animationObjIndx < animationObject.items.size-1)
-            ++animationObjIndx
         val graphics2D = graphics as Graphics2D
         if (animationObject.gridOn)
             drawGrid(graphics2D, animationObject)
+        if (animationObject.items.isEmpty())
+            return
+        val animationItem = animationObject.items[animationObjIndx]
+        println("${LocalTime.now()} points: ${animationItem.data}")
+        if (animationObjIndx < animationObject.items.size-1)
+            ++animationObjIndx
         for (i in 0 until animationItem.data.size) {
             val pixel = animationItem.data[i]
             val width = tileWidth
@@ -53,8 +54,8 @@ class AnimationManager(private val animationPanel: AnimationPanel, animationObje
                 graphics2D.color = animationItem.colour
             else
                 graphics2D.color = pixel.colour
-            val x = pixel.p.first * tileWidth
-            val y = pixel.p.second * tileHeight
+            val x = pixel.p.x * tileWidth
+            val y = pixel.p.y * tileHeight
             if (pixel.shape == SHAPE_DEFAULT) {
                 if (animationItem.shape == SHAPE_SQUARE)
                     graphics2D.fillRect(x, y, width, height)

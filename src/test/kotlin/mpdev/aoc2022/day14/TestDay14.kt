@@ -2,12 +2,14 @@ package mpdev.aoc2022.day14
 
 import mpdev.aoc2022.common.DaySpecific
 import mpdev.aoc2022.common.PuzzleProcessor
+import mpdev.aoc2022.common.animationObject
 import mpdev.aoc2022.common.getInput
 import mpdev.aoc2022.utils.convertToString
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
+import java.awt.Point
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Nested
@@ -94,6 +96,16 @@ class TestDay14 {
         val result = solution.part1(testInput)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor1.process())
+        // animation
+        animationObject.title1 = "AoC 2022 Day 14 Animation"
+        animationObject.title2 = "Pile of Sand"
+        animationObject.timerInterval = 100
+        animationObject.tileSize = 40
+        animationObject.gridOn = true
+        animationObject.start = Point(200,200)
+        animationObject.rows = 10
+        animationObject.columns = 10
+        animationObject.start()
     }
 
     @Test

@@ -1,9 +1,6 @@
 package mpdev.aoc2022.day09
 
-import mpdev.aoc2022.common.DaySpecific
-import mpdev.aoc2022.common.PuzzleProcessor
-import mpdev.aoc2022.common.getInput
-import mpdev.aoc2022.common.testMode
+import mpdev.aoc2022.common.*
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 
@@ -85,6 +82,7 @@ R 2
         println("== Initial State ==")
         println(testInput.grid)
         testMode = true
+        doAnimation = true
         val result = solution.part2(testInput)
         println(testInput.tailTrail.distinct())
         assertEquals(expected, result)

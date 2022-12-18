@@ -29,10 +29,6 @@ class TestDay11 {
         puzzleProcessor2 = DaySpecific.getProcessor(2, 11, inputLines)!!
     }
 
-    /*
-
-     */
-
     @Test
     @Order(1)
     fun `Test Get Input`() {
