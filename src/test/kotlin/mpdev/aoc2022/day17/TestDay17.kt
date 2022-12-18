@@ -44,7 +44,7 @@ class TestDay17 {
     @Order(3)
     @CsvSource(value = arrayOf("0", "1", "2", "3", "4"))
     fun `Test New Rock`(indx: Int) {
-        testInput.newRock(Rock(testInput.rockList[indx]))
+        testInput.newRock(testInput.rockList[indx])
         println(testInput.gridToString())
     }
 
@@ -52,7 +52,7 @@ class TestDay17 {
     @Order(4)
     @CsvSource(value = arrayOf("0", "1", "2", "3", "4"))
     fun `Test Move Rock Down`(indx: Int) {
-        val rock = Rock(testInput.rockList[indx])
+        val rock = testInput.rockList[indx]
         testInput.newRock(rock)
         println(testInput.gridToString())
         Thread.sleep(1000)
@@ -66,15 +66,15 @@ class TestDay17 {
     @Order(5)
     @CsvSource(value = arrayOf("0", "1", "2", "3", "4"))
     fun `Test Move Rock Sideways`(indx: Int) {
-        val rock = Rock(testInput.rockList[indx])
+        val rock = testInput.rockList[indx]
         testInput.newRock(rock)
         println(testInput.gridToString())
         Thread.sleep(1000)
-        while (testInput.moveRockLeft()) {
+        while (testInput.moveRockSideWays('>')) {
             println(testInput.gridToString())
             Thread.sleep(1000)
         }
-        while (testInput.moveRockRight()) {
+        while (testInput.moveRockSideWays('>')) {
             println(testInput.gridToString())
             Thread.sleep(1000)
         }
@@ -83,8 +83,8 @@ class TestDay17 {
     @Test
     @Order(6)
     fun `Test Move 2 Rocks Down`() {
-        val rock1 = Rock(testInput.rockList[2])
-        val rock2 = Rock(testInput.rockList[3])
+        val rock1 = testInput.rockList[2]
+        val rock2 = testInput.rockList[3]
         testInput.newRock(rock1)
         println(testInput.gridToString())
         Thread.sleep(1000)
@@ -93,7 +93,7 @@ class TestDay17 {
             Thread.sleep(1000)
         }
 
-        testInput.setRockToStopped()
+        testInput.placeRockToRest()
         testInput.newRock(rock2)
         println(testInput.gridToString())
         println(testInput.currHeight)
@@ -103,7 +103,7 @@ class TestDay17 {
             println(testInput.gridToString())
             Thread.sleep(1000)
         }
-        testInput.setRockToStopped()
+        testInput.placeRockToRest()
         println(testInput.gridToString())
         println(testInput.currHeight)
     }
@@ -112,10 +112,10 @@ class TestDay17 {
     @Order(6)
     fun `Test Move Rocks Down and Sideways`() {
         val delay = 400L
-        val rock1 = Rock(testInput.rockList[2])
-        val rock2 = Rock(testInput.rockList[3])
-        val rock3 = Rock(testInput.rockList[4])
-        val rock4 = Rock(testInput.rockList[1])
+        val rock1 = testInput.rockList[2]
+        val rock2 = testInput.rockList[3]
+        val rock3 = testInput.rockList[4]
+        val rock4 = testInput.rockList[1]
         testInput.newRock(rock1)
         println(testInput.gridToString())
         Thread.sleep(delay)
@@ -123,11 +123,11 @@ class TestDay17 {
             println(testInput.gridToString())
             Thread.sleep(delay)
         }
-        testInput.moveRockLeft()
+        testInput.moveRockSideWays('<')
         println(testInput.gridToString())
         Thread.sleep(delay)
 
-        testInput.setRockToStopped()
+        testInput.placeRockToRest()
         println(testInput.currHeight)
         Thread.sleep(delay)
 
@@ -141,17 +141,17 @@ class TestDay17 {
             Thread.sleep(delay)
         }
 
-        while (testInput.moveRockLeft()) {
+        while (testInput.moveRockSideWays('<')) {
             println(testInput.gridToString())
             Thread.sleep(delay)
         }
 
-        while (testInput.moveRockRight()) {
+        while (testInput.moveRockSideWays('>')) {
             println(testInput.gridToString())
             Thread.sleep(delay)
         }
 
-        testInput.setRockToStopped()
+        testInput.placeRockToRest()
         println(testInput.gridToString())
         println(testInput.currHeight)
 
@@ -159,7 +159,7 @@ class TestDay17 {
         println(testInput.gridToString())
         println(testInput.currHeight)
         Thread.sleep(delay)
-        while (testInput.moveRockRight()) {
+        while (testInput.moveRockSideWays('>')) {
             println(testInput.gridToString())
             Thread.sleep(delay)
         }
@@ -168,7 +168,7 @@ class TestDay17 {
             println(testInput.gridToString())
             Thread.sleep(delay)
         }
-        testInput.setRockToStopped()
+        testInput.placeRockToRest()
         println(testInput.gridToString())
         println(testInput.currHeight)
 
@@ -176,7 +176,7 @@ class TestDay17 {
         println(testInput.gridToString())
         println(testInput.currHeight)
         Thread.sleep(delay)
-        while (testInput.moveRockRight()) {
+        while (testInput.moveRockSideWays('>')) {
             println(testInput.gridToString())
             Thread.sleep(delay)
         }
@@ -184,7 +184,7 @@ class TestDay17 {
             println(testInput.gridToString())
             Thread.sleep(delay)
         }
-        while (testInput.moveRockLeft()) {
+        while (testInput.moveRockSideWays('<')) {
             println(testInput.gridToString())
             Thread.sleep(delay)
         }
@@ -192,7 +192,7 @@ class TestDay17 {
             println(testInput.gridToString())
             Thread.sleep(delay)
         }
-        testInput.setRockToStopped()
+        testInput.placeRockToRest()
         println(testInput.gridToString())
         println(testInput.currHeight)
     }

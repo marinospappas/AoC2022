@@ -1,5 +1,6 @@
 package mpdev.aoc2022.utils
 
+import java.awt.Point
 import java.lang.StringBuilder
 import kotlin.math.abs
 
@@ -40,3 +41,10 @@ fun IntRange.append(b: IntRange): IntRange? {
     else
         IntRange(this.first, if (this.last > b.last) this.last else b.last)
 }
+
+/** Point extensions */
+operator fun Point.plus(b: Point) = Point(this.x+b.x, this.y+b.y)
+
+fun Point.xPlus(n: Int) = Point(this.x+n, this.y)
+
+fun Point.yPlus(n: Int) = Point(this.x, this.y+n)

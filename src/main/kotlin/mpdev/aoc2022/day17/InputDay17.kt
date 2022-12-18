@@ -1,51 +1,37 @@
 package mpdev.aoc2022.day17
 
+import mpdev.aoc2022.utils.xPlus
+import mpdev.aoc2022.utils.yPlus
 import java.awt.Point
-import java.lang.RuntimeException
-import java.lang.StringBuilder
 import java.math.BigInteger
+import kotlin.math.max
+import kotlin.text.StringBuilder
 
 class InputDay17(var movesList: List<Char>) {
 
-    var grid = mutableListOf<CharArray>()
-    var dimensions = Pair(7, Int.MAX_VALUE)
+    companion object {
+        const val PIXEL_FREE = 0
+        const val PIXEL_TAKEN = 1
+    }
+    var grid = mutableListOf<IntArray>()
     var currHeight = -1
-    var rockX = 0
-    var rockY = 0
-    lateinit var rock: Rock
+    var rockPos = Point(-1,-1)
+    var rock: Rock? = null
     var jetPatternIndex = 0
 
     var rockList = listOf(
-        listOf(
-            "@@@@".toCharArray()
-        ),
-        listOf(
-            ".@.".toCharArray(),
-            "@@@".toCharArray(),
-            ".@.".toCharArray()
-        ),
-        listOf(
-            "@@@".toCharArray(),
-            "..@".toCharArray(),
-            "..@".toCharArray()
-        ),
-        listOf(
-            "@".toCharArray(),
-            "@".toCharArray(),
-            "@".toCharArray(),
-            "@".toCharArray()
-        ),
-        listOf(
-            "@@".toCharArray(),
-            "@@".toCharArray()
-        ),
+        Rock(listOf("@@@@")),
+        Rock(listOf(".@.", "@@@", ".@.")),
+        Rock(listOf("@@@", "..@", "..@")),
+        Rock(listOf("@", "@", "@", "@")),
+        Rock(listOf("@@", "@@")),
     )
 
     var gridState = mutableMapOf<GridState,Pair<Int,Int>>()
 
     fun playTetris(n: Int): Int {
         (1..n).forEach {
-            newRock(Rock(rockList[(it - 1) % rockList.size]))
+            newRock(rockList[(it - 1) % rockList.size])
             playRock()
         }
         return currHeight + 1
@@ -58,14 +44,13 @@ class InputDay17(var movesList: List<Char>) {
         var rockType = 0
         var cycleDetected = false
         while (true) {
-            newRock(Rock(rockList[rockType]))
+            newRock(rockList[rockType])
             playRock()
-            if (count == maxCount)
+            if (count++ == maxCount)
                 break
-            ++count
             rockType = (++rockType) % rockList.size
 
-            if (!cycleDetected && count.toInt() > 2000) {   // start detecting cycles above 2000 pieces
+            if (!cycleDetected && count.toInt() > 2000) {   // start detecting cycles above 2000 pieces to make sure it has settled
                 val state = GridState(grid[currHeight].joinToString(""), rockType, jetPatternIndex)
                 val prevCount: Int
                 val prevHeight: Int
@@ -93,54 +78,34 @@ class InputDay17(var movesList: List<Char>) {
         return ((currHeight + 1).toBigInteger() + offset).toString()
     }
 
-    fun playRock() {
+    private fun playRock() {
         while (true) {
-            when (getNextSidewaysMove()) {
-                '<' -> moveRockLeft()
-                '>' -> moveRockRight()
-                else -> throw RuntimeException("invalid move character")
-            }
+            moveRockSideWays(getNextSidewaysMove())
             if (!moveRockDown()) {
-                setRockToStopped()
+                placeRockToRest()
                 return
             }
         }
     }
 
-    fun extendGrid(n: Int) {
-        for (i in 1..n) {
-            val newRow = CharArray(7) { '.' }
-            grid.add(newRow)
-        }
-    }
-
     fun newRock(newRock: Rock) {
-        rock = Rock(newRock.data)
-        extendGrid(rock.height + 3)
-        placeRock(2, currHeight + 3 + 1)
+        rock = newRock
+        (1..(rock!!.height+3)).forEach { grid.add(IntArray(7) { PIXEL_FREE }) }
+        rockPos = Point(2, currHeight + 3 + 1)
     }
 
     fun moveRockDown(): Boolean {
         if (!canMoveDown())
             return false
-        removeRock()
-        placeRock(rockX, rockY - 1)
+        rockPos = rockPos.yPlus(-1)
         return true
     }
 
-    fun moveRockLeft(): Boolean {
-        if (!canMoveLeft())
+    fun moveRockSideWays(c: Char): Boolean {
+        val xIncr = if (c == '<') -1 else 1
+        if (!canMoveSideways(xIncr))
             return false
-        removeRock()
-        placeRock(rockX - 1, rockY)
-        return true
-    }
-
-    fun moveRockRight(): Boolean {
-        if (!canMoveRight())
-            return false
-        removeRock()
-        placeRock(rockX + 1, rockY)
+        rockPos = rockPos.xPlus(xIncr)
         return true
     }
 
@@ -151,91 +116,55 @@ class InputDay17(var movesList: List<Char>) {
         return move
     }
 
-    fun setRockToStopped() {
-        for (h in 0 until rock.height)
-            for (w in 0 until rock.width)
-                if (grid[rockY + h][rockX + w] == '@')
-                    grid[rockY + h][rockX + w] = '#'
-        if (rockY + rock.height - 1 > currHeight)
-            currHeight = rockY + rock.height - 1
-    }
-
-    private fun placeRock(x: Int, y: Int) {
-        for (h in 0 until rock.height)
-            for (w in 0 until rock.width)
-                if (rock[h][w] != '.')
-                    grid[y + h][x + w] = rock[h][w]
-        rockX = x
-        rockY = y
-    }
-
-    private fun removeRock() {
-        for (h in 0 until rock.height)
-            for (w in 0 until rock.width)
-                if (rock[h][w] != '.')
-                    grid[rockY + h][rockX + w] = '.'
+    fun placeRockToRest() {
+        rock!!.data.forEach { point -> grid[rockPos.y + point.y][rockPos.x + point.x] = PIXEL_TAKEN }
+        currHeight = max(rockPos.y + rock!!.height - 1, currHeight)
+        rock = null
     }
 
     private fun canMoveDown(): Boolean {
-        if (rockY == 0)
+        if (rockPos.y == 0)
             return false
-        rock.getListOfSolidPoints().forEach {
-            if (grid[rockY+it.y-1][rockX+it.x] == '#')
-                return false
-        }
+        rock!!.data.forEach { point -> if (grid[rockPos.y-1 + point.y][rockPos.x + point.x] == PIXEL_TAKEN) return false }
         return true
     }
 
-    private fun canMoveLeft(): Boolean {
-        if (rockX == 0)
+    private fun canMoveSideways(xIncr: Int): Boolean {
+        if (xIncr == -1 && rockPos.x == 0 || xIncr == 1 && rockPos.x + rock!!.width >= 7)
             return false
-        rock.getListOfSolidPoints().forEach {
-            if (grid[rockY+it.y][rockX+it.x-1] == '#')
-                return false
-        }
+        rock!!.data.forEach { point -> if (grid[rockPos.y + point.y][rockPos.x+xIncr + point.x] == PIXEL_TAKEN) return false }
         return true
     }
 
-    private fun canMoveRight(): Boolean {
-        if (rockX + rock.width >= 7)
-            return false
-        rock.getListOfSolidPoints().forEach {
-            if (grid[rockY+it.y][rockX+it.x+1] == '#')
-                return false
-        }
-        return true
-    }
+    fun gridToString() = gridRangeToString(0, grid.size-1)
 
-    fun gridToString(offset: Int): String {
-        val s = StringBuilder()
-        for (i in currHeight+3 downTo currHeight-offset) {
-            grid[i].toList().forEach { s.append(it) }
-            s.append(" :${i+1}").append("\n")
-        }
-        return s.toString()
-    }
+    fun gridToString(offset: Int) = gridRangeToString(currHeight-offset, currHeight+3)
 
-    fun gridToString(): String {
-        val s = StringBuilder()
-        for (i in grid.size-1 downTo 0) {
-            grid[i].toList().forEach { s.append(it) }
-            s.append(" :${i+1}").append("\n")
-        }
-        return s.toString()
-    }
+    private fun gridRangeToString(from: Int, to: Int) =
+        StringBuilder().also { s -> (to downTo from).forEach { y ->
+            grid[y].indices.forEach { x ->
+                s.append(
+                    when {
+                        grid[y][x] == PIXEL_TAKEN -> "#"
+                        rock != null && rock!!.data.contains(Point(x - rockPos.x, y - rockPos.y)) -> "@"
+                        else -> "."
+                    }
+                ) }
+            s.append(" :${y+1}").append("\n")
+        } }.toString()
 }
 
-class Rock(var data: List<CharArray>) {
-    val width = data[0].size
-    val height = data.size
-    operator fun get(row: Int) = data[row]
-
-    fun getListOfSolidPoints(): List<Point> =
-        mutableListOf<Point>().also { list ->
-            (0 until height).forEach { row -> (0 until width).forEach { col ->
-                if (data[row][col] != '.') list.add(Point(col, row))
-            } }
-        }
+class Rock(strList: List<String>) {
+    var data: MutableList<Point> = mutableListOf()
+    val width: Int
+    val height: Int
+    init {
+        strList.indices.forEach { y -> strList[y].indices.forEach {
+            x -> if (strList[y][x] != '.') data.add(Point(x,y))
+        } }
+        width = strList.first().length
+        height = strList.size
+    }
 }
 
 class GridState(val topRow: String, val nextRock: Int, val jetIndx: Int) {
@@ -252,5 +181,3 @@ class GridState(val topRow: String, val nextRock: Int, val jetIndx: Int) {
     }
     override fun toString() = "state: $topRow, $nextRock, $jetIndx"
 }
-
-
