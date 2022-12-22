@@ -29,7 +29,7 @@ class InputDay17(var movesList: List<Char>) {
 
     var gridState = mutableMapOf<GridState,Pair<Int,Int>>()
 
-    fun playTetris(n: Int): Int {
+    fun playTetris(n: Int): Int {   // simple
         (1..n).forEach {
             newRock(rockList[(it - 1) % rockList.size])
             playRock()
@@ -37,7 +37,7 @@ class InputDay17(var movesList: List<Char>) {
         return currHeight + 1
     }
 
-    fun playTetris2(n: String): String {
+    fun playTetris2(n: String): String {    // with cycle detection
         val maxCount = BigInteger(n)
         var offset = BigInteger("0")
         var count = BigInteger("1")
@@ -50,7 +50,7 @@ class InputDay17(var movesList: List<Char>) {
                 break
             rockType = (++rockType) % rockList.size
 
-            if (!cycleDetected && count.toInt() > 2000) {   // start detecting cycles above 2000 pieces to make sure it has settled
+            if (!cycleDetected && count.toInt() > 2022) {   // start detecting cycles above 2000 pieces to make sure it has settled
                 val state = GridState(grid[currHeight].joinToString(""), rockType, jetPatternIndex)
                 val prevCount: Int
                 val prevHeight: Int
@@ -63,10 +63,8 @@ class InputDay17(var movesList: List<Char>) {
                     cycleDetected = true
                     val rockCntCycle = count.toInt() - prevCount
                     val heightCycle = currHeight - prevHeight
-                    println(
-                        "cycle detected: rock count $prevCount - ${count.toInt()} height ${prevHeight + 1} -  ${currHeight + 1}" +
-                                " next rock $rockType next move $jetPatternIndex"
-                    )
+                    println("cycle detected: rock count $prevCount - ${count.toInt()} height ${prevHeight + 1} - ${currHeight + 1}" +
+                                " next rock $rockType next move $jetPatternIndex")
                     println("cycle: rocks $rockCntCycle height $heightCycle")
                     val cycles = (maxCount - count + BigInteger("1")) / rockCntCycle.toBigInteger()
                     offset += heightCycle.toBigInteger() * cycles
@@ -159,25 +157,17 @@ class Rock(strList: List<String>) {
     val width: Int
     val height: Int
     init {
-        strList.indices.forEach { y -> strList[y].indices.forEach {
-            x -> if (strList[y][x] != '.') data.add(Point(x,y))
-        } }
+        strList.indices.forEach { y -> strList[y].indices
+            .forEach { x -> if (strList[y][x] != '.') data.add(Point(x,y)) }
+        }
         width = strList.first().length
         height = strList.size
     }
 }
 
 class GridState(val topRow: String, val nextRock: Int, val jetIndx: Int) {
-    override fun equals(other: Any?): Boolean {
-        return other is GridState && this.topRow == other.topRow && this.nextRock == other.nextRock &&
-                this.jetIndx == other.jetIndx
-    }
-    override fun hashCode(): Int {
-        var hash = 17
-        hash = hash * 31 + topRow.hashCode()
-        hash = hash * 31 + nextRock
-        hash = hash * 31 + jetIndx
-        return hash
-    }
+    override fun equals(other: Any?) = other is GridState
+            && this.topRow == other.topRow && this.nextRock == other.nextRock && this.jetIndx == other.jetIndx
+    override fun hashCode() = ((17 * 31 + topRow.hashCode()) * 31 + nextRock) * 31 + jetIndx
     override fun toString() = "state: $topRow, $nextRock, $jetIndx"
 }
