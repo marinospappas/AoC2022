@@ -43,13 +43,26 @@ class TestDay20 {
     @Test
     @Order(3)
     fun `Test Shift One Item`() {
-        testInput.encrList.forEach { println(it) }
-        testInput.shiftOneItem(0)
-        testInput.printListSorted()
-        testInput.encrList.forEach { println(it) }
-        testInput.shiftOneItem(1)
-        testInput.printListSorted()
-        testInput.encrList.forEach { println(it) }
+        println("Initial arrangement:")
+        println(testInput.encrList)
+        (0..6).forEach {
+            println("\n${testInput.encrList[it].value} moves")
+            testInput.shiftOneItem(it)
+            println(testInput.shiftedList())
+            println(testInput.encrList)
+        }
+    }
+
+    @Test
+    @Order(4)
+    fun `Test Shift List`() {
+        println("Initial arrangement:")
+        println(testInput.encrList)
+        testInput.shiftList()
+        println("\nresult after shifting the list")
+        println(testInput.shiftedList())
+        println(testInput.encrList)
+        assertEquals(listOf(1, 2, -3, 4, 0, 3, -2), testInput.shiftedList())
     }
 
     @Test

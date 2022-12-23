@@ -1,24 +1,36 @@
 package mpdev.aoc2022.day20
 
-class InputDay20(var encrList: MutableList<Pair<Int,Int>>) {
+class InputDay20(var encrList: MutableList<Item>) {
 
-    companion object {
+    fun shiftList() {
+        (0 until encrList.size).forEach { shiftOneItem(it) }
     }
-
 
     fun shiftOneItem(indx: Int) {
-        val newPos = (encrList[indx].second + encrList[indx].first % encrList.size) % encrList.size
-        for (i in encrList.indices)
-            encrList[i] = when (encrList[i].second) {
-                in 0 .. newPos -> Pair(encrList[i].first, encrList[i].second - 1)
-                in newPos..newPos -> Pair(encrList[i].first,
-                    (encrList[i].second + encrList[i].first % encrList.size) % encrList.size)
-                else -> encrList[i]
-            }
-        encrList[indx] = Pair(encrList[indx].first, newPos)
+        val curPos = encrList[indx].position
+        var shiftBy = encrList[indx].value % encrList.size
+        if (shiftBy < 0)
+            shiftBy += encrList.size - 1
+        var newPos = curPos + shiftBy
+        if (newPos >= encrList.size)
+            newPos = newPos - encrList.size + 1
+        encrList[indx].position = Int.MAX_VALUE  // give the current item temporarily a position far away
+        if (newPos > curPos)
+            encrList.filter { it.position in (curPos+1)..newPos }.forEach { it.position = it.position - 1 }
+        else
+            if (newPos < curPos)
+                encrList.filter { it.position in newPos..(curPos-1) }.forEach { it.position = it.position + 1 }
+        encrList[indx].position = newPos
     }
 
-    fun printListSorted() {
-        println(encrList.sortedBy { it.second })
+    fun shiftedList(): List<Int> {
+        val res = mutableListOf<Int>()
+        encrList.sortedBy { it.position }.forEach { res.add(it.value) }
+        return res
     }
+
+}
+
+class Item(var value: Int, var position: Int) {
+    override fun toString() = "$value, pos=$position"
 }
