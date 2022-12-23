@@ -6,7 +6,11 @@ class SolutionProcessorDay20: SolutionProcessor<InputDay20> {
 
     /** part 1 calculation */
     override fun part1(input: InputDay20): String {
-        return ""
+        input.shiftList()
+        input.encrList.sortedBy { it.position }.forEach {
+            println("pos:${it.position}: ${it.value}")
+        }
+        return input.getCoordinatesSum().toString()
     }
 
     /** part 2 calculation */
