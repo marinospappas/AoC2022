@@ -30,6 +30,7 @@ class SolutionProcessorDay21: SolutionProcessor<InputDay21> {
             '/' -> { _, _ -> BigInteger("1") }
             else -> { _, _ -> null }
         }
+        // reverse calculate value for human
         return input.monkeyMap["humn"]!!.getRevResult().toString()
     }
 

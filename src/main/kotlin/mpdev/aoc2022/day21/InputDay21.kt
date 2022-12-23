@@ -28,39 +28,15 @@ class InputDay21(val monkeyMap: MutableMap<String,Monkey>, val parent: MutableMa
             // also rev calc
             val pid = parent[it.id] ?: return@forEach
             val pMonkey = map[pid.first] ?: throw RunTimeException("could not retrieve parent object for id ${pid.first}")
-            when (pMonkey.op) {
-                '+' -> {
-                    it.revCalc = { _, _ ->
-                        if (pid.second)    // if on the left hand side of the parent equation
-                            pMonkey.getRevResult() - map[pMonkey.s2]!!.getResult()
-                        else
-                            pMonkey.getRevResult() - map[pMonkey.s1]!!.getResult()
-                    }
-                }
-                '-' -> {
-                    it.revCalc = { _, _ ->
-                        if (pid.second)    // if on the left hand side of the parent equation
-                            pMonkey.getRevResult() + map[pMonkey.s2]!!.getResult()
-                        else
-                            map[pMonkey.s1]!!.getResult() - pMonkey.getRevResult()
-                    }
-                }
-                '*' -> {
-                    it.revCalc = { _, _ ->
-                        if (pid.second)    // if on the left hand side of the parent equation
-                            pMonkey.getRevResult() / map[pMonkey.s2]!!.getResult()
-                        else
-                            pMonkey.getRevResult() / map[pMonkey.s1]!!.getResult()
-                    }
-                }
-                '/' -> {
-                    it.revCalc = { _, _ ->
-                        if (pid.second)    // if on the left hand side of the parent equation
-                            pMonkey.getRevResult() * map[pMonkey.s2]!!.getResult()
-                        else
-                            map[pMonkey.s1]!!.getResult() / pMonkey.getRevResult()
-                    }
-                }
+            when (pMonkey.op) {   // the reverse calc depends on whether the object is on the left or on the right in the parent calc
+                '+' -> it.revCalc = if (pid.second) { _, _ -> pMonkey.getRevResult() - map[pMonkey.s2]!!.getResult() }
+                                else { _, _ -> pMonkey.getRevResult() - map[pMonkey.s1]!!.getResult() }
+                '-' -> it.revCalc = if (pid.second)  { _, _ -> pMonkey.getRevResult() + map[pMonkey.s2]!!.getResult() }
+                                else { _, _ -> map[pMonkey.s1]!!.getResult() - pMonkey.getRevResult() }
+                '*' -> it.revCalc = if (pid.second) { _, _ -> pMonkey.getRevResult() / map[pMonkey.s2]!!.getResult() }
+                                else { _, _ -> pMonkey.getRevResult() / map[pMonkey.s1]!!.getResult() }
+                '/' -> it.revCalc = if (pid.second) { _, _ -> pMonkey.getRevResult() * map[pMonkey.s2]!!.getResult() }
+                                else { _, _ -> map[pMonkey.s1]!!.getResult() / pMonkey.getRevResult() }
             }
         }
     }
