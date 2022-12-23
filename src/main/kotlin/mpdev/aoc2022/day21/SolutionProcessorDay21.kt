@@ -1,6 +1,7 @@
 package mpdev.aoc2022.day21
 
 import mpdev.aoc2022.common.*
+import java.math.BigInteger
 
 class SolutionProcessorDay21: SolutionProcessor<InputDay21> {
 
@@ -11,17 +12,24 @@ class SolutionProcessorDay21: SolutionProcessor<InputDay21> {
 
     /** part 2 calculation */
     override fun part2(input: InputDay21): String {
-        val left = true // calculate side of human
+        val left = input.calcSideOfHuman()
+        val branchResult: BigInteger
         if (left) {
-            val branchResult = input.monkeyMap[input.monkeyMap["root"]!!.s2]!!.getResult()
-            input.monkeyMap[input.monkeyMap["root"]!!.s1] = InputDay21.Monkey(id=input.monkeyMap["root"]!!.s1, number=branchResult)
-            println("right branch result $branchResult")
+            branchResult = input.monkeyMap[input.monkeyMap["root"]!!.s2]!!.getResult()
+            println("human on the left branch - right branch result $branchResult")
         }
         else {
-            val branchResult = input.monkeyMap[input.monkeyMap["root"]!!.s1]!!.getResult()
-            input.monkeyMap[input.monkeyMap["root"]!!.s2] = InputDay21.Monkey(id=input.monkeyMap["root"]!!.s2, number=branchResult)
+            branchResult = input.monkeyMap[input.monkeyMap["root"]!!.s1]!!.getResult()
+            println("human on the right branch - left branch result $branchResult")
         }
-        input.monkeyMap.forEach { (k, v) -> println("$k: $v") }
+        // adjust root's reverse calculation so that it will result in both sides of the root calc equal
+        input.monkeyMap["root"]!!.revCalc = when (input.monkeyMap["root"]!!.op) {
+            '+' -> { _, _ -> branchResult * BigInteger("2") }
+            '-' -> { _, _ -> BigInteger("0") }
+            '*' -> { _, _ -> branchResult * branchResult }
+            '/' -> { _, _ -> BigInteger("1") }
+            else -> { _, _ -> null }
+        }
         return input.monkeyMap["humn"]!!.getRevResult().toString()
     }
 
