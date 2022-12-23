@@ -76,9 +76,8 @@ class InputDay21(val monkeyMap: MutableMap<String,Monkey>, val parent: MutableMa
     class Monkey(val id: String, val s1: String = "", val s2: String = "", val op: Char = ' ', val number: BigInteger = BigInteger("0")) {
         var calc: (String, String) -> BigInteger? = { _,_ -> null }
         var revCalc: (String, String) -> BigInteger? = { _,_ -> null }
-        var reveCalcStr: String = ""
         fun getResult() = calc(s1, s2) ?: number
         fun getRevResult() = revCalc(s1, s2) ?: number
-        override fun toString() = "$id = " + (if (op == ' ') number.toString() else "$s1 $op $s2") + " (rev calc = $reveCalcStr)"
+        override fun toString() = "$id = " + (if (op == ' ') number.toString() else "$s1 $op $s2")
     }
 }
