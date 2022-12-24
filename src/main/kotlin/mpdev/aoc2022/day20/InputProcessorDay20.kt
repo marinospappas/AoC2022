@@ -9,8 +9,8 @@ class InputProcessorDay20: InputProcessor<InputDay20>() {
         val dataList = mutableListOf<Item>()
         var count = 0
         input.forEach {
-            val n: Int
-            try { n = it.toInt() }
+            val n: Long
+            try { n = it.toLong() }
             catch (e: NumberFormatException) { throw InputDataException("day 20: bad input line $it") }
             dataList.add(Item(n, count++))
         }

@@ -62,7 +62,35 @@ class TestDay20 {
         println("\nresult after shifting the list")
         println(testInput.shiftedList())
         println(testInput.encrList)
-        assertEquals(listOf(1, 2, -3, 4, 0, 3, -2), testInput.shiftedList())
+        assertEquals(listOf(1L, 2, -3, 4, 0, 3, -2), testInput.shiftedList())
+    }
+
+    @Test
+    @Order(5)
+    fun `Test Shift One Item 2`() {
+        testInput.processDecrKey()
+        println("Initial arrangement:")
+        println(testInput.encrList)
+        (0..6).forEach {
+            println("\n${testInput.encrList[it].value} moves")
+            testInput.shiftOneItem(it)
+            println(testInput.shiftedList())
+            println(testInput.encrList)
+        }
+    }
+
+    @Test
+    @Order(6)
+    fun `Test Shift List 2`() {
+        testInput.processDecrKey()
+        println("Initial arrangement:")
+        println(testInput.encrList)
+        testInput.shiftList(10)
+        println("\nresult after shifting the list")
+        println(testInput.shiftedList())
+        println(testInput.encrList)
+        assertEquals(listOf(0L, -2434767459, 1623178306, 3246356612, -1623178306, 2434767459, 811589153),
+            testInput.shiftedList())
     }
 
     @Test
