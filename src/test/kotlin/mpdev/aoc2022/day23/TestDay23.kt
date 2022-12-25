@@ -95,7 +95,7 @@ class TestDay23 {
     @Test
     @Order(12)
     fun `Test Calculate Part 2`() {
-        val expected = ""
+        val expected = "20"
         val result = solution.part2(testInput)
         println(testInput.gridToString())
         assertEquals(expected, result)

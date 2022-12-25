@@ -12,7 +12,10 @@ class SolutionProcessorDay23: SolutionProcessor<InputDay23> {
 
     /** part 2 calculation */
     override fun part2(input: InputDay23): String {
-        return ""
+        var rounds = 1
+        while(input.playRound() > 0)
+            ++rounds
+        return rounds.toString()
     }
 
 }

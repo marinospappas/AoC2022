@@ -31,7 +31,7 @@ class InputDay23(var inputList: List<String>) {
         extendGrid()
     }
 
-    fun playRound() {
+    fun playRound(): Int {
         // decide moves
         val thisRoundMoveIndex = movesIndx++ % movesList.size
         elvesList.forEach { elf ->
@@ -44,12 +44,14 @@ class InputDay23(var inputList: List<String>) {
             }
         }
         // execute moves
+        var moveCount = 0
         elvesList.forEach { elf ->
             if (elvesList.filter { it.newPos.equals(elf.newPos) }.size == 1)
-                elf.moveToNewPos()
+                moveCount += elf.moveToNewPos()
         }
         // extend grid if needed
         extendGrid()
+        return moveCount
     }
 
     fun getResult() =
@@ -124,10 +126,12 @@ class InputDay23(var inputList: List<String>) {
         fun makeDecision(moveBy: Point) {
             newPos = pos + moveBy
         }
-        fun moveToNewPos() {
+        fun moveToNewPos(): Int {
+            val moveRes = if (newPos.equals(pos)) 0 else 1
             grid.setItem(pos, '.')
             pos = Point(newPos.x, newPos.y)
             grid.setItem(pos, '#')
+            return moveRes
         }
     }
 
