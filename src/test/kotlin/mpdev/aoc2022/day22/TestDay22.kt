@@ -48,10 +48,24 @@ class TestDay22 {
         println(testInput.gridToString())
         println(testInput.path)
         testInput.path.forEach {
-            testInput.executeMove(it)
+            testInput.executeMove(it){testInput.nextPosition2D()}
             println()
             println("step $it")
             println(testInput.gridToString())
+        }
+    }
+
+    @Test
+    @Order(5)
+    fun `Test Execute Step 3D`() {
+        println(testInput.gridToString())
+        println(testInput.path)
+        testInput.path.forEach {
+            testInput.executeMove(it){testInput.nextPosition3D()}
+            println()
+            println("step $it")
+            println(testInput.gridToString())
+            println("current position: ${testInput.position}")
         }
     }
 
@@ -68,8 +82,9 @@ class TestDay22 {
     @Test
     @Order(12)
     fun `Test Calculate Part 2`() {
-        val expected = ""
+        val expected = "5031"
         val result = solution.part2(testInput)
+        println(testInput.gridToString())
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor2.process())
     }

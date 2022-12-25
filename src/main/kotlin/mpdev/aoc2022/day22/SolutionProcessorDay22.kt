@@ -6,14 +6,15 @@ class SolutionProcessorDay22: SolutionProcessor<InputDay22> {
 
     /** part 1 calculation */
     override fun part1(input: InputDay22): String {
-        input.path.forEach { input.executeMove(it) }
+        input.path.forEach { input.executeMove(it){input.nextPosition2D()} }
         println("final position ${input.position}")
         return input.position.getPassword().toString()
     }
 
     /** part 2 calculation */
     override fun part2(input: InputDay22): String {
-        return ""
-    }
+        input.path.forEach { input.executeMove(it){input.nextPosition3D()} }
+        println("final position for 3D path ${input.position}")
+        return input.position.getPassword().toString()    }
 
 }
