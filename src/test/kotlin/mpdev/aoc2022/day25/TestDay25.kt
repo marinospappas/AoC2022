@@ -57,7 +57,7 @@ class TestDay25 {
         "12345, 1-0---0",
         "314159265, 1121-1110-1=0"
     ))
-    fun `Test Snafu To Int and Int To Snafu`(int: String, snafu: String) {
+    fun `Test Snafu To Long and Long To Snafu`(int: String, snafu: String) {
         assertEquals(int.toLong(), Snafu(snafu).toLong())
         assertEquals(snafu, int.toLong().toSnafu())
     }
@@ -66,7 +66,7 @@ class TestDay25 {
     @Order(5)
     fun `Test Snafu To Int 2`() {
         val expected = listOf(
-            1747, 906, 198, 11, 201, 31, 1257, 32, 353, 107, 7, 3, 37
+            1747L, 906L, 198L, 11L, 201L, 31L, 1257L, 32L, 353L, 107L, 7L, 3L, 37L
         )
         snafuList.indices.forEach { assertEquals(expected[it], snafuList[it].toLong()) }
         assertEquals(4890L, snafuList.sumOf { it.toLong() })

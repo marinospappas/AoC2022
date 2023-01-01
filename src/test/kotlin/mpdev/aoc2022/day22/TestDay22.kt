@@ -3,13 +3,9 @@ package mpdev.aoc2022.day22
 import mpdev.aoc2022.common.DaySpecific
 import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
+import mpdev.aoc2022.common.testMode
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.CsvSource
-import org.junit.jupiter.params.provider.MethodSource
-import java.util.stream.Stream
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -21,12 +17,13 @@ class TestDay22 {
     private val filename = "src/test/resources/day22/input.txt"
     private val inputProcessor = InputProcessorDay22()
     private val solution = SolutionProcessorDay22()
-    private lateinit var testInput: InputDay22
+    private lateinit var testInput: Day22
     private lateinit var puzzleProcessor1: PuzzleProcessor<*>
     private lateinit var puzzleProcessor2: PuzzleProcessor<*>
 
     @BeforeEach
     fun testSetup() {
+        testMode = true
         val inputLines = getInput(filename)
         testInput = inputProcessor.process(inputLines)
         puzzleProcessor1 = DaySpecific.getProcessor(1, 22, inputLines)!!

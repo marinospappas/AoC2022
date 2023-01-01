@@ -6,7 +6,7 @@ import java.util.*
  * Dijkstra implementation
  * T is the type of the Node ID in the Graph
  */
-class Dijkstra<T>(var costMap: Map<Pair<T,T>,Int>) {
+class Dijkstra<T>(var costMap: Map<Pair<T,T>,Int>? = null) {
 
     class PathNode<T>(
         val node: Vertex<T>?,
@@ -23,9 +23,9 @@ class Dijkstra<T>(var costMap: Map<Pair<T,T>,Int>) {
 
     class DijkstraException(override var message: String): Exception()
 
-    fun getCost(from: T, to: T): Int {
-        return costMap[Pair(from, to)] ?: throw DijkstraException("cost from $from to $to not defined")
-    }
+    fun getCost(from: T, to: T) =
+        if (costMap == null) 1      // default cost is 1 for all moves if no cost map given
+        else costMap!![Pair(from, to)] ?: throw DijkstraException("cost from $from to $to not defined")
 
     /**
      * The Dijkstra algorithm implementation

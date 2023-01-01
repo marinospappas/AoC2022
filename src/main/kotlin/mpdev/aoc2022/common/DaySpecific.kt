@@ -51,6 +51,9 @@ import mpdev.aoc2022.day16.SolutionProcessorDay16
 import mpdev.aoc2022.day17.ConstantsDay17
 import mpdev.aoc2022.day17.InputProcessorDay17
 import mpdev.aoc2022.day17.SolutionProcessorDay17
+import mpdev.aoc2022.day19.ConstantsDay19
+import mpdev.aoc2022.day19.InputProcessorDay19
+import mpdev.aoc2022.day19.SolutionProcessorDay19
 import mpdev.aoc2022.day20.ConstantsDay20
 import mpdev.aoc2022.day20.InputProcessorDay20
 import mpdev.aoc2022.day20.SolutionProcessorDay20
@@ -63,6 +66,9 @@ import mpdev.aoc2022.day22.SolutionProcessorDay22
 import mpdev.aoc2022.day23.ConstantsDay23
 import mpdev.aoc2022.day23.InputProcessorDay23
 import mpdev.aoc2022.day23.SolutionProcessorDay23
+import mpdev.aoc2022.day24.ConstantsDay24
+import mpdev.aoc2022.day24.InputProcessorDay24
+import mpdev.aoc2022.day24.SolutionProcessorDay24
 import mpdev.aoc2022.day25.ConstantsDay25
 import mpdev.aoc2022.day25.InputProcessorDay25
 import mpdev.aoc2022.day25.SolutionProcessorDay25
@@ -224,6 +230,15 @@ class DaySpecific {
                     SolutionProcessorDay17()
                 )
 
+                19 -> PuzzleProcessor(
+                    part1Or2,
+                    day,
+                    ConstantsDay19(),
+                    inputlines,
+                    InputProcessorDay19(),
+                    SolutionProcessorDay19()
+                )
+
                 20 -> PuzzleProcessor(
                     part1Or2,
                     day,
@@ -258,6 +273,15 @@ class DaySpecific {
                     inputlines,
                     InputProcessorDay23(),
                     SolutionProcessorDay23()
+                )
+
+                24 -> PuzzleProcessor(
+                    part1Or2,
+                    day,
+                    ConstantsDay24(),
+                    inputlines,
+                    InputProcessorDay24(),
+                    SolutionProcessorDay24()
                 )
 
                 25 -> PuzzleProcessor(
