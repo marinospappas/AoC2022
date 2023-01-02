@@ -43,7 +43,7 @@ class TestDay18 {
         val example = listOf("1,1,1", "2,1,1")
         testInput = inputProcessor.process(example)
         testInput.pointsList.forEach { println(it) }
-        assertEquals(10, testInput.getExposedSurface(testInput.pointsList))
+        assertEquals(10, testInput.getExposedSurface())
     }
 
     @Test
@@ -58,7 +58,7 @@ class TestDay18 {
             )
         testInput = inputProcessor.process(example)
         testInput.pointsList.forEach { println(it) }
-        assertEquals(40, testInput.getExposedSurface(testInput.pointsList))
+        assertEquals(40, testInput.getExposedSurface())
     }
 
     @Test
@@ -71,8 +71,8 @@ class TestDay18 {
         )
         testInput = inputProcessor.process(example)
         testInput.pointsList.forEach { println(it) }
-        assertEquals(36, testInput.getExposedSurface(testInput.pointsList))
-        assertEquals(30, testInput.getOutsideExposedSurface())
+        assertEquals(36, testInput.getExposedSurface())
+        assertEquals(30, testInput.getExposedSurface(true))
     }
 
     @Test

@@ -8,24 +8,32 @@ const val LAVA = 2
 
 class Day18(var pointsList: List<Point3D>) {
 
+    private val airPockets = mutableListOf<Point3D>()
     private val arrSize = maxOf(pointsList.maxOf { it.x }, pointsList.maxOf { it.y }, pointsList.maxOf { it.z }) + 1
     private val cube: Array<Array<IntArray>> = Array(arrSize) { Array(arrSize) { IntArray(arrSize){ AIR } } }
 
     init {
         pointsList.forEach { cube[it.z][it.y][it.x] = LAVA }
+        floodCube()
+        cube.indices.forEach { z ->
+            (0 until cube[0].size).forEach { y ->
+                (0 until cube[0][0].size).forEach { x ->
+                    if (cube[z][y][x] == AIR)
+                        airPockets.add(Point3D(x, y, z))
+                }
+            }
+        }
     }
 
-    fun getExposedSurface(points: List<Point3D>): Int {
+    fun getExposedSurface(onlyOuterSurface: Boolean = false): Int {
         var exposed = 0
-        points.forEach { point ->
-            point.getAdjacent().forEach { neighbour -> if (!points.contains(neighbour)) ++exposed }
+        pointsList.forEach { point ->
+            point.getAdjacent().forEach { neighbour ->
+                if (!pointsList.contains(neighbour) && (!onlyOuterSurface || !airPockets.contains(neighbour)))
+                    ++exposed
+            }
         }
         return exposed
-    }
-
-    fun getOutsideExposedSurface(): Int {
-        floodCube()
-        return getExposedSurface(pointsList) - getExposedSurface(getAirPockets())
     }
 
     private fun floodCube() {
@@ -42,15 +50,6 @@ class Day18(var pointsList: List<Point3D>) {
                         queue.add(neighbour)
             }
         }
-    }
-
-    private fun getAirPockets(): List<Point3D> {
-        val airPockets = mutableListOf<Point3D>()
-        cube.indices.forEach { z -> (0 until cube[0].size).forEach { y-> (0 until cube[0][0].size).forEach { x ->
-            if (cube[z][y][x] == AIR)
-                airPockets.add(Point3D(x,y,z))
-        } } }
-        return airPockets
     }
 
     private fun insideCube(p: Point3D) =

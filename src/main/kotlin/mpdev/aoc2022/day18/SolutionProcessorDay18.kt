@@ -6,11 +6,11 @@ class SolutionProcessorDay18: SolutionProcessor<Day18> {
 
     /** part 1 calculation */
     override fun part1(input: Day18): String {
-        return input.getExposedSurface(input.pointsList).toString()
+        return input.getExposedSurface().toString()
     }
 
     /** part 2 calculation */
     override fun part2(input: Day18): String {
-        return input.getOutsideExposedSurface().toString()
+        return input.getExposedSurface(true).toString()
     }
 }
