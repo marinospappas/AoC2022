@@ -26,7 +26,7 @@ class Day22(var inputList: List<String>, var path: List<String>) {
         val height = grid.size
         cubeSize = if (height < width) height / 3 else height / 4
         println("grid width $width, grid height $height, cube size $cubeSize")
-        // coordinates of the cube edges for part 2
+        // initialise coordinates of the cube edges for part 2
         Transformation3D.initTransformations()
     }
 
