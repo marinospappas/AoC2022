@@ -8,12 +8,8 @@ const val LAVA = 2
 
 class Day18(var pointsList: List<Point3D>) {
 
-    val maxX = pointsList.maxOf { it.x }
-    val maxY = pointsList.maxOf { it.y }
-    val maxZ = pointsList.maxOf { it.z }
-    val arrSize = maxOf(maxX, maxY, maxZ) + 1
-    val cube: Array<Array<IntArray>> =
-        Array(arrSize) { Array(arrSize) { IntArray(arrSize){ AIR } } }
+    private val arrSize = maxOf(pointsList.maxOf { it.x }, pointsList.maxOf { it.y }, pointsList.maxOf { it.z }) + 1
+    private val cube: Array<Array<IntArray>> = Array(arrSize) { Array(arrSize) { IntArray(arrSize){ AIR } } }
 
     init {
         pointsList.forEach { cube[it.z][it.y][it.x] = LAVA }
@@ -27,37 +23,38 @@ class Day18(var pointsList: List<Point3D>) {
         return exposed
     }
 
-    fun getOutsideExposedSurface() = getExposedSurface(pointsList) - getExposedSurface(findAirPockets())
+    fun getOutsideExposedSurface(): Int {
+        floodCube()
+        return getExposedSurface(pointsList) - getExposedSurface(getAirPockets())
+    }
 
-    private fun findAirPockets(): List<Point3D> {
-        val stack: Deque<Point3D> = ArrayDeque()
+    private fun floodCube() {
+        val queue: Queue<Point3D> = LinkedList()
         val visited: MutableSet<Point3D> = HashSet()
-        stack.push(Point3D(0,0,0))
-        while (!stack.isEmpty()) {
-            val cur = stack.pop()
-            visited.add(cur)
-            if (cube[cur.x][cur.y][cur.z] == AIR) {
-                cube[cur.x][cur.y][cur.z] = WATER
-                for (neighbour in cur.getAdjacent())
-                    if (!visited.contains(neighbour) && withinCube(neighbour))
-                        stack.push(neighbour)
+        queue.add(Point3D(0,0,0))
+        while (!queue.isEmpty()) {
+            val current = queue.poll()
+            visited.add(current)
+            if (cube[current.x][current.y][current.z] == AIR) {
+                cube[current.x][current.y][current.z] = WATER
+                for (neighbour in current.getAdjacent())
+                    if (!visited.contains(neighbour) && insideCube(neighbour))
+                        queue.add(neighbour)
             }
         }
-        return getAirPockets()
     }
 
     private fun getAirPockets(): List<Point3D> {
         val airPockets = mutableListOf<Point3D>()
-        (0 until cube.size).forEach { z -> (0 until cube[0].size).forEach { y-> (0 until cube[0][0].size).forEach { x ->
+        cube.indices.forEach { z -> (0 until cube[0].size).forEach { y-> (0 until cube[0][0].size).forEach { x ->
             if (cube[z][y][x] == AIR)
                 airPockets.add(Point3D(x,y,z))
         } } }
-        println("air pockets: ${airPockets.size}")
         return airPockets
     }
 
-    private fun withinCube(p: Point3D) =
-        p.x >= 0 && p.y >= 0 && p.z >= 0 && p.x < cube.size && p.y < cube[0].size && p.z < cube[0][0].size
+    private fun insideCube(p: Point3D) =
+        p.z in cube.indices && p.y in 0 until cube[0].size && p.x in 0 until cube[0][0].size
 
     data class Point3D(val x: Int, val y: Int, val z: Int) {
         fun getAdjacent() = mutableListOf<Point3D>().also { l -> listOf(
