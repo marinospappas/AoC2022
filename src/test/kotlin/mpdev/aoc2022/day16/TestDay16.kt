@@ -47,58 +47,22 @@ class TestDay16 {
         testInput.minPaths.forEach{(k,v) -> println("valve pair: $k, time to reach dest: $v")}
     }
 
-    @ParameterizedTest
-    @Order(8)
-    @MethodSource("providerOfArgsToCalcFlow")
-    fun `Test Calculate Flow`(path: List<String>, expected: Pair<Int,Int>) {
-        val flowAndTime = testInput.calculateFlowAndTime(path)
-        assertEquals(expected, flowAndTime)
-    }
-
     @Test
     @Order(10)
     fun `Test Calculate Part 1`() {
-        val expected = ""
+        val expected = "1651"
         val result = solution.part1(testInput)
         assertEquals(expected, result)
-        //assertEquals(expected, puzzleProcessor1.process())
+        assertEquals(expected, puzzleProcessor1.process())
     }
 
     @Test
     @Order(12)
     fun `Test Calculate Part 2`() {
-        val expected = ""
+        val expected = "1707"
         val result = solution.part2(testInput)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor2.process())
-    }
-
-    companion object {
-        @JvmStatic
-        fun providerOfArgsToCalcFlow(): Stream<Arguments> {
-            val totalPath = listOf(
-                Pair("AA",0), Pair("DD",0), Pair("DD",1), Pair("CC",0), Pair("BB",0), Pair("BB",1),
-                Pair("AA",0), Pair("JJ",0), Pair("JJ",0), Pair("JJ",1), Pair("II",0), Pair("AA",0),
-                Pair("DD", 1), Pair("EE",0), Pair("FF",0), Pair("GG",0), Pair("HH",0), Pair("HH",1),
-                Pair("GG",0), Pair("FF", 0), Pair("EE",0), Pair("EE",1), Pair("DD",1), Pair("CC",0),
-                Pair("CC",1), Pair("DD",1), Pair("DD",1), Pair("DD",1), Pair("DD",1), Pair("DD",1),
-                Pair("DD",1)
-            )
-            val expected = listOf(
-                0, 0, 0,   20, 20, 20,   33, 33, 33, 33,   54, 54, 54, 54, 54, 54, 54, 54,   76, 76, 76, 76,
-                79, 79, 79,   81, 81, 81, 81, 81, 81
-            )
-            val curPath = mutableListOf<Pair<String,Int>>()
-            var curExpected = 0
-            val args = mutableListOf<Arguments>()
-            for (indx in totalPath.indices) {
-                val thisPath = curPath + totalPath[indx]
-                curPath.add(totalPath[indx])
-                curExpected += expected[indx]
-                args.add(Arguments.of(thisPath, Pair(curExpected,indx)))
-            }
-            return args.stream()
-        }
     }
 
 }

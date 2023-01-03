@@ -14,7 +14,7 @@ class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,S
     val graph = Graph<String>()
     val minPaths = mutableMapOf<Pair<String,String>, Int>()
     var startId = "AA"
-    val numOfFunctioningValves = valveMap.values.count { it.rate > 0 }
+    private val numOfFunctioningValves = valveMap.values.count { it.rate > 0 }
 
     init {
         valveMap.forEach { (k,_) ->
@@ -34,7 +34,7 @@ class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,S
         }
     }
 
-    fun findMaxPressureRelief(maxTime: Int) {
+    fun findMaxPressureRelief1(maxTime: Int): Int {
         var maxPressureRelieved = 0
         val queue: Queue<State> = LinkedList()
         queue.add(State(startId))
@@ -43,47 +43,44 @@ class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,S
             val curState = queue.poll()
             // if all valves open or max time reached just calculate result
             if (curState.openedValves.size == numOfFunctioningValves || curState.elapsedTime >= maxTime) {
-                //...
+                val relievedAtEnd = getRelievedPressureAtEnd(curState, maxTime)
+                maxPressureRelieved = maxOf(maxPressureRelieved, relievedAtEnd)
                 continue
             }
             // find remaining unopened valves
-            val unopened = valveMap.keys.toMutableList()
+            val unopened = valveMap.values.filter { it.rate > 0 }.map{ it.id }.toMutableList()
             unopened.removeAll(curState.openedValves)
+            unopened.remove(startId)
             unopened.forEach { dest ->
-                val cost = minPaths[Pair(curState.curValve, dest)]!!
+                val cost = minPaths[Pair(curState.curValve, dest)] ?: minPaths[Pair(dest, curState.curValve)]!!
                 val newElapsed = curState.elapsedTime + cost
                 if (newElapsed >= maxTime) {
-                    //...
+                    val relievedAtEnd = getRelievedPressureAtEnd(curState, maxTime)
+                    maxPressureRelieved = maxOf(maxPressureRelieved, relievedAtEnd)
                 }
                 else {
-
+                    val totalRate = valveMap.values.filter { curState.openedValves.contains(it.id) }.sumOf { it.rate }
+                    val thisRelieved = totalRate * cost
+                    val nextState = State(dest, curState.openedValves+dest,
+                        curState.elapsedTime+cost, curState.pressureRelieved+thisRelieved)
+                    if (!seenBefore.contains(nextState)) {
+                        queue.add(nextState)
+                        seenBefore.add(nextState)
+                    }
                 }
-
             }
         }
+        return maxPressureRelieved
     }
 
-    fun getCurrentRate() = valveMap.values.filter { it.state == VALVE_STATE_ON }.sumOf { it.rate }
-
-    fun clearValvesState() {
-        valveMap.forEach { (_,v) -> v.state = VALVE_STATE_OFF }
+    fun getRelievedPressureAtEnd(state: State, maxtime: Int): Int {
+        val remainingTime = maxtime - state.elapsedTime
+        val totalRate = valveMap.values.filter { state.openedValves.contains(it.id) }.sumOf { it.rate }
+        return state.pressureRelieved + totalRate * remainingTime
     }
-
-    fun calculateFlowAndTime(path: List<String>): Pair<Int,Int> {
-        var totalFlow = 0
-        var time = 0
-        for (i in 0 until path.lastIndex) {
-            valveMap[path[i]]!!.state = VALVE_STATE_ON
-            totalFlow += getCurrentRate() * 1 // rate per minute
-            ++time
-        }
-        return Pair(totalFlow,time)
-    }
-
-
 }
 
-data class Valve(val id: String, val rate: Int, var state: Int = VALVE_STATE_OFF)
+data class Valve(val id: String, val rate: Int)
 
 data class State(val curValve: String, val openedValves: List<String> = listOf(),
                  val elapsedTime: Int = 0, val pressureRelieved: Int = 0)
