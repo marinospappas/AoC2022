@@ -6,10 +6,7 @@ import mpdev.aoc2022.common.getInput
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.CsvSource
-import org.junit.jupiter.params.provider.MethodSource
-import java.util.stream.Stream
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -21,7 +18,7 @@ class TestDay17 {
     private val filename = "src/test/resources/day17/input.txt"
     private val inputProcessor = InputProcessorDay17()
     private val solution = SolutionProcessorDay17()
-    private lateinit var testInput: InputDay17
+    private lateinit var testInput: Day17
     private lateinit var puzzleProcessor1: PuzzleProcessor<*>
     private lateinit var puzzleProcessor2: PuzzleProcessor<*>
 

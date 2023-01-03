@@ -7,7 +7,7 @@ import java.math.BigInteger
 import kotlin.math.max
 import kotlin.text.StringBuilder
 
-class InputDay17(var movesList: List<Char>) {
+class Day17(var movesList: List<Char>) {
 
     companion object {
         const val PIXEL_FREE = 0
@@ -107,7 +107,7 @@ class InputDay17(var movesList: List<Char>) {
         return true
     }
 
-    fun getNextSidewaysMove(): Char {
+    private fun getNextSidewaysMove(): Char {
         val move = movesList[jetPatternIndex++]
         if (jetPatternIndex >= movesList.size)
             jetPatternIndex = 0
@@ -165,9 +165,4 @@ class Rock(strList: List<String>) {
     }
 }
 
-class GridState(val topRow: String, val nextRock: Int, val jetIndx: Int) {
-    override fun equals(other: Any?) = other is GridState
-            && this.topRow == other.topRow && this.nextRock == other.nextRock && this.jetIndx == other.jetIndx
-    override fun hashCode() = ((17 * 31 + topRow.hashCode()) * 31 + nextRock) * 31 + jetIndx
-    override fun toString() = "state: $topRow, $nextRock, $jetIndx"
-}
+data class GridState(val topRow: String, val nextRock: Int, val jetIndx: Int)
