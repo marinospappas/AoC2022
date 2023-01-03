@@ -40,8 +40,8 @@ class Graph<T>(var getConnections: (id: T) -> List<GraphNode<T>>? = { null } ) {
     override fun toString(): String {
         return StringBuilder().also { s ->
             nodes.keys.forEach { id ->
-                s.append("id: $id, connects to ").also {
-                    getNeighbours(id)?.forEach { n -> s.append("  ${n.getId()}, cost: ${costs[Pair(id, n.getId())]}")
+                s.append("id: $id, connects to:").also {
+                    getNeighbours(id)?.forEach { n -> s.append(" ${n.getId()}, cost: ${costs[Pair(id, n.getId())]}")
                         .append(", heur: ${heuristics[id]}") }
                 }.also { s.append("\n") }
             }

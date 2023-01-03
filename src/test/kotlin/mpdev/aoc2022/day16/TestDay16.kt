@@ -20,7 +20,7 @@ class TestDay16 {
     private val filename = "src/test/resources/day16/input.txt"
     private val inputProcessor = InputProcessorDay16()
     private val solution = SolutionProcessorDay16()
-    private lateinit var testInput: InputDay16
+    private lateinit var testInput: Day16
     private lateinit var puzzleProcessor1: PuzzleProcessor<*>
     private lateinit var puzzleProcessor2: PuzzleProcessor<*>
 
@@ -40,10 +40,17 @@ class TestDay16 {
         assertEquals(10, testInput.valveMap.size)
     }
 
-    @ParameterizedTest
+    @Test
     @Order(3)
+    fun `Test Calc Min Distances`() {
+        testInput.findMinPathCombinations()
+        testInput.minPaths.forEach{(k,v) -> println("valve pair: $k, time to reach dest: $v")}
+    }
+
+    @ParameterizedTest
+    @Order(8)
     @MethodSource("providerOfArgsToCalcFlow")
-    fun `Test Calculate Flow`(path: List<Pair<String,Int>>, expected: Pair<Int,Int>) {
+    fun `Test Calculate Flow`(path: List<String>, expected: Pair<Int,Int>) {
         val flowAndTime = testInput.calculateFlowAndTime(path)
         assertEquals(expected, flowAndTime)
     }
