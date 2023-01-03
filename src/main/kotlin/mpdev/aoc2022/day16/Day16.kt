@@ -39,7 +39,6 @@ class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,S
         var maxPressureRelieved = 0
         val queue: Queue<State> = LinkedList()
         queue.add(State(startId))
-        val seenBefore = mutableSetOf<State>()
         while (queue.isNotEmpty()) {
             val curState = queue.poll()
             ++count
@@ -63,9 +62,10 @@ class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,S
                     val thisRelieved = totalRate * cost
                     val nextState = State(dest, curState.openedValves+dest,
                         curState.elapsedTime+cost, curState.pressureRelieved+thisRelieved)
-                    if (!seenBefore.contains(nextState)) {
+                    // check if this state has the potential to outperform the current max pressure relief
+                    val potentialTotalRelief = getPotentialPressureReliefAtEnd(curState, maxTime)
+                    if (potentialTotalRelief >= maxPressureRelieved) {
                         queue.add(nextState)
-                        seenBefore.add(nextState)
                     }
                 }
             }
@@ -77,6 +77,12 @@ class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,S
     private fun getRelievedPressureAtEnd(state: State, maxtime: Int): Int {
         val remainingTime = maxtime - state.elapsedTime
         val totalRate = valveMap.values.filter { state.openedValves.contains(it.id) }.sumOf { it.rate }
+        return state.pressureRelieved + totalRate * remainingTime
+    }
+
+    private fun getPotentialPressureReliefAtEnd(state: State, maxTime: Int): Int {
+        val remainingTime = maxTime - state.elapsedTime
+        val totalRate = valveMap.values.sumOf { it.rate }
         return state.pressureRelieved + totalRate * remainingTime
     }
 }
