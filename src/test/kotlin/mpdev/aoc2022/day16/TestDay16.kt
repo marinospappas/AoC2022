@@ -5,10 +5,6 @@ import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.MethodSource
-import java.util.stream.Stream
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -43,7 +39,7 @@ class TestDay16 {
     @Test
     @Order(3)
     fun `Test Calc Min Distances`() {
-        testInput.findMinPathCombinations()
+        testInput.calculateMinPathCombinations()
         testInput.minPaths.forEach{(k,v) -> println("valve pair: $k, time to reach dest: $v")}
     }
 

@@ -2,7 +2,6 @@ package mpdev.aoc2022.day16
 
 import mpdev.aoc2022.utils.Dijkstra
 import mpdev.aoc2022.utils.Graph
-import mpdev.aoc2022.utils.GraphNode
 import mpdev.aoc2022.utils.combinations
 import java.util.*
 
@@ -14,6 +13,7 @@ class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,S
     val graph = Graph<String>()
     val minPaths = mutableMapOf<Pair<String,String>, Int>()
     var startId = "AA"
+    private val functioningValves = valveMap.values.filter { it.rate > 0 }.map{ it.id }
     private val numOfFunctioningValves = valveMap.values.count { it.rate > 0 }
 
     init {
@@ -24,7 +24,7 @@ class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,S
     }
 
     /** find minimum path for all combinations of working valves (and the start) */
-    fun findMinPathCombinations() {
+    fun calculateMinPathCombinations() {
         val algo = Dijkstra<String>()
         (listOf(valveMap[startId]) + valveMap.values.filter { it.rate > 0 }).combinations(2).forEach {
             val start = it[0]!!.id
@@ -34,23 +34,23 @@ class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,S
         }
     }
 
-    fun findMaxPressureRelief1(maxTime: Int): Int {
+    fun calculateMaxPressureRelief1(maxTime: Int): Int {
+        var count = 0
         var maxPressureRelieved = 0
         val queue: Queue<State> = LinkedList()
         queue.add(State(startId))
         val seenBefore = mutableSetOf<State>()
         while (queue.isNotEmpty()) {
             val curState = queue.poll()
+            ++count
             // if all valves open or max time reached just calculate result
             if (curState.openedValves.size == numOfFunctioningValves || curState.elapsedTime >= maxTime) {
                 val relievedAtEnd = getRelievedPressureAtEnd(curState, maxTime)
                 maxPressureRelieved = maxOf(maxPressureRelieved, relievedAtEnd)
                 continue
             }
-            // find remaining unopened valves
-            val unopened = valveMap.values.filter { it.rate > 0 }.map{ it.id }.toMutableList()
-            unopened.removeAll(curState.openedValves)
-            unopened.remove(startId)
+            // find remaining unopened valves and try all next states (for each remaining unopened valve)
+            val unopened = listOf(functioningValves).flatten() - curState.openedValves.toSet()
             unopened.forEach { dest ->
                 val cost = minPaths[Pair(curState.curValve, dest)] ?: minPaths[Pair(dest, curState.curValve)]!!
                 val newElapsed = curState.elapsedTime + cost
@@ -70,10 +70,11 @@ class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,S
                 }
             }
         }
+        println("Number of iterations: $count")
         return maxPressureRelieved
     }
 
-    fun getRelievedPressureAtEnd(state: State, maxtime: Int): Int {
+    private fun getRelievedPressureAtEnd(state: State, maxtime: Int): Int {
         val remainingTime = maxtime - state.elapsedTime
         val totalRate = valveMap.values.filter { state.openedValves.contains(it.id) }.sumOf { it.rate }
         return state.pressureRelieved + totalRate * remainingTime
