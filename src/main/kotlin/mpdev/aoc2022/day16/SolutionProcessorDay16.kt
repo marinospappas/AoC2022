@@ -12,7 +12,9 @@ class SolutionProcessorDay16: SolutionProcessor<Day16> {
 
 
     override fun part2(input: Day16): String {
-        return ""
+        input.calculateMinPathCombinations()
+        input.calculateMaxPressureRelief1(26)
+        return input.calculateMaxPressureRelief2().toString()
     }
 
 }

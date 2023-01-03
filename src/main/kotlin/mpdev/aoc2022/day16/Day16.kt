@@ -8,13 +8,15 @@ import java.util.*
 const val VALVE_STATE_OFF = 0
 const val VALVE_STATE_ON = 1
 
-class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,String>>) {
+class Day16(var valveMap: Map<String,Valve>, private val connections: List<Pair<String,String>>) {
 
     val graph = Graph<String>()
     val minPaths = mutableMapOf<Pair<String,String>, Int>()
-    var startId = "AA"
+    private var startId = "AA"
     private val functioningValves = valveMap.values.filter { it.rate > 0 }.map{ it.id }
     private val numOfFunctioningValves = valveMap.values.count { it.rate > 0 }
+    private val relievedPressureForValveCombiMap = mutableMapOf<List<String>,Int>()
+
 
     init {
         valveMap.forEach { (k,_) ->
@@ -34,6 +36,7 @@ class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,S
         }
     }
 
+    /** calculate max pressure relief possible (part 1) and save pressure relief for each opened valve combination (part 2) */
     fun calculateMaxPressureRelief1(maxTime: Int): Int {
         var count = 0
         var maxPressureRelieved = 0
@@ -42,19 +45,28 @@ class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,S
         while (queue.isNotEmpty()) {
             val curState = queue.poll()
             ++count
+            val relievedAtEnd = getRelievedPressureAtEnd(curState, maxTime)
+
+            // save the amount that will be relieved at the end for this opened valve combination
+            // the valve combination is sorted as only the valve ids matter and not the sequence
+            // in the end only the maximum value for a specific set of valves is retained in the map
+            val key = curState.openedValves.sorted()
+            if (relievedPressureForValveCombiMap[key] == null
+                || relievedPressureForValveCombiMap[key]!! < relievedAtEnd)
+               relievedPressureForValveCombiMap[key] = relievedAtEnd
+
             // if all valves open or max time reached just calculate result
             if (curState.openedValves.size == numOfFunctioningValves || curState.elapsedTime >= maxTime) {
-                val relievedAtEnd = getRelievedPressureAtEnd(curState, maxTime)
                 maxPressureRelieved = maxOf(maxPressureRelieved, relievedAtEnd)
                 continue
             }
+
             // find remaining unopened valves and try all next states (for each remaining unopened valve)
-            val unopened = listOf(functioningValves).flatten() - curState.openedValves.toSet()
+            val unopened = functioningValves - curState.openedValves.toSet()
             unopened.forEach { dest ->
                 val cost = minPaths[Pair(curState.curValve, dest)] ?: minPaths[Pair(dest, curState.curValve)]!!
                 val newElapsed = curState.elapsedTime + cost
                 if (newElapsed >= maxTime) {
-                    val relievedAtEnd = getRelievedPressureAtEnd(curState, maxTime)
                     maxPressureRelieved = maxOf(maxPressureRelieved, relievedAtEnd)
                 }
                 else {
@@ -62,27 +74,26 @@ class Day16(var valveMap: Map<String,Valve>, val connections: List<Pair<String,S
                     val thisRelieved = totalRate * cost
                     val nextState = State(dest, curState.openedValves+dest,
                         curState.elapsedTime+cost, curState.pressureRelieved+thisRelieved)
-                    // check if this state has the potential to outperform the current max pressure relief
-                    val potentialTotalRelief = getPotentialPressureReliefAtEnd(curState, maxTime)
-                    if (potentialTotalRelief >= maxPressureRelieved) {
-                        queue.add(nextState)
-                    }
+                    queue.add(nextState)
                 }
             }
         }
         println("Number of iterations: $count")
+        println("Size of relieved pressure map ${relievedPressureForValveCombiMap.size}")
         return maxPressureRelieved
+    }
+
+    fun calculateMaxPressureRelief2(): Int {
+        // the map of pressure relieve figures for each valve combination must have been updated
+        return relievedPressureForValveCombiMap.keys.combinations(2).filter { Collections.disjoint(it[0], it[1]) }
+            .maxOf {
+                relievedPressureForValveCombiMap[it[0]]!! + relievedPressureForValveCombiMap[it[1]]!!
+            }
     }
 
     private fun getRelievedPressureAtEnd(state: State, maxtime: Int): Int {
         val remainingTime = maxtime - state.elapsedTime
         val totalRate = valveMap.values.filter { state.openedValves.contains(it.id) }.sumOf { it.rate }
-        return state.pressureRelieved + totalRate * remainingTime
-    }
-
-    private fun getPotentialPressureReliefAtEnd(state: State, maxTime: Int): Int {
-        val remainingTime = maxTime - state.elapsedTime
-        val totalRate = valveMap.values.sumOf { it.rate }
         return state.pressureRelieved + totalRate * remainingTime
     }
 }
