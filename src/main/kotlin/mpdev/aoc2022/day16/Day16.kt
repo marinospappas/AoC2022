@@ -5,10 +5,7 @@ import mpdev.aoc2022.utils.Graph
 import mpdev.aoc2022.utils.combinations
 import java.util.*
 
-const val VALVE_STATE_OFF = 0
-const val VALVE_STATE_ON = 1
-
-class Day16(var valveMap: Map<String,Valve>, private val connections: List<Pair<String,String>>) {
+class Day16(var valveMap: Map<String,Valve>, connections: List<Pair<String,String>>) {
 
     val graph = Graph<String>()
     val minPaths = mutableMapOf<Pair<String,String>, Int>()
@@ -16,7 +13,6 @@ class Day16(var valveMap: Map<String,Valve>, private val connections: List<Pair<
     private val functioningValves = valveMap.values.filter { it.rate > 0 }.map{ it.id }
     private val numOfFunctioningValves = valveMap.values.count { it.rate > 0 }
     private val relievedPressureForValveCombiMap = mutableMapOf<List<String>,Int>()
-
 
     init {
         valveMap.forEach { (k,_) ->
@@ -36,7 +32,10 @@ class Day16(var valveMap: Map<String,Valve>, private val connections: List<Pair<
         }
     }
 
-    /** calculate max pressure relief possible (part 1) and save pressure relief for each opened valve combination (part 2) */
+    /**
+     * calculate max pressure relief possible (part 1)
+     * and save pressure relief for each opened valve combination (part 2)
+     */
     fun calculateMaxPressureRelief1(maxTime: Int): Int {
         var count = 0
         var maxPressureRelieved = 0
@@ -79,7 +78,6 @@ class Day16(var valveMap: Map<String,Valve>, private val connections: List<Pair<
             }
         }
         println("Number of iterations: $count")
-        println("Size of relieved pressure map ${relievedPressureForValveCombiMap.size}")
         return maxPressureRelieved
     }
 
@@ -91,8 +89,8 @@ class Day16(var valveMap: Map<String,Valve>, private val connections: List<Pair<
             }
     }
 
-    private fun getRelievedPressureAtEnd(state: State, maxtime: Int): Int {
-        val remainingTime = maxtime - state.elapsedTime
+    private fun getRelievedPressureAtEnd(state: State, maxTime: Int): Int {
+        val remainingTime = maxTime - state.elapsedTime
         val totalRate = valveMap.values.filter { state.openedValves.contains(it.id) }.sumOf { it.rate }
         return state.pressureRelieved + totalRate * remainingTime
     }
