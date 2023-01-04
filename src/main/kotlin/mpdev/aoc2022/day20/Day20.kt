@@ -15,7 +15,7 @@ class Day20(var dataList: MutableList<Item>) {
 
     fun shiftList() {
         dataList.indices.forEach { origPos ->
-            val pos = dataList.indexOfFirst { it.position == origPos }
+            val pos = dataList.indexOfFirst { it.originalPosition == origPos }
             val item = dataList.removeAt(pos)
             dataList.add((pos + item.value).mod(dataList.size), item)
         }
@@ -23,9 +23,9 @@ class Day20(var dataList: MutableList<Item>) {
 
     fun shiftedList(): List<Long> {
         val res = mutableListOf<Long>()
-        dataList.sortedBy { it.position }.forEach { res.add(it.value) }
+        dataList.sortedBy { it.originalPosition }.forEach { res.add(it.value) }
         return res
     }
 }
 
-data class Item(var value: Long, var position: Int)
+data class Item(var value: Long, var originalPosition: Int)
