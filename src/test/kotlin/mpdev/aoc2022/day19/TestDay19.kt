@@ -36,13 +36,24 @@ class TestDay19 {
 
     @Test
     @Order(5)
-    fun `Test Calculate Geodes`() {
-        val res1 = testData.calculateGeodes(testData.blueprintList[0], 24)
-        val res2 = testData.calculateGeodes(testData.blueprintList[1], 24)
-        println("blueprint 1: $res1")
-        println("blueprint 2: $res2")
-        assertEquals(9, res1)
-        assertEquals(12, res2)
+    fun `Test Calculate Geodes 1`() {
+        val expected = listOf(-1, 9, 12)
+        testData.blueprintList.forEach { bluePrint ->
+            val res = testData.calculateGeodes(bluePrint, 24)
+            println("blueprint ${bluePrint.id}: $res")
+            assertEquals(expected[bluePrint.id], res)
+        }
+    }
+
+    @Test
+    @Order(6)
+    fun `Test Calculate Geodes 2`() {
+        val expected = listOf(-1, 56, 62)
+        testData.blueprintList.take(3).forEach { bluePrint ->
+            val res = testData.calculateGeodes(bluePrint, 32)
+            println("blueprint ${bluePrint.id}: $res")
+            assertEquals(expected[bluePrint.id], res)
+        }
     }
 
     @Test

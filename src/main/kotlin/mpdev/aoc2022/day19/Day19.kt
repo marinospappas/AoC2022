@@ -56,30 +56,20 @@ data class State(var time: Int, var oreRobots: Int, var clayRobots: Int, var obs
     private fun buildNewState(bluePrint: BluePrint, maxTime: Int,
         incrOreRobots: Int = 0, incrClayRobots: Int = 0, incrObsidianRobots: Int = 0, incrGeodeRobots: Int = 0): State? {
 
-        val requiredTime =
-            when {
-            incrOreRobots == 1 ->
-                if (ore >= bluePrint.oreRobot.oreCost) 1
-                else ceil((bluePrint.oreRobot.oreCost - ore) / oreRobots.toDouble()).toInt() + 1
-            incrClayRobots == 1 ->
-                if (ore >= bluePrint.clayRobot.oreCost) 1
-                else ceil((bluePrint.clayRobot.oreCost - ore) / oreRobots.toDouble()).toInt() + 1
-            incrObsidianRobots == 1 -> {
-                // max of clay req. time and ore req.time
-                maxOf(if (clay >= bluePrint.obsidianRobot.clayCost) 1
-                    else ceil((bluePrint.obsidianRobot.clayCost - clay) / clayRobots.toDouble()).toInt() + 1,
-                    if (ore >= bluePrint.obsidianRobot.oreCost) 1
-                    else ceil((bluePrint.obsidianRobot.oreCost - ore) / oreRobots.toDouble()).toInt() + 1)
-            }
-            incrGeodeRobots == 1 -> {
-                // max of obsidian req. time and ore req.time
-                maxOf(if (obsidian >= bluePrint.geodeRobot.obsidianCost) 1
-                    else ceil((bluePrint.geodeRobot.obsidianCost - obsidian) / obsidianRobots.toDouble()).toInt() + 1,
-                    if (ore >= bluePrint.geodeRobot.oreCost) 1
+        val requiredTime = maxOf(
+                incrOreRobots * (if (ore >= bluePrint.oreRobot.oreCost) 1
+                    else ceil((bluePrint.oreRobot.oreCost - ore) / oreRobots.toDouble()).toInt() + 1),
+                incrClayRobots * (if (ore >= bluePrint.clayRobot.oreCost) 1
+                    else ceil((bluePrint.clayRobot.oreCost - ore) / oreRobots.toDouble()).toInt() + 1),
+                incrObsidianRobots * (if (clay >= bluePrint.obsidianRobot.clayCost) 1
+                    else ceil((bluePrint.obsidianRobot.clayCost - clay) / clayRobots.toDouble()).toInt() + 1),
+                incrObsidianRobots * (if (ore >= bluePrint.obsidianRobot.oreCost) 1
+                    else ceil((bluePrint.obsidianRobot.oreCost - ore) / oreRobots.toDouble()).toInt() + 1),
+                incrGeodeRobots * (if (obsidian >= bluePrint.geodeRobot.obsidianCost) 1
+                    else ceil((bluePrint.geodeRobot.obsidianCost - obsidian) / obsidianRobots.toDouble()).toInt() + 1),
+                incrGeodeRobots * ( if (ore >= bluePrint.geodeRobot.oreCost) 1
                     else ceil((bluePrint.geodeRobot.oreCost - ore) / oreRobots.toDouble()).toInt() + 1)
-            }
-            else -> 1
-        }
+            )
         if (time + requiredTime > maxTime)
             return null
         return State(
@@ -102,10 +92,8 @@ data class State(var time: Int, var oreRobots: Int, var clayRobots: Int, var obs
 
 /*
 Blueprint 1:
-    Each ore robot costs 4 ore.
-    Each clay robot costs 2 ore.
-    Each obsidian robot costs 3 ore and 14 clay.
-    Each geode robot costs 2 ore and 7 obsidian.
+    Each ore robot costs 4 ore. Each clay robot costs 2 ore.
+    Each obsidian robot costs 3 ore and 14 clay. Each geode robot costs 2 ore and 7 obsidian.
  */
 data class BluePrint(val id: Int,
                 val oreRobot: OreRobot,
