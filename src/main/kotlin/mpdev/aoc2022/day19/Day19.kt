@@ -1,8 +1,5 @@
 package mpdev.aoc2022.day19
 
-import java.io.File
-import java.io.PrintWriter
-import java.lang.StringBuilder
 import java.util.PriorityQueue
 import kotlin.math.ceil
 import kotlin.math.max
@@ -56,10 +53,9 @@ data class State(var time: Int, var oreRobots: Int, var clayRobots: Int, var obs
         return nextStates
     }
 
-    private fun buildNewState(
-        bluePrint: BluePrint, maxTime: Int, incrOreRobots: Int = 0, incrClayRobots: Int = 0,
-        incrObsidianRobots: Int = 0, incrGeodeRobots: Int = 0
-    ): State? {
+    private fun buildNewState(bluePrint: BluePrint, maxTime: Int,
+        incrOreRobots: Int = 0, incrClayRobots: Int = 0, incrObsidianRobots: Int = 0, incrGeodeRobots: Int = 0): State? {
+
         val requiredTime =
             when {
             incrOreRobots == 1 ->
@@ -84,15 +80,11 @@ data class State(var time: Int, var oreRobots: Int, var clayRobots: Int, var obs
             }
             else -> 1
         }
-
         if (time + requiredTime > maxTime)
             return null
         return State(
-            time + requiredTime,
-            oreRobots + incrOreRobots,
-            clayRobots + incrClayRobots,
-            obsidianRobots + incrObsidianRobots,
-            geodeRobots + incrGeodeRobots,
+            time + requiredTime, oreRobots + incrOreRobots, clayRobots + incrClayRobots,
+            obsidianRobots + incrObsidianRobots, geodeRobots + incrGeodeRobots,
             ore + requiredTime * oreRobots - incrOreRobots * bluePrint.oreRobot.oreCost - incrClayRobots * bluePrint.clayRobot.oreCost -
                     incrObsidianRobots * bluePrint.obsidianRobot.oreCost - incrGeodeRobots * bluePrint.geodeRobot.oreCost,
             clay + requiredTime * clayRobots - incrObsidianRobots * bluePrint.obsidianRobot.clayCost,
@@ -101,13 +93,11 @@ data class State(var time: Int, var oreRobots: Int, var clayRobots: Int, var obs
         )
     }
 
-    fun canProduceMore(bestSoFar: Int, maxTime: Int): Boolean {
-        // if a state cannot produce more total geodes than the best so far geodes produced already
-        // will not be considered as it cannot beat the previous state
+    fun canProduceMore(bestSoFar: Int, maxTime: Int) =
+        // if a state cannot produce more total geodes than the best number so far produced already
+        // will not be considered as it cannot beat the previous max state
         // maximum theoretical production is when we produce one geode robot per minute
-        val totalGeodes = geodes + (0 until (maxTime-time)).sumOf { it + geodeRobots }
-        return totalGeodes > bestSoFar
-    }
+        geodes + (0 until (maxTime-time)).sumOf { it + geodeRobots } > bestSoFar
 }
 
 /*
@@ -125,11 +115,6 @@ data class BluePrint(val id: Int,
     val maxOreCost: Int = maxOf(oreRobot.oreCost, clayRobot.oreCost, obsidianRobot.oreCost, geodeRobot.oreCost)
     val maxClayCost: Int = obsidianRobot.clayCost
     val maxObsidianCost: Int = geodeRobot.obsidianCost
-
-    override fun toString() = StringBuilder().also { s ->
-        s.append("Blueprint: $id\n").append("\t$oreRobot\n").append("\t$clayRobot\n").append("\t$obsidianRobot\n")
-            .append("\t$geodeRobot\n")
-    }.toString()
 }
 
 data class OreRobot(val oreCost: Int)
