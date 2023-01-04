@@ -21,11 +21,7 @@ class Day20(var dataList: MutableList<Item>) {
         }
     }
 
-    fun shiftedList(): List<Long> {
-        val res = mutableListOf<Long>()
-        dataList.forEach { res.add(it.value) }
-        return res
-    }
+    fun shiftedList() = mutableListOf<Long>().also { l -> dataList.forEach { l.add(it.value) } }
 }
 
 data class Item(var value: Long, var originalPosition: Int)

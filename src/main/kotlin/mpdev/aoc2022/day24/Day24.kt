@@ -5,9 +5,7 @@ import mpdev.aoc2022.utils.GraphNode
 import java.awt.Point
 import java.lang.StringBuilder
 
-class InputDay24(var inputList: List<String>) {
-
-    private val START = Pair(500,0)
+class Day24(var inputList: List<String>) {
 
     companion object {
         lateinit var grid: Array<CharArray>

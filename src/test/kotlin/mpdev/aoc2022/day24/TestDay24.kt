@@ -3,10 +3,8 @@ package mpdev.aoc2022.day24
 import mpdev.aoc2022.common.DaySpecific
 import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
-import mpdev.aoc2022.day24.InputDay24.Companion.end
-import mpdev.aoc2022.day24.InputDay24.Companion.grid
-import mpdev.aoc2022.day24.InputDay24.Companion.overlayGrid
-import mpdev.aoc2022.day24.InputDay24.Companion.start
+import mpdev.aoc2022.day24.Day24.Companion.grid
+import mpdev.aoc2022.day24.Day24.Companion.overlayGrid
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 
@@ -19,7 +17,7 @@ class TestDay24 {
     private val filename = "src/test/resources/day24/input.txt"
     private val inputProcessor = InputProcessorDay24()
     private val solution = SolutionProcessorDay24()
-    private lateinit var testInput: InputDay24
+    private lateinit var testInput: Day24
     private lateinit var puzzleProcessor1: PuzzleProcessor<*>
     private lateinit var puzzleProcessor2: PuzzleProcessor<*>
 
