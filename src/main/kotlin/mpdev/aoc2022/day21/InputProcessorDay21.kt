@@ -2,12 +2,12 @@ package mpdev.aoc2022.day21
 
 import mpdev.aoc2022.common.InputDataException
 import mpdev.aoc2022.common.InputProcessor
-import mpdev.aoc2022.day21.InputDay21.Monkey
+import mpdev.aoc2022.day21.Day21.Monkey
 import mpdev.aoc2022.utils.matchRegExp
 import mpdev.aoc2022.utils.regexMatch
 import java.math.BigInteger
 
-class InputProcessorDay21: InputProcessor<InputDay21>() {
+class InputProcessorDay21: InputProcessor<Day21>() {
 
     /*
     dbpl: 5
@@ -30,10 +30,10 @@ class InputProcessorDay21: InputProcessor<InputDay21>() {
         }
     }
 
-    override fun process(input: List<String>): InputDay21 {
+    override fun process(input: List<String>): Day21 {
         val dataMap = mutableMapOf<String,Monkey>()
         val parent = mutableMapOf<String,Pair<String,Boolean>>()
         input.forEach { processLine(it, dataMap, parent) }
-        return InputDay21(dataMap, parent)
+        return Day21(dataMap, parent)
     }
 }

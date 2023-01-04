@@ -1,6 +1,6 @@
 package mpdev.aoc2022.day25
 
-class InputDay25(var inputList: List<String>) {
+class Day25(var inputList: List<String>) {
 
     companion object {
         val snafuList = mutableListOf<Snafu>()
@@ -27,7 +27,6 @@ class InputDay25(var inputList: List<String>) {
         }
         override fun toString() = value
     }
-
 }
 
 fun Long.toSnafu(): String {

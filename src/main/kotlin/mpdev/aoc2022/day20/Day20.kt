@@ -1,6 +1,6 @@
 package mpdev.aoc2022.day20
 
-class InputDay20(var encrList: MutableList<Item>) {
+class Day20(var encrList: MutableList<Item>) {
 
     val DECR_KEY = 811_589_153
 

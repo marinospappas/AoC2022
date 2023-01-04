@@ -3,15 +3,15 @@ package mpdev.aoc2022.day21
 import mpdev.aoc2022.common.*
 import java.math.BigInteger
 
-class SolutionProcessorDay21: SolutionProcessor<InputDay21> {
+class SolutionProcessorDay21: SolutionProcessor<Day21> {
 
     /** part 1 calculation */
-    override fun part1(input: InputDay21): String {
+    override fun part1(input: Day21): String {
         return input.monkeyMap["root"]!!.getResult().toString()
     }
 
     /** part 2 calculation */
-    override fun part2(input: InputDay21): String {
+    override fun part2(input: Day21): String {
         val left = input.calcSideOfHuman()
         val branchResult: BigInteger
         if (left) {

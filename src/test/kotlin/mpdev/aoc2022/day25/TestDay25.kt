@@ -3,8 +3,8 @@ package mpdev.aoc2022.day25
 import mpdev.aoc2022.common.DaySpecific
 import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.getInput
-import mpdev.aoc2022.day25.InputDay25.Companion.snafuList
-import mpdev.aoc2022.day25.InputDay25.Snafu
+import mpdev.aoc2022.day25.Day25.Companion.snafuList
+import mpdev.aoc2022.day25.Day25.Snafu
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
@@ -19,7 +19,7 @@ class TestDay25 {
     private val filename = "src/test/resources/day25/input.txt"
     private val inputProcessor = InputProcessorDay25()
     private val solution = SolutionProcessorDay25()
-    private lateinit var testInput: InputDay25
+    private lateinit var testInput: Day25
     private lateinit var puzzleProcessor1: PuzzleProcessor<*>
     private lateinit var puzzleProcessor2: PuzzleProcessor<*>
 

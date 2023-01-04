@@ -4,7 +4,7 @@ import java.awt.Point
 import java.lang.StringBuilder
 import mpdev.aoc2022.utils.plus
 
-class InputDay23(var inputList: List<String>) {
+class Day23(var inputList: List<String>) {
 
     private val START = Pair(500,0)
 
@@ -17,9 +17,9 @@ class InputDay23(var inputList: List<String>) {
             listOf(Point(+1,-1), Point(+1,0), Point(+1,+1)),     // NE, E, SE
         )
     }
-    val elvesList = mutableListOf<Elf>()
-    var dimensions: Point
-    var movesIndx = 0
+    private val elvesList = mutableListOf<Elf>()
+    private var dimensions: Point
+    private var movesIndx = 0
 
     init {
         dimensions = Point(inputList.first().length, inputList.size)
@@ -58,7 +58,7 @@ class InputDay23(var inputList: List<String>) {
         grid.toList().sumOf { row -> row.count { it == '.' } } -
                 2*dimensions.x - 2*(dimensions.y-2)
 
-    fun extendGrid() {
+    private fun extendGrid() {
         if (grid.first().count { it == '#' } > 0)
             extendGridUp()
         if (grid.last().count { it == '#' } > 0)
@@ -69,7 +69,7 @@ class InputDay23(var inputList: List<String>) {
             extendGridRight()
     }
 
-    fun extendGridUp() {
+    private fun extendGridUp() {
         val oldGrid = grid
         dimensions = Point(dimensions.x, dimensions.y+1)
         grid = Array(dimensions.y) { CharArray(dimensions.x) }
@@ -80,7 +80,7 @@ class InputDay23(var inputList: List<String>) {
         elvesList.forEach { it.pos = Point(it.pos.x, it.pos.y+1) }
     }
 
-    fun extendGridDown() {
+    private fun extendGridDown() {
         val oldGrid = grid
         dimensions = Point(dimensions.x, dimensions.y+1)
         grid = Array(dimensions.y) { CharArray(dimensions.x) }

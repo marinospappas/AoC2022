@@ -3,7 +3,7 @@ package mpdev.aoc2022.day21
 import mpdev.aoc2022.common.RunTimeException
 import java.math.BigInteger
 
-class InputDay21(val monkeyMap: MutableMap<String,Monkey>, val parent: MutableMap<String,Pair<String,Boolean>>) {
+class Day21(val monkeyMap: MutableMap<String,Monkey>, val parent: MutableMap<String,Pair<String,Boolean>>) {
 
     init {
         // update the calc function for each monkey
