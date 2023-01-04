@@ -36,19 +36,6 @@ class TestDay20 {
     }
 
     @Test
-    @Order(3)
-    fun `Test Shift One Item`() {
-        println("Initial arrangement:")
-        println(testInput.dataList)
-        (0..6).forEach {
-            println("\n${testInput.dataList[it].value} moves")
-            testInput.shiftOneItem(it)
-            println(testInput.shiftedList())
-            println(testInput.dataList)
-        }
-    }
-
-    @Test
     @Order(4)
     fun `Test Shift List`() {
         println("Initial arrangement:")
@@ -61,26 +48,12 @@ class TestDay20 {
     }
 
     @Test
-    @Order(5)
-    fun `Test Shift One Item 2`() {
-        testInput.processDecrKey()
-        println("Initial arrangement:")
-        println(testInput.dataList)
-        (0..6).forEach {
-            println("\n${testInput.dataList[it].value} moves")
-            testInput.shiftOneItem(it)
-            println(testInput.shiftedList())
-            println(testInput.dataList)
-        }
-    }
-
-    @Test
     @Order(6)
     fun `Test Shift List 2`() {
         testInput.processDecrKey()
         println("Initial arrangement:")
         println(testInput.dataList)
-        testInput.shiftList()
+        (1..10).forEach { testInput.shiftList() }
         println("\nresult after shifting the list")
         println(testInput.shiftedList())
         println(testInput.dataList)
