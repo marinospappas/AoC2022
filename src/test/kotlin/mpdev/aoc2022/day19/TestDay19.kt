@@ -37,14 +37,18 @@ class TestDay19 {
     @Test
     @Order(5)
     fun `Test Calculate Geodes`() {
-        println(testData.calculateGeodes(testData.blueprintList[0], testData.maxTime))
+        val res1 = testData.calculateGeodes(testData.blueprintList[0], 24)
+        val res2 = testData.calculateGeodes(testData.blueprintList[1], 24)
+        println("blueprint 1: $res1")
+        println("blueprint 2: $res2")
+        assertEquals(9, res1)
+        assertEquals(12, res2)
     }
-
 
     @Test
     @Order(10)
     fun `Test Calculate Part 1`() {
-        val expected = ""
+        val expected = "33"
         val result = solution.part1(testData)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor1.process())
@@ -53,7 +57,7 @@ class TestDay19 {
     @Test
     @Order(12)
     fun `Test Calculate Part 2`() {
-        val expected = ""
+        val expected = (56*62).toString()
         val result = solution.part2(testData)
         assertEquals(expected, result)
         assertEquals(expected, puzzleProcessor2.process())

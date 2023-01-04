@@ -4,23 +4,10 @@ import java.io.File
 import java.io.PrintWriter
 import java.lang.StringBuilder
 import java.util.PriorityQueue
+import kotlin.math.ceil
 import kotlin.math.max
-import kotlin.math.roundToInt
 
 class Day19(var blueprintList: List<BluePrint>) {
-
-    var maxTime = 24
-    val debug: PrintWriter
-
-    init {
-        debug = File("day19debug.txt").printWriter()
-    }
-
-    fun printQueue(queue: PriorityQueue<State>, geodes: Int, count: Int) {
-        debug.println("Count = $count  Geodes = $geodes")
-        if(queue.isNotEmpty())
-            debug.println(queue.peek())
-    }
 
     fun calculateGeodes(bluePrint: BluePrint, maxTime: Int): Int {
         var geodes = 0
@@ -31,18 +18,10 @@ class Day19(var blueprintList: List<BluePrint>) {
         while (pQueue.isNotEmpty()) {
             ++ count
             val state = pQueue.poll()
-            if (state.canProduceMore(geodes, maxTime)) {
-                val newStates = state.getNextStates(bluePrint, maxTime)
-                if (count < 20000) {
-                    debug.println("\ncount $count")
-                    debug.println("current state $state")
-                    newStates.forEach { debug.println(it) }
-                }
-                pQueue.addAll(newStates)
-            }
+            if (state.canProduceMore(geodes, maxTime))
+                pQueue.addAll(state.getNextStates(bluePrint, maxTime))
             geodes = max(geodes, state.geodes)
         }
-        debug.close()
         return geodes
     }
 }
@@ -57,53 +36,76 @@ data class State(var time: Int, var oreRobots: Int, var clayRobots: Int, var obs
         if (time >= maxTime)
             return mutableListOf()
         val nextStates = mutableListOf<State>()
-        if (oreRobots in 1 until bluePrint.maxOreCost)
-            nextStates.add(buildNewState(bluePrint, maxTime, incrOreRobots = 1))
-        if (clayRobots < bluePrint.maxClayCost && oreRobots > 0)
-            nextStates.add(buildNewState(bluePrint, maxTime, incrClayRobots = 1))
-        if (obsidianRobots < bluePrint.maxObsidianCost && oreRobots > 0 && clayRobots > 0)
-            nextStates.add(buildNewState(bluePrint, maxTime, incrObsidianRobots = 1))
-        if (oreRobots > 0 && obsidianRobots > 0)
-            nextStates.add(buildNewState(bluePrint, maxTime, incrGeodeRobots = 1))
+        var newState: State?
+        if (bluePrint.maxOreCost > oreRobots && ore > 0) {
+            if (buildNewState(bluePrint, maxTime, incrOreRobots = 1).also { newState = it } != null)
+                nextStates.add(newState!!)
+        }
+        if (bluePrint.maxClayCost > clayRobots && ore > 0) {
+            if (buildNewState(bluePrint, maxTime, incrClayRobots = 1).also { newState = it } != null)
+                nextStates.add(newState!!)
+        }
+        if (bluePrint.maxObsidianCost > obsidianRobots && ore > 0 && clay > 0) {
+            if (buildNewState(bluePrint, maxTime, incrObsidianRobots = 1).also { newState = it } != null)
+                nextStates.add(newState!!)
+        }
+        if (ore > 0 && obsidian > 0) {
+            if (buildNewState(bluePrint, maxTime, incrGeodeRobots = 1).also { newState = it } != null)
+                nextStates.add(newState!!)
+        }
         return nextStates
     }
 
-    private fun buildNewState(bluePrint: BluePrint, maxTime: Int, incrOreRobots: Int = 0, incrClayRobots: Int = 0,
-                              incrObsidianRobots: Int = 0, incrGeodeRobots: Int = 0): State {
-        val requiredTime = when {
-            incrOreRobots == 1 -> if (ore >= bluePrint.oreRobot.oreCost) 1
-                else ((bluePrint.oreRobot.oreCost - ore) / oreRobots.toDouble()).roundToInt()
-            incrClayRobots == 1 -> if (ore >= bluePrint.clayRobot.oreCost) 1
-                else ((bluePrint.clayRobot.oreCost - ore) / oreRobots.toDouble()).roundToInt()
-            incrObsidianRobots == 1 -> if (clay >= bluePrint.obsidianRobot.clayCost) 1
-                else ((bluePrint.obsidianRobot.clayCost - clay) / clayRobots.toDouble()).roundToInt()
-            incrGeodeRobots == 1 -> if (obsidian >= bluePrint.geodeRobot.obsidianCost) 1
-                else ((bluePrint.geodeRobot.obsidianCost - obsidian) / obsidianRobots.toDouble()).roundToInt()
+    private fun buildNewState(
+        bluePrint: BluePrint, maxTime: Int, incrOreRobots: Int = 0, incrClayRobots: Int = 0,
+        incrObsidianRobots: Int = 0, incrGeodeRobots: Int = 0
+    ): State? {
+        val requiredTime =
+            when {
+            incrOreRobots == 1 ->
+                if (ore >= bluePrint.oreRobot.oreCost) 1
+                else ceil((bluePrint.oreRobot.oreCost - ore) / oreRobots.toDouble()).toInt() + 1
+            incrClayRobots == 1 ->
+                if (ore >= bluePrint.clayRobot.oreCost) 1
+                else ceil((bluePrint.clayRobot.oreCost - ore) / oreRobots.toDouble()).toInt() + 1
+            incrObsidianRobots == 1 -> {
+                // max of clay req. time and ore req.time
+                maxOf(if (clay >= bluePrint.obsidianRobot.clayCost) 1
+                    else ceil((bluePrint.obsidianRobot.clayCost - clay) / clayRobots.toDouble()).toInt() + 1,
+                    if (ore >= bluePrint.obsidianRobot.oreCost) 1
+                    else ceil((bluePrint.obsidianRobot.oreCost - ore) / oreRobots.toDouble()).toInt() + 1)
+            }
+            incrGeodeRobots == 1 -> {
+                // max of obsidian req. time and ore req.time
+                maxOf(if (obsidian >= bluePrint.geodeRobot.obsidianCost) 1
+                    else ceil((bluePrint.geodeRobot.obsidianCost - obsidian) / obsidianRobots.toDouble()).toInt() + 1,
+                    if (ore >= bluePrint.geodeRobot.oreCost) 1
+                    else ceil((bluePrint.geodeRobot.oreCost - ore) / oreRobots.toDouble()).toInt() + 1)
+            }
             else -> 1
         }
-        if (time+requiredTime > maxTime) {
-            val newState = State(maxTime, oreRobots, clayRobots, obsidianRobots, geodeRobots)
-            newState.ore = ore + (maxTime-time) * oreRobots - incrOreRobots * bluePrint.oreRobot.oreCost
-            newState.clay = clay + (maxTime-time) * clayRobots
-            newState.obsidian = obsidian + (maxTime-time) * obsidianRobots
-            newState.geodes = geodes + (maxTime-time) * geodeRobots
-            return newState
-        }
-        val newState = State(time+requiredTime, oreRobots+incrOreRobots, clayRobots+incrClayRobots,
-            obsidianRobots+incrObsidianRobots, geodeRobots+incrGeodeRobots)
-        newState.ore = ore + requiredTime * oreRobots - incrOreRobots * bluePrint.oreRobot.oreCost - incrClayRobots * bluePrint.clayRobot.oreCost -
-                incrObsidianRobots * bluePrint.obsidianRobot.oreCost - incrGeodeRobots * bluePrint.geodeRobot.oreCost
-        newState.clay = clay + requiredTime * clayRobots - incrObsidianRobots * bluePrint.obsidianRobot.clayCost
-        newState.obsidian = obsidian + requiredTime * obsidianRobots - incrGeodeRobots * bluePrint.geodeRobot.obsidianCost
-        newState.geodes = geodes + requiredTime * geodeRobots
-        return newState
+
+        if (time + requiredTime > maxTime)
+            return null
+        return State(
+            time + requiredTime,
+            oreRobots + incrOreRobots,
+            clayRobots + incrClayRobots,
+            obsidianRobots + incrObsidianRobots,
+            geodeRobots + incrGeodeRobots,
+            ore + requiredTime * oreRobots - incrOreRobots * bluePrint.oreRobot.oreCost - incrClayRobots * bluePrint.clayRobot.oreCost -
+                    incrObsidianRobots * bluePrint.obsidianRobot.oreCost - incrGeodeRobots * bluePrint.geodeRobot.oreCost,
+            clay + requiredTime * clayRobots - incrObsidianRobots * bluePrint.obsidianRobot.clayCost,
+            obsidian + requiredTime * obsidianRobots - incrGeodeRobots * bluePrint.geodeRobot.obsidianCost,
+            geodes + requiredTime * geodeRobots
+        )
     }
 
     fun canProduceMore(bestSoFar: Int, maxTime: Int): Boolean {
         // if a state cannot produce more total geodes than the best so far geodes produced already
         // will not be considered as it cannot beat the previous state
         // maximum theoretical production is when we produce one geode robot per minute
-        val totalGeodes = geodes + (maxTime-time)*geodes + (maxTime-time)*(maxTime-time-1)
+        val totalGeodes = geodes + (0 until (maxTime-time)).sumOf { it + geodeRobots }
         return totalGeodes > bestSoFar
     }
 }
