@@ -44,7 +44,7 @@ class TestDay20 {
         println("\nresult after shifting the list")
         println(testInput.shiftedList())
         println(testInput.dataList)
-        assertEquals(listOf(1L, 2, -3, 4, 0, 3, -2), testInput.shiftedList())
+        assertEquals(listOf(-2L, 1L, 2, -3, 4, 0, 3), testInput.shiftedList())
     }
 
     @Test

@@ -23,7 +23,7 @@ class Day20(var dataList: MutableList<Item>) {
 
     fun shiftedList(): List<Long> {
         val res = mutableListOf<Long>()
-        dataList.sortedBy { it.originalPosition }.forEach { res.add(it.value) }
+        dataList.forEach { res.add(it.value) }
         return res
     }
 }

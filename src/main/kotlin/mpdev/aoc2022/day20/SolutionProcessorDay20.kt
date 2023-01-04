@@ -7,6 +7,7 @@ class SolutionProcessorDay20: SolutionProcessor<Day20> {
     /** part 1 calculation */
     override fun part1(input: Day20): String {
         input.shiftList()
+        println(input.shiftedList())
         return input.getCoordinatesSum().toString()
     }
 
@@ -14,6 +15,7 @@ class SolutionProcessorDay20: SolutionProcessor<Day20> {
     override fun part2(input: Day20): String {
         input.processDecrKey()
         (1..10).forEach { _ -> input.shiftList() }
+        println(input.shiftedList())
         return input.getCoordinatesSum().toString()
     }
 
