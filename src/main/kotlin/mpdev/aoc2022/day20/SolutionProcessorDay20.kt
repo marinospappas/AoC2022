@@ -7,15 +7,15 @@ class SolutionProcessorDay20: SolutionProcessor<Day20> {
     /** part 1 calculation */
     override fun part1(input: Day20): String {
         input.shiftList()
-        input.encrList.sortedBy { it.position }.forEach { println("pos:${it.position}: ${it.value}") }
+        input.dataList.sortedBy { it.position }.forEach { println("pos:${it.position}: ${it.value}") }
         return input.getCoordinatesSum().toString()
     }
 
     /** part 2 calculation */
     override fun part2(input: Day20): String {
-        input.shiftList()
         input.processDecrKey()
-        input.encrList.sortedBy { it.position }.forEach { println("pos:${it.position}: ${it.value}") }
+        (1..10).forEach { input.shiftList() }
+        input.dataList.sortedBy { it.position }.forEach { println("pos:${it.position}: ${it.value}") }
         return input.getCoordinatesSum().toString()
     }
 
