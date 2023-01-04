@@ -14,8 +14,8 @@ class Day24(var inputList: List<String>) {
         lateinit var start: Point
         lateinit var end: Point
     }
-    val blizardList = mutableListOf<Blizard>()
-    val blizardStates = mutableListOf<MutableList<Blizard>>()
+    val blizzardList = mutableListOf<Blizzard>()
+    val blizzardStates = mutableListOf<MutableList<Blizzard>>()
 
     var graphData = Graph<NodeId> { id -> getConnectedNodes(id) }
     var startId: NodeId
@@ -26,13 +26,14 @@ class Day24(var inputList: List<String>) {
         grid =  Array(dimensions.y) { inputList[it].toCharArray() }
         grid.indices.forEach { y -> grid[y].indices.forEach { x ->   // keep blizzards in a separate list
                 if ("^>v<".contains(grid[y][x])) {
-                    blizardList.add(Blizard(Point(x,y), grid[y][x]))
+                    blizzardList.add(Blizzard(Point(x,y), grid[y][x]))
                     grid[y][x] = '.'
                 }
             }
         }
         start = Point(grid.first().indexOfFirst { it == '.' }, 0)
         end = Point(grid.last().indexOfFirst { it == '.' }, dimensions.y-1)
+        // preprocess blizzarda for the next n minutes
         processBlizards(10000)
         // add start and end nodes to the graph
         startId = NodeId(start, 0)
@@ -41,7 +42,7 @@ class Day24(var inputList: List<String>) {
         graphData.addNode(endId)
     }
 
-    // connected nodes are calculated dynamically
+    // connected nodes are calculated dynamically - called by the Dijkstra algorithm for each node that it considers
     fun getConnectedNodes(nodeId: NodeId): List<GraphNode<NodeId>> {
         val nodes = mutableListOf<GraphNode<NodeId>>()
         overlay(nodeId.blizIndx+1)
@@ -65,24 +66,24 @@ class Day24(var inputList: List<String>) {
 
     fun overlay(blizIndx: Int) {
         overlayGrid = Array(dimensions.y) { y-> CharArray(dimensions.x) { x-> grid[y][x] } }
-        blizardStates[blizIndx].forEach {
+        blizzardStates[blizIndx].forEach {
             overlayGrid[it.pos.y][it.pos.x] = if (overlayGrid[it.pos.y][it.pos.x] == '.') it.direction else '2'
         }
     }
 
     private fun processBlizards(repeat: Int) {
-        blizardStates.add(blizardList)
-        (1 until repeat).forEach {
-            val newState = mutableListOf<Blizard>()
-            blizardStates.last().forEach {
-                newState.add(Blizard(Point(it.pos.x,it.pos.y), it.direction))
+        blizzardStates.add(blizzardList)
+        (1 until repeat).forEach { _ ->
+            val newState = mutableListOf<Blizzard>()
+            blizzardStates.last().forEach {
+                newState.add(Blizzard(Point(it.pos.x,it.pos.y), it.direction))
                 newState.last().moveToNewPos()
             }
-            blizardStates.add(newState)
+            blizzardStates.add(newState)
         }
     }
 
-    class Blizard(var pos: Point, val direction: Char) {
+    data class Blizzard(var pos: Point, val direction: Char) {
         fun moveToNewPos() {
             when (direction) {
                 '>' -> pos = Point(if (pos.x+1 == dimensions.x-1) 1 else pos.x + 1, pos.y)
@@ -91,23 +92,10 @@ class Day24(var inputList: List<String>) {
                 '^' -> pos = Point(pos.x, if (pos.y-1 == 0) dimensions.y - 2 else pos.y - 1 )
             }
         }
-        override fun toString() = "${pos.x}, ${pos.y} $direction"
     }
 }
 
-class NodeId(val pos: Point, val blizIndx: Int) {
-    override fun equals(other: Any?): Boolean {
-        return other is NodeId && this.pos.x == other.pos.x && this.pos.y == other.pos.y && this.blizIndx == other.blizIndx
-    }
-    override fun hashCode(): Int {
-        var hash = 17
-        hash = hash * 31 + pos.hashCode()
-        hash = hash * 31 + blizIndx
-        return hash
-    }
-    override fun toString() = "${pos.x},${pos.y} $blizIndx"
-}
-
+data class NodeId(val pos: Point, val blizIndx: Int)
 
 fun Array<CharArray>.gridToString(): String {
     val s = StringBuilder()

@@ -33,7 +33,8 @@ class TestDay24 {
     @Order(1)
     fun `Test Get Input`() {
         println(grid.gridToString())
-        assertEquals(7, grid.size)
+        testInput.blizzardList.forEach { println(it) }
+        assertEquals(6, grid.size)
     }
 
     @Test
@@ -50,7 +51,7 @@ class TestDay24 {
         )
         testInput = inputProcessor.process(inputLines)
         println(grid.gridToString())
-        println(testInput.blizardList)
+        println(testInput.blizzardList)
         (0..5).forEach {
             println("$it.")
             testInput.overlay(it)
