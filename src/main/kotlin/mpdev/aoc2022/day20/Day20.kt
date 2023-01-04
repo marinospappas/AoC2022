@@ -28,6 +28,4 @@ class Day20(var dataList: MutableList<Item>) {
     }
 }
 
-data class Item(var value: Long, var position: Int) {
-    //override fun toString() = "$value"
-}
+data class Item(var value: Long, var position: Int)
