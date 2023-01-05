@@ -1,9 +1,14 @@
 package mpdev.aoc2022.day24
 
+import mpdev.aoc2022.common.RunTimeException
 import mpdev.aoc2022.utils.Graph
 import mpdev.aoc2022.utils.GraphNode
+import mpdev.aoc2022.utils.plus
 import java.awt.Point
 import java.lang.StringBuilder
+import java.util.*
+import kotlin.NoSuchElementException
+import kotlin.math.abs
 
 class Day24(var inputList: List<String>) {
 
@@ -15,11 +20,10 @@ class Day24(var inputList: List<String>) {
         lateinit var end: Point
     }
     val blizzardList = mutableListOf<Blizzard>()
-    val blizzardStates = mutableListOf<MutableList<Blizzard>>()
-
-    var graphData = Graph<NodeId> { id -> getConnectedNodes(id) }
+    private val blizzardStates = mutableListOf<List<Blizzard>>()
     var startId: NodeId
     var endId: NodeId
+    var iterCount = 0
 
     init {
         dimensions = Point(inputList.first().length, inputList.size)
@@ -34,33 +38,50 @@ class Day24(var inputList: List<String>) {
         start = Point(grid.first().indexOfFirst { it == '.' }, 0)
         end = Point(grid.last().indexOfFirst { it == '.' }, dimensions.y-1)
         // preprocess blizzarda for the next n minutes
-        processBlizards(10000)
-        // add start and end nodes to the graph
+        processBlizzards(1000)
         startId = NodeId(start, 0)
         endId = NodeId(end, Int.MIN_VALUE)
-        graphData.addNode(startId)
-        graphData.addNode(endId)
     }
 
-    // connected nodes are calculated dynamically - called by the Dijkstra algorithm for each node that it considers
-    fun getConnectedNodes(nodeId: NodeId): List<GraphNode<NodeId>> {
-        val nodes = mutableListOf<GraphNode<NodeId>>()
-        overlay(nodeId.blizIndx+1)
-        val listOfCoords = mutableListOf(Point(nodeId.pos.x-1,nodeId.pos.y), Point(nodeId.pos.x+1, nodeId.pos.y))
-        if (nodeId.pos.y > 0)
-            listOfCoords.add(Point(nodeId.pos.x, nodeId.pos.y-1))
-        if (nodeId.pos.y < dimensions.y-1)
-            listOfCoords.add(Point(nodeId.pos.x, nodeId.pos.y+1))
-        listOfCoords.forEach {
-            if (it != startId.pos && overlayGrid[it.y][it.x] == '.')
-                if (Point(it.x, it.y) == endId.pos)
-                    nodes.add(GraphNode(NodeId(Point(it.x, it.y), Int.MIN_VALUE)) { id -> getConnectedNodes(id) })
-                else
-                    nodes.add(GraphNode(NodeId(Point(it.x, it.y), nodeId.blizIndx + 1)) { id -> getConnectedNodes(id) })
+    fun findPath(start: NodeId, end: NodeId): Int {
+        iterCount = 0
+        val queue = PriorityQueue(compareBy(NodeId::blizIndx))
+        val seen = mutableSetOf(start)
+        queue.add(start)
+        while (!queue.isEmpty()) {
+            ++iterCount
+            val current = queue.poll()
+            //if (current.pos == end.pos)
+            //    return current.blizIndx
+            getConnectedNodes(current, end).forEach {
+                if (it.pos == end.pos)
+                    return current.blizIndx+1
+                if (seen.add(it))
+                    queue.add(it)
+            }
+        }
+        throw RunTimeException("could not find path from $start to $end")
+    }
+
+    // connected nodes are calculated dynamically depending on the state of the blizzards
+    private fun getConnectedNodes(nodeId: NodeId, endId: NodeId): List<NodeId> {
+        val nodes = mutableListOf<NodeId>()
+        listOf(Point(-1,0), Point(+1,0), Point(0,-1), Point(0,+1)).forEach { point ->
+            val neighbour = nodeId.pos + point
+            if (neighbour == endId.pos)
+                return listOf(endId)
+            if (neighbour == startId.pos
+                || (neighbour.x > 0 && neighbour.x < grid[0].lastIndex
+                        && neighbour.y > 0 && neighbour.y < grid.lastIndex
+                        && blizzardStates[nodeId.blizIndx+1].none { it.pos == neighbour }))
+                nodes.add(NodeId(neighbour, nodeId.blizIndx+1))
         }
         // add the node itself as its own neighbour (= don't move)
         if (nodes.isEmpty())
-            nodes.add(GraphNode(NodeId(nodeId.pos, nodeId.blizIndx+1)) { id -> getConnectedNodes(id) } )
+            nodes.add(NodeId(nodeId.pos, nodeId.blizIndx+1))
+        print("neighbours for nodeId (${nodeId.pos.x},${nodeId.pos.y}) time ${nodeId.blizIndx} are ")
+        nodes.forEach { print("(${it.pos.x},${it.pos.y}) ") }
+        println()
         return nodes
     }
 
@@ -71,7 +92,7 @@ class Day24(var inputList: List<String>) {
         }
     }
 
-    private fun processBlizards(repeat: Int) {
+    private fun processBlizzards(repeat: Int) {
         blizzardStates.add(blizzardList)
         (1 until repeat).forEach { _ ->
             val newState = mutableListOf<Blizzard>()

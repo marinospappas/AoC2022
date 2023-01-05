@@ -1,6 +1,5 @@
 package mpdev.aoc2022.common
 
-import mpdev.aoc2022.utils.annimation.AnimationObject
 import kotlin.system.measureTimeMillis
 
 fun main(args: Array<String>) {

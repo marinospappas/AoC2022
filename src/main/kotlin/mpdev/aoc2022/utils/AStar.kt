@@ -6,7 +6,7 @@ import java.util.*
  * A* implementation
  * T is the type of the Node ID in the Graph
  */
-class AStar<T>(var costMap: Map<Pair<T,T>,Int>, var heuristicMap: Map<T,Int>) {
+class AStar<T>(private var costMap: Map<Pair<T,T>,Int>? = null, private var heuristicMap: Map<T,Int>) {
 
     class PathNode<T>(
         val node: Vertex<T>?,
@@ -25,9 +25,9 @@ class AStar<T>(var costMap: Map<Pair<T,T>,Int>, var heuristicMap: Map<T,Int>) {
 
     class AStarException(override var message: String): Exception()
 
-    fun getCost(from: T, to: T): Int {
-        return costMap[Pair(from, to)] ?: throw AStarException("cost from $from to $to not defined")
-    }
+    private fun getCost(from: T, to: T) =
+        if (costMap == null) 1      // default cost is 1 for all moves if no cost map given
+        else costMap!![Pair(from, to)] ?: throw AStarException("cost from $from to $to not defined")
 
     fun getHeuristic(id: T): Int {
         return heuristicMap[id] ?: throw AStarException("heuristic for $id not defined")

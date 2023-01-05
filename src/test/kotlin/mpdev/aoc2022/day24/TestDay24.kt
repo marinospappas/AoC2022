@@ -59,6 +59,21 @@ class TestDay24 {
         }
     }
 
+
+    @Test
+    @Order(7)
+    fun `Test Find Path`() {
+        val expected = 18
+        val result = testInput.findPath(testInput.startId, testInput.endId)
+        println("Start")
+        testInput.overlay(0)
+        println(overlayGrid.gridToString())
+        println("Finish")
+        testInput.overlay(18)
+        println(overlayGrid.gridToString())
+        assertEquals(expected, result)
+    }
+
     @Test
     @Order(10)
     fun `Test Calculate Part 1`() {

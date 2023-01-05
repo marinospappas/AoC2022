@@ -12,58 +12,28 @@ class SolutionProcessorDay24: SolutionProcessor<Day24> {
 
     /** part 1 calculation */
     override fun part1(puzzle: Day24): String {
-        val minPath = Dijkstra<NodeId>()
-        val res = minPath.runIt(puzzle.graphData[puzzle.startId], puzzle.graphData[puzzle.endId])
-        println("number of iterations: ${res.numberOfIterations}")
-        println(res.path)
-        return (res.path[res.path.lastIndex-1].blizIndx + 1).toString()
+        val res = puzzle.findPath(puzzle.startId, puzzle.endId)
+        println("number of iterations: ${puzzle.iterCount}")
+        return res.toString()
     }
 
     /** part 2 calculation */
     override fun part2(puzzle: Day24): String {
         println("start = ${puzzle.startId} end = ${puzzle.endId}")
-        puzzle.overlay(0)
-        println(overlayGrid.gridToString())
-        println("****")
-
-        val minPath = Dijkstra<NodeId>()
-        var res = minPath.runIt(puzzle.graphData[puzzle.startId], puzzle.graphData[puzzle.endId])
-        println("number of iterations 1: ${res.numberOfIterations}")
-        val path1 = res.path[res.path.lastIndex - 1].blizIndx + 1
-        println(res.path)
-        puzzle.overlay(path1)
-        println(overlayGrid.gridToString())
-        println("path1 $path1")
-
-        puzzle.startId = NodeId(Point(end.x, end.y), path1)
-        puzzle.endId = NodeId(Point(start.x, start.y), Int.MIN_VALUE)
-        puzzle.graphData = Graph<NodeId> { id -> puzzle.getConnectedNodes(id) }
-        puzzle.graphData.addNode(puzzle.startId)
-        puzzle.graphData.addNode(puzzle.endId)
-        println("start = ${puzzle.startId} end = ${puzzle.endId}")
-        res = minPath.runIt(puzzle.graphData[puzzle.startId], puzzle.graphData[puzzle.endId])
-        println("number of iterations 1: ${res.numberOfIterations}")
-        val path2 = res.path[res.path.lastIndex - 1].blizIndx + 1 - res.path[0].blizIndx
-        println(res.path)
-        puzzle.overlay(path1 + path2)
-        println(overlayGrid.gridToString())
-        println("path2 $path2")
-
-        puzzle.startId = NodeId(Point(start.x, start.y), path1 + path2)
-        puzzle.endId = NodeId(Point(end.x, end.y), Int.MIN_VALUE)
-        puzzle.graphData = Graph<NodeId> { id -> puzzle.getConnectedNodes(id) }
-        puzzle.graphData.addNode(puzzle.startId)
-        puzzle.graphData.addNode(puzzle.endId)
-        println("start = ${puzzle.startId} end = ${puzzle.endId}")
-        res = minPath.runIt(puzzle.graphData[puzzle.startId], puzzle.graphData[puzzle.endId])
-        println("number of iterations 1: ${res.numberOfIterations}")
-        val path3 = res.path[res.path.lastIndex - 1].blizIndx + 1 - res.path[0].blizIndx
-        println("path3 $path3")
-        println(res.path)
-        puzzle.overlay(path1 + path2 + path3)
-        println(overlayGrid.gridToString())
-
-        return (path1 + path2 + path3).toString()
+        val res1 = puzzle.findPath(puzzle.startId, puzzle.endId)
+        println("number of iterations: ${puzzle.iterCount}")
+        println("res1 $res1")
+        val start1 = NodeId(puzzle.endId.pos, res1)
+        val end1 = NodeId(puzzle.startId.pos, Int.MIN_VALUE)
+        val res2 = puzzle.findPath(start1, end1)
+        println("number of iterations: ${puzzle.iterCount}")
+        println("res2 $res2")
+        val start2 = NodeId(puzzle.startId.pos, res2)
+        val end2 = NodeId(puzzle.endId.pos, Int.MIN_VALUE)
+        val res3 = puzzle.findPath(start2, end2)
+        println("number of iterations: ${puzzle.iterCount}")
+        println("res3 $res3")
+        return res3.toString()
     }
 
 }
