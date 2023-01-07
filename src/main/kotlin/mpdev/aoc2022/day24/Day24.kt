@@ -6,8 +6,6 @@ import mpdev.aoc2022.utils.plus
 import java.awt.Point
 import java.lang.StringBuilder
 import java.util.*
-import kotlin.system.measureTimeMillis
-
 
 class Day24(var inputList: List<String>) {
 
@@ -20,8 +18,8 @@ class Day24(var inputList: List<String>) {
     }
     val blizzardList = mutableListOf<Blizzard>()
     private val blizzardStates = mutableListOf<List<Blizzard>>()
-    var startId: NodeId
-    var endId: NodeId
+    // keep only the coords of the blizzards on each minute for efficiency
+    private val blizzardListsOfPoints = mutableListOf<List<Point>>()
     var iterCount = 0
 
     init {
@@ -38,8 +36,6 @@ class Day24(var inputList: List<String>) {
         end = Point(grid.last().indexOfFirst { it == '.' }, dimensions.y-1)
         // preprocess blizzards for the next n minutes
         processBlizzards(1000)
-        startId = NodeId(start, 0)
-        endId = NodeId(end, Int.MIN_VALUE)
     }
 
     fun findPath(start: NodeId, end: NodeId): Int {
@@ -62,18 +58,21 @@ class Day24(var inputList: List<String>) {
 
     // connected nodes are calculated dynamically depending on the state of the blizzards
     private fun getFreeConnectedNodes(nodeId: NodeId, startId: NodeId, endId: NodeId): List<NodeId> {
-        val nodes = mutableListOf<NodeId>()
+        // list of neighbour points - also possible to stay in the same position if no blizzard in the next minute
+        val connectedNodes = mutableListOf<NodeId>()
         listOf(Point(0,0), Point(-1,0), Point(+1,0), Point(0,-1), Point(0,+1)).forEach { point ->
             val neighbour = nodeId.pos + point
             if (neighbour == endId.pos)
                 return listOf(NodeId(endId.pos, nodeId.blizIndx + 1))
             if (neighbour == startId.pos
                 || (neighbour.x > 0 && neighbour.x < grid[0].lastIndex
-                && neighbour.y > 0 && neighbour.y < grid.lastIndex
-                && blizzardStates[nodeId.blizIndx+1].none { it.pos == neighbour }))
-                    nodes.add(NodeId(neighbour, nodeId.blizIndx+1))
+                && neighbour.y > 0 && neighbour.y < grid.lastIndex))
+                    connectedNodes.add(NodeId(neighbour, nodeId.blizIndx+1))
         }
-        return nodes
+        return connectedNodes.filterNot { blizzardListsOfPoints[nodeId.blizIndx+1].contains(it.pos) }
+        // Improvement: instead of checking against the list of blizzard points which is costly
+        // calculate the positions of the blizzards for each given minute by using the pattern:
+        //     the blizzards repeat every "least common multiple" of rows-2, columns-2 minutes
     }
 
     fun overlay(blizIndx: Int) {
@@ -81,6 +80,7 @@ class Day24(var inputList: List<String>) {
         blizzardStates[blizIndx].forEach {
             overlayGrid[it.pos.y][it.pos.x] = if (overlayGrid[it.pos.y][it.pos.x] == '.') it.direction else '2'
         }
+
     }
 
     private fun processBlizzards(repeat: Int) {
@@ -93,6 +93,7 @@ class Day24(var inputList: List<String>) {
             }
             blizzardStates.add(newState)
         }
+        blizzardStates.forEach { blizzards -> blizzardListsOfPoints.add(blizzards.map { it.pos }) }
     }
 
     data class Blizzard(var pos: Point, val direction: Char) {
@@ -105,11 +106,10 @@ class Day24(var inputList: List<String>) {
             }
         }
     }
+
+    data class NodeId(val pos: Point, val blizIndx: Int)
+    data class NodeWithCost(val nodeId: NodeId, val cost: Int)
 }
-
-data class NodeId(val pos: Point, val blizIndx: Int)
-
-data class NodeWithCost(val nodeId: NodeId, val cost: Int)
 
 fun Array<CharArray>.gridToString(): String {
     val s = StringBuilder()
