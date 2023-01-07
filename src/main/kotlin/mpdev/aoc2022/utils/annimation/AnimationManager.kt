@@ -1,6 +1,7 @@
 package mpdev.aoc2022.utils.annimation
 
 import java.awt.Color
+import java.awt.Font
 import java.awt.Graphics
 import java.awt.Graphics2D
 import java.time.LocalTime
@@ -36,6 +37,7 @@ class AnimationManager(private val animationPanel: AnimationPanel, animationObje
         if (animationObject.waitForEnter) {
             val text = "Press ENTER to start"
             graphics2D.color = Color.WHITE
+            graphics2D.font = Font(graphics2D.font.name, Font.PLAIN, animationObject.tileSize/2)
             graphics2D.drawChars(text.toCharArray(), 0, text.length,
                 animationObject.tileSize, animationObject.rows/2 * animationObject.tileSize)
             return
@@ -101,6 +103,4 @@ class AnimationManager(private val animationPanel: AnimationPanel, animationObje
         if (animationObject.debug) println("${LocalTime.now()} animation Manager : draw called repaint")
         animationPanel.repaint()
     }
-
 }
-
