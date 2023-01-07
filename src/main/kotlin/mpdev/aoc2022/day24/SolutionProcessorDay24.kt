@@ -19,7 +19,6 @@ class SolutionProcessorDay24: SolutionProcessor<Day24> {
 
     /** part 2 calculation */
     override fun part2(puzzle: Day24): String {
-        println("start = ${puzzle.startId} end = ${puzzle.endId}")
         val res1 = puzzle.findPath(puzzle.startId, puzzle.endId)
         println("number of iterations: ${puzzle.iterCount}")
         println("res1 $res1")

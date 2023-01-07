@@ -1,14 +1,13 @@
 package mpdev.aoc2022.day24
 
 import mpdev.aoc2022.common.RunTimeException
-import mpdev.aoc2022.utils.Graph
-import mpdev.aoc2022.utils.GraphNode
+import mpdev.aoc2022.utils.manhattanDist
 import mpdev.aoc2022.utils.plus
 import java.awt.Point
 import java.lang.StringBuilder
 import java.util.*
-import kotlin.NoSuchElementException
-import kotlin.math.abs
+import kotlin.system.measureTimeMillis
+
 
 class Day24(var inputList: List<String>) {
 
@@ -37,7 +36,7 @@ class Day24(var inputList: List<String>) {
         }
         start = Point(grid.first().indexOfFirst { it == '.' }, 0)
         end = Point(grid.last().indexOfFirst { it == '.' }, dimensions.y-1)
-        // preprocess blizzarda for the next n minutes
+        // preprocess blizzards for the next n minutes
         processBlizzards(1000)
         startId = NodeId(start, 0)
         endId = NodeId(end, Int.MIN_VALUE)
@@ -45,43 +44,35 @@ class Day24(var inputList: List<String>) {
 
     fun findPath(start: NodeId, end: NodeId): Int {
         iterCount = 0
-        val queue = PriorityQueue(compareBy(NodeId::blizIndx))
+        val queue = PriorityQueue(compareBy(NodeWithCost::cost))
         val seen = mutableSetOf(start)
-        queue.add(start)
+        queue.add(NodeWithCost(start, start.blizIndx))
         while (!queue.isEmpty()) {
             ++iterCount
             val current = queue.poll()
-            //if (current.pos == end.pos)
-            //    return current.blizIndx
-            getConnectedNodes(current, end).forEach {
-                if (it.pos == end.pos)
-                    return current.blizIndx+1
-                if (seen.add(it))
-                    queue.add(it)
+            if (current.nodeId.pos == end.pos)
+                return current.cost
+            getFreeConnectedNodes(current.nodeId, start, end).forEach { node ->
+                if (seen.add(node))
+                    queue.add(NodeWithCost(node, node.blizIndx + manhattanDist(node.pos, end.pos)))
             }
         }
         throw RunTimeException("could not find path from $start to $end")
     }
 
     // connected nodes are calculated dynamically depending on the state of the blizzards
-    private fun getConnectedNodes(nodeId: NodeId, endId: NodeId): List<NodeId> {
+    private fun getFreeConnectedNodes(nodeId: NodeId, startId: NodeId, endId: NodeId): List<NodeId> {
         val nodes = mutableListOf<NodeId>()
-        listOf(Point(-1,0), Point(+1,0), Point(0,-1), Point(0,+1)).forEach { point ->
+        listOf(Point(0,0), Point(-1,0), Point(+1,0), Point(0,-1), Point(0,+1)).forEach { point ->
             val neighbour = nodeId.pos + point
             if (neighbour == endId.pos)
-                return listOf(endId)
+                return listOf(NodeId(endId.pos, nodeId.blizIndx + 1))
             if (neighbour == startId.pos
                 || (neighbour.x > 0 && neighbour.x < grid[0].lastIndex
-                        && neighbour.y > 0 && neighbour.y < grid.lastIndex
-                        && blizzardStates[nodeId.blizIndx+1].none { it.pos == neighbour }))
-                nodes.add(NodeId(neighbour, nodeId.blizIndx+1))
+                && neighbour.y > 0 && neighbour.y < grid.lastIndex
+                && blizzardStates[nodeId.blizIndx+1].none { it.pos == neighbour }))
+                    nodes.add(NodeId(neighbour, nodeId.blizIndx+1))
         }
-        // add the node itself as its own neighbour (= don't move)
-        if (nodes.isEmpty())
-            nodes.add(NodeId(nodeId.pos, nodeId.blizIndx+1))
-        print("neighbours for nodeId (${nodeId.pos.x},${nodeId.pos.y}) time ${nodeId.blizIndx} are ")
-        nodes.forEach { print("(${it.pos.x},${it.pos.y}) ") }
-        println()
         return nodes
     }
 
@@ -117,6 +108,8 @@ class Day24(var inputList: List<String>) {
 }
 
 data class NodeId(val pos: Point, val blizIndx: Int)
+
+data class NodeWithCost(val nodeId: NodeId, val cost: Int)
 
 fun Array<CharArray>.gridToString(): String {
     val s = StringBuilder()
