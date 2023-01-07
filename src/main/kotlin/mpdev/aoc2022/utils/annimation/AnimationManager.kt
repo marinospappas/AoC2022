@@ -31,9 +31,15 @@ class AnimationManager(private val animationPanel: AnimationPanel, animationObje
     private val tileHeight = animationObject.tileSize
 
     fun renderObject(graphics: Graphics) {
+        val graphics2D = graphics as Graphics2D
         // first check if we have to wait for Enter
-        if (animationObject.waitForEnter)
+        if (animationObject.waitForEnter) {
+            val text = "Press ENTER to start"
+            graphics2D.color = Color.WHITE
+            graphics2D.drawChars(text.toCharArray(), 0, text.length,
+                animationObject.tileSize, animationObject.rows/2 * animationObject.tileSize)
             return
+        }
 
         if (firstRender) {  // skip first time as this fun is called twice in the beginning
             firstRender = false
@@ -41,7 +47,7 @@ class AnimationManager(private val animationPanel: AnimationPanel, animationObje
         }
         if (animationObject.debug) println("${LocalTime.now()} animation Manager : renderObject called")
         if (animationObject.debug) println("${LocalTime.now()} animation index $animationObjIndx")
-        val graphics2D = graphics as Graphics2D
+
         if (animationObject.gridOn)
             drawGrid(graphics2D, animationObject)
         if (animationObject.items.isEmpty())
