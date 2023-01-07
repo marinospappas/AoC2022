@@ -19,7 +19,7 @@ class AnimationManager(private val animationPanel: AnimationPanel, animationObje
     }
 
     init {
-        println("${LocalTime.now()} animation Manager created")
+        if (animationObject.debug) println("${LocalTime.now()} animation Manager created")
         this.animationObject = animationObject
         objColor = Color.GREEN
         objColorHead = Color.RED
@@ -27,27 +27,34 @@ class AnimationManager(private val animationPanel: AnimationPanel, animationObje
         isRunning = true
     }
 
-    val tileWidth = animationObject.tileSize
-    val tileHeight = animationObject.tileSize
+    private val tileWidth = animationObject.tileSize
+    private val tileHeight = animationObject.tileSize
 
     fun renderObject(graphics: Graphics) {
+        // first check if we have to wait for Enter
+        if (animationObject.waitForEnter)
+            return
+
         if (firstRender) {  // skip first time as this fun is called twice in the beginning
             firstRender = false
             return
         }
-        println("${LocalTime.now()} animation Manager : renderObject called")
-        println("${LocalTime.now()} animation index $animationObjIndx")
+        if (animationObject.debug) println("${LocalTime.now()} animation Manager : renderObject called")
+        if (animationObject.debug) println("${LocalTime.now()} animation index $animationObjIndx")
         val graphics2D = graphics as Graphics2D
         if (animationObject.gridOn)
             drawGrid(graphics2D, animationObject)
         if (animationObject.items.isEmpty())
             return
         val animationItem = animationObject.items[animationObjIndx]
-        println("${LocalTime.now()} points: ${animationItem.data}")
-        if (animationObjIndx < animationObject.items.size-1)
-            ++animationObjIndx
-        for (i in 0 until animationItem.data.size) {
-            val pixel = animationItem.data[i]
+        if (animationObject.debug) println("${LocalTime.now()} points: ${animationItem.data}")
+        if (animationItem.repeatFromItem >= 0)
+            animationObjIndx = animationItem.repeatFromItem
+        else
+            if (animationObjIndx < animationObject.items.size-1)
+                ++animationObjIndx
+        for (index in 0 until animationItem.data.size) {
+            val pixel = animationItem.data[index]
             val width = tileWidth
             val height = tileHeight
             if (pixel.colour == COLOUR_DEFAULT)
@@ -85,7 +92,7 @@ class AnimationManager(private val animationPanel: AnimationPanel, animationObje
     }
 
     fun draw() {
-        println("${LocalTime.now()} animation Manager : draw called repaint")
+        if (animationObject.debug) println("${LocalTime.now()} animation Manager : draw called repaint")
         animationPanel.repaint()
     }
 

@@ -9,7 +9,7 @@ import mpdev.aoc2022.utils.regexMatch
 498,4 -> 498,6 -> 496,6
 503,4 -> 502,4 -> 502,9 -> 494,9
  */
-class InputProcessorDay14: InputProcessor<InputDay14>() {
+class InputProcessorDay14: InputProcessor<Day14>() {
 
     private fun processLine(line: String, datalist: MutableList<List<Pair<Int,Int>>>) {
         val pointsList = mutableListOf<Pair<Int,Int>>()
@@ -32,9 +32,9 @@ class InputProcessorDay14: InputProcessor<InputDay14>() {
         datalist.add(pointsList)
     }
 
-    override fun process(input: List<String>): InputDay14 {
+    override fun process(input: List<String>): Day14 {
         val datalist = mutableListOf<List<Pair<Int,Int>>>()
         input.forEach { line -> processLine(line, datalist) }
-        return InputDay14(datalist)
+        return Day14(datalist)
     }
 }

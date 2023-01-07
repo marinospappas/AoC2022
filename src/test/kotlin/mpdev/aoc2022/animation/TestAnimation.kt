@@ -1,7 +1,6 @@
 package mpdev.aoc2022.animation
 
 import mpdev.aoc2022.utils.annimation.*
-import mpdev.aoc2022.utils.snake.SnakeFrame
 import org.junit.jupiter.api.*
 import java.awt.Color
 import java.awt.Point
@@ -74,10 +73,10 @@ class TestAnimation {
         animationObject.timerInterval = 1000
         animationObject.tileSize = 20
         animationObject.gridOn = true
-        animationObject.start = Point(200,200)
+        animationObject.startPoint = Point(200,200)
         animationObject.rows = 20
         animationObject.columns = 40
-        val animationFrame = animationObject.start()
+        animationObject.start()
     }
 }
 

@@ -4,7 +4,7 @@ import java.awt.Color
 import java.awt.Point
 
 class AnimationObject {
-    var start: Point = Point(80,80)
+    var startPoint: Point = Point(80,80)
     var rows: Int = 40
     var columns: Int = 40
     var title1: String = "Animation"
@@ -15,21 +15,24 @@ class AnimationObject {
     var gridOn: Boolean = false
     var gridColour: Color = Color.GRAY
     var items: MutableList<AnimationItem> = mutableListOf()
+    var waitForEnter: Boolean = false
+    var debug: Boolean = false
 
     init {
         addItem()
     }
 
     fun addItem() {
-        println("adding empty item to AnimationItems")
+        if (debug) println("adding empty item to AnimationItems")
         items.add(AnimationItem(mutableListOf()))
     }
 
-    fun copyLastItem() {
+    fun copyLastItem(): Int {
         val lastItem = items.last()
-        items.add(AnimationItem(mutableListOf(), lastItem.shape, lastItem.colour))
+        items.add(AnimationItem(mutableListOf(), lastItem.shape, lastItem.colour, -1))
         lastItem.data.forEach {  items.last().data.add(AnimationPixel(Point(it.p.x,it.p.y), it.shape, it.colour)) }
-        println("adding last item once more to AnimationItems: $lastItem")
+        if (debug) println("adding last item once more to AnimationItems: $lastItem")
+        return items.lastIndex
     }
 
     fun addPixel(p: Point, shape: Int = SHAPE_DEFAULT, colour: Color = COLOUR_DEFAULT) {
@@ -40,20 +43,19 @@ class AnimationObject {
         items.last().data.removeLast()
     }
 
+    fun repeatFromItem(itemIndex: Int) {
+        items.last().repeatFromItem = itemIndex
+    }
+
     fun start() = AnimationFrame(this)
 }
 
 const val SHAPE_CIRCLE = 0
 const val SHAPE_SQUARE = 1
 const val SHAPE_DEFAULT = -1
-val COLOUR_DEFAULT = Color.BLACK
+val COLOUR_DEFAULT: Color = Color.BLACK
 
-class AnimationItem(val data: MutableList<AnimationPixel>, val shape: Int = SHAPE_SQUARE,
-                    val colour: Color = Color(30, 30,30)) {
-    override fun toString() = "$data shape: $shape colour: $colour"
-}
+data class AnimationItem(val data: MutableList<AnimationPixel>, val shape: Int = SHAPE_SQUARE,
+                    val colour: Color = Color(30, 30,30), var repeatFromItem: Int = -1)
 
-class AnimationPixel(val p: Point, val shape: Int = SHAPE_DEFAULT,
-                     val colour: Color = COLOUR_DEFAULT) {
-    override fun toString() = "$p shape: $shape colour: $colour"
-}
+data class AnimationPixel(val p: Point, val shape: Int = SHAPE_DEFAULT, val colour: Color = COLOUR_DEFAULT)

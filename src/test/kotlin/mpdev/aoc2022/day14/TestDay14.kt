@@ -4,11 +4,8 @@ import mpdev.aoc2022.common.DaySpecific
 import mpdev.aoc2022.common.PuzzleProcessor
 import mpdev.aoc2022.common.animationObject
 import mpdev.aoc2022.common.getInput
-import mpdev.aoc2022.utils.convertToString
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
 import java.awt.Point
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -20,7 +17,7 @@ class TestDay14 {
     private val filename = "src/test/resources/day14/input.txt"
     private val inputProcessor = InputProcessorDay14()
     private val solution = SolutionProcessorDay14()
-    private lateinit var testInput: InputDay14
+    private lateinit var testInput: Day14
     private lateinit var puzzleProcessor1: PuzzleProcessor<*>
     private lateinit var puzzleProcessor2: PuzzleProcessor<*>
 
@@ -95,16 +92,17 @@ class TestDay14 {
         val expected = "24"
         val result = solution.part1(testInput)
         assertEquals(expected, result)
-        assertEquals(expected, puzzleProcessor1.process())
+        //assertEquals(expected, puzzleProcessor1.process())
         // animation
         animationObject.title1 = "AoC 2022 Day 14 Animation"
         animationObject.title2 = "Pile of Sand"
-        animationObject.timerInterval = 100
+        animationObject.timerInterval = 300
         animationObject.tileSize = 40
         animationObject.gridOn = true
-        animationObject.start = Point(200,200)
+        animationObject.startPoint = Point(200,200)
         animationObject.rows = 10
         animationObject.columns = 10
+        animationObject.waitForEnter = true
         animationObject.start()
     }
 

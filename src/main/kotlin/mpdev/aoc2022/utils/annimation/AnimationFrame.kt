@@ -13,7 +13,7 @@ class AnimationFrame(animationObject: AnimationObject) : JFrame() {
         title = animationObject.title1
         val width = animationObject.columns * animationObject.tileSize
         val height = animationObject.rows * animationObject.tileSize
-        this.setBounds(animationObject.start.x, animationObject.start.y, width+40+1, height+75+1)
+        this.setBounds(animationObject.startPoint.x, animationObject.startPoint.y, width+40+1, height+75+1)
         setLocationRelativeTo(null)
         defaultCloseOperation = EXIT_ON_CLOSE
         this.isResizable = false

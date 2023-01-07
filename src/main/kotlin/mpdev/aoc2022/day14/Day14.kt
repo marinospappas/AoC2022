@@ -8,7 +8,7 @@ import java.lang.StringBuilder
 import kotlin.math.max
 import kotlin.math.min
 
-class InputDay14(var inputList: List<List<Pair<Int,Int>>>) {
+class Day14(var inputList: List<List<Pair<Int,Int>>>) {
 
     private val START = Pair(500,0)
 
@@ -73,6 +73,21 @@ class InputDay14(var inputList: List<List<Pair<Int,Int>>>) {
             animationObject.addPixel(Point(from.first+shift,from.second), SHAPE_CIRCLE, Color.YELLOW)
         }
         if (to.first < -1) {  // can't rest anywhere
+            val repeatAnimationId = animationObject.copyLastItem()
+            animationObject.removeLastPixel()
+            // repeat animation of the last grain that falls off the grid
+            from = START
+            animationObject.copyLastItem()
+            animationObject.addPixel(Point(from.first+shift,from.second), SHAPE_CIRCLE, Color.LIGHT_GRAY)
+            while (moveGrainDown(from).also { to = it }.first > -1) {
+                from = to
+                animationObject.copyLastItem()
+                animationObject.removeLastPixel()
+                animationObject.addPixel(Point(from.first+shift,from.second), SHAPE_CIRCLE, Color.LIGHT_GRAY)
+            }
+            animationObject.copyLastItem()
+            animationObject.removeLastPixel()
+            animationObject.repeatFromItem(repeatAnimationId)
             println("move from $from not possible")
             return false
         }

@@ -10,13 +10,13 @@ import javax.swing.JPanel
 import javax.swing.Timer
 import kotlin.system.exitProcess
 
-class AnimationPanel(animationObject: AnimationObject) : JPanel(), KeyListener , ActionListener {
+class AnimationPanel(val animationObject: AnimationObject) : JPanel(), KeyListener , ActionListener {
     var animationManager: AnimationManager
     private val timer: Timer
     private val timerInterval = animationObject.timerInterval
 
     init {
-        println ("${LocalTime.now()} animation Panel created")
+        if (animationObject.debug) println ("${LocalTime.now()} animation Panel created")
         this.isOpaque = true
         background = animationObject.bgndColour
         addKeyListener(this)
@@ -28,19 +28,20 @@ class AnimationPanel(animationObject: AnimationObject) : JPanel(), KeyListener ,
     }
 
     override fun paintComponent(g: Graphics) {
-        println("${LocalTime.now()} paintComponent: calling animationManager.renderObject")
+        if (animationObject.debug) println("${LocalTime.now()} paintComponent: calling animationManager.renderObject")
         super.paintComponent(g)
         animationManager.renderObject(g)
     }
 
     override fun actionPerformed(e: ActionEvent) {
-        println("${LocalTime.now()} actionPerformed: calling animationManager.draw")
+        if (animationObject.debug) println("${LocalTime.now()} actionPerformed: calling animationManager.draw")
         animationManager.draw()
     }
 
     override fun keyPressed(e: KeyEvent) {
         when (e.keyCode) {
             KeyEvent.VK_ESCAPE -> exitProcess(0)
+            KeyEvent.VK_ENTER -> animationObject.waitForEnter = false
         }
     }
 
