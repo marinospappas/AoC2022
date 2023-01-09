@@ -54,11 +54,6 @@ class Rope(var knots: MutableList<Point>) {
         (1..move.second).forEach { _ -> tailTrail.add( moveRopeOneStep( getFirstMove(move), tailTrail )) }
     }
 
-    /** animate one move */
-    fun animateOneMove(move: Pair<Char,Int>) {
-        (1..move.second).forEach { _ -> animationTrail.add(animateRopeMoveOneStep( getFirstMove(move) )) }
-    }
-
     /** move the rope one step */
     private fun moveRopeOneStep(move: Point, tailTrail: List<Point>):  Point {
         knots[0] = knots[0] + move          // move head
@@ -96,6 +91,11 @@ class Rope(var knots: MutableList<Point>) {
             else-> Point(0,  0)
         }
 
+    /////////// animation
+    /** animate one move */
+    fun animateOneMove(move: Pair<Char,Int>) {
+        (1..move.second).forEach { _ -> animationTrail.add(animateRopeMoveOneStep( getFirstMove(move) )) }
+    }
     /** animate rope movement one step */
     private fun animateRopeMoveOneStep(move: Point): Point {
         var nextMove = move
@@ -107,7 +107,6 @@ class Rope(var knots: MutableList<Point>) {
         animateRope()
         return knots.last()
     }
-
     fun animateRope() {
         animationObject.addItem()
         for (i in knots.lastIndex downTo 0) {
