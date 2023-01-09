@@ -6,24 +6,24 @@ import java.math.BigInteger
 class SolutionProcessorDay21: SolutionProcessor<Day21> {
 
     /** part 1 calculation */
-    override fun part1(input: Day21): String {
-        return input.monkeyMap["root"]!!.getResult().toString()
+    override fun part1(puzzle: Day21): String {
+        return puzzle.monkeyMap["root"]!!.getResult().toString()
     }
 
     /** part 2 calculation */
-    override fun part2(input: Day21): String {
-        val left = input.calcSideOfHuman()
+    override fun part2(puzzle: Day21): String {
+        val left = puzzle.calcSideOfHuman()
         val branchResult: BigInteger
         if (left) {
-            branchResult = input.monkeyMap[input.monkeyMap["root"]!!.s2]!!.getResult()
+            branchResult = puzzle.monkeyMap[puzzle.monkeyMap["root"]!!.s2]!!.getResult()
             println("human on the left branch - right branch result $branchResult")
         }
         else {
-            branchResult = input.monkeyMap[input.monkeyMap["root"]!!.s1]!!.getResult()
+            branchResult = puzzle.monkeyMap[puzzle.monkeyMap["root"]!!.s1]!!.getResult()
             println("human on the right branch - left branch result $branchResult")
         }
         // adjust root's reverse calculation so that it will result in both sides of the root calc equal
-        input.monkeyMap["root"]!!.revCalc = when (input.monkeyMap["root"]!!.op) {
+        puzzle.monkeyMap["root"]!!.revCalc = when (puzzle.monkeyMap["root"]!!.op) {
             '+' -> { _, _ -> branchResult * BigInteger("2") }
             '-' -> { _, _ -> BigInteger("0") }
             '*' -> { _, _ -> branchResult * branchResult }
@@ -31,7 +31,7 @@ class SolutionProcessorDay21: SolutionProcessor<Day21> {
             else -> { _, _ -> null }
         }
         // reverse calculate value for human
-        return input.monkeyMap["humn"]!!.getRevResult().toString()
+        return puzzle.monkeyMap["humn"]!!.getRevResult().toString()
     }
 
 }

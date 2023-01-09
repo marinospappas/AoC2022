@@ -1,21 +1,20 @@
 package mpdev.aoc2022.day09
 
 import mpdev.aoc2022.common.*
+import java.awt.Point
 
-class SolutionProcessorDay09: SolutionProcessor<InputDay09> {
+class SolutionProcessorDay09: SolutionProcessor<Day09> {
 
-    private fun setupAndMoveRope(input: InputDay09, numKnots: Int): List<Pair<Int,Int>> {
-        input.rope = Rope(mutableListOf<Pair<Int,Int>>().also { list -> (1..numKnots).forEach { list.add(Pair(0,0)) } })
-        return input.executeMoves()
+    private fun setupAndMoveRope(puzzle: Day09, numKnots: Int): List<Point> {
+        puzzle.rope = Rope(
+            mutableListOf<Point>().also { list -> (1..numKnots).forEach { list.add(Point(0,0)) } }
+        )
+        return puzzle.executeMoves()
     }
 
     /** part 1 calculation */
-    override fun part1(input: InputDay09): String {
-        return setupAndMoveRope(input, 2).distinct().count().toString()
-    }
+    override fun part1(puzzle: Day09) = setupAndMoveRope(puzzle, 2).distinct().count().toString()
 
     /** part 2 calculation */
-    override fun part2(input: InputDay09): String {
-        return setupAndMoveRope(input, 10).distinct().count().toString()
-    }
+    override fun part2(puzzle: Day09) = setupAndMoveRope(puzzle, 10).distinct().count().toString()
 }

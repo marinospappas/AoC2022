@@ -14,11 +14,11 @@ fun main(args: Array<String>) {
 
     val filename = "src/main/resources/day${String.format("%02d", day)}/input.txt"
     val inputLines = getInput(filename)
-    val puzzle = DaySpecific.getProcessor(part1Or2, day, inputLines) ?:
+    val puzzleProcessor = DaySpecific.getProcessor(part1Or2, day, inputLines) ?:
         throw ProgramArgException("could not determine correct solution class - ${Constants.USAGE}")
 
     val elapsedTime = measureTimeMillis {
-        puzzle.process()
+        puzzleProcessor.process()
     }
     println("Day $day Part $part1Or2 - Completed in $elapsedTime msec")
 

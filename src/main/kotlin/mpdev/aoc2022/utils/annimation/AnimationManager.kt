@@ -13,7 +13,7 @@ class AnimationManager(private val animationPanel: AnimationPanel, animationObje
     private val objColorTail: Color
     private var animationObject: AnimationObject
     private var animationObjIndx = 0
-    val isRunning: Boolean
+    var isRunning: Boolean = true
 
     companion object {
         var firstRender = true
@@ -25,7 +25,6 @@ class AnimationManager(private val animationPanel: AnimationPanel, animationObje
         objColor = Color.GREEN
         objColorHead = Color.RED
         objColorTail = Color.BLUE
-        isRunning = true
     }
 
     private val tileWidth = animationObject.tileSize
@@ -86,7 +85,7 @@ class AnimationManager(private val animationPanel: AnimationPanel, animationObje
         }
     }
 
-    fun drawGrid(g: Graphics2D, animationObject: AnimationObject) {
+    private fun drawGrid(g: Graphics2D, animationObject: AnimationObject) {
         g.color = animationObject.gridColour
         val width = animationObject.columns * animationObject.tileSize
         val height = animationObject.rows * animationObject.tileSize

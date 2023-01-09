@@ -15,7 +15,6 @@ fun String.allCharsDifferent(): Boolean {
     return true
 }
 
-
 /** Pair class extensions */
 operator fun Pair<Int,Int>.minus(b: Pair<Int,Int>): Pair<Int, Int> {
     return Pair(this.first - b.first, this.second - b.second)
@@ -25,9 +24,9 @@ operator fun Pair<Int,Int>.plus(b: Pair<Int,Int>): Pair<Int, Int> {
     return Pair(this.first + b.first, this.second + b.second)
 }
 
-fun Pair<Int,Int>.isAdjacent(b: Pair<Int,Int>): Boolean {
-    return abs(this.first - b.first) in (0..1) &&
-            abs(this.second - b.second) in (0..1)
+fun Point.isAdjacent(b: Point): Boolean {
+    return abs(this.x - b.x) in (0..1) &&
+            abs(this.y - b.y) in (0..1)
 }
 
 /** List extensions */
@@ -43,8 +42,10 @@ fun IntRange.append(b: IntRange): IntRange? {
 }
 
 /** Point extensions */
-operator fun Point.plus(b: Point) = Point(this.x+b.x, this.y+b.y)
+operator fun Point.plus(b: Point) = Point(this.x + b.x, this.y + b.y)
 
-fun Point.xPlus(n: Int) = Point(this.x+n, this.y)
+operator fun Point.minus(b: Point) = Point(this.x - b.x, this.y - b.y)
 
-fun Point.yPlus(n: Int) = Point(this.x, this.y+n)
+fun Point.xPlus(n: Int) = Point(this.x + n, this.y)
+
+fun Point.yPlus(n: Int) = Point(this.x, this.y + n)

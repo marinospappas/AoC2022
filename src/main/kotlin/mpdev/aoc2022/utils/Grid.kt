@@ -1,38 +1,44 @@
 package mpdev.aoc2022.utils
 
+import mpdev.aoc2022.common.testMode
+import java.awt.Point
 import java.lang.StringBuilder
 
 /** grid class - used only for visualisation */
-class Grid(rope: MutableList<Pair<Int,Int>> = mutableListOf(Pair(0,0)), mode: Char = 'r' ) {
+class Grid(rope: MutableList<Point> = mutableListOf(Point(0,0)), mode: Char = 'r' ) {
 
-    private var dimensions = Pair(6,5)  // X, Y
+    var dimensions = Point(6,5)
     private val gridData = mutableListOf<MutableList<Char>>()
-    private val trail = mutableListOf<Pair<Int,Int>>()
-    private var shift = Pair(0,0)
-    private var start = Pair(0,0)
+    private val trail = mutableListOf<Point>()
+    private var shift = Point(0,0)
+    private var start = Point(0,0)
 
     init {
-        val minCoord = Pair((rope+start).minOf { it.first }, (rope+start).minOf { it.second })
-        val maxCoord = Pair((rope+start).maxOf { it.first }, (rope+start).maxOf { it.second })
-        dimensions = Pair(maxCoord.first-minCoord.first+2, maxCoord.second- minCoord.second+2)
-        shift = Pair(-minCoord.first, -minCoord.second )
+        //val minCoord = Point((rope+start).minOf { it.x }, (rope+start).minOf { it.y })
+        //val maxCoord = Point((rope+start).maxOf { it.x }, (rope+start).maxOf { it.y })
+        val minCoord = Point(-12, -6)
+        val maxCoord = Point(14, 15)
+
+        if (testMode)   println("X-range: ${minCoord.x} - ${maxCoord.x}  Y-range: ${minCoord.y} - ${maxCoord.y}")
+        dimensions = Point(maxCoord.x-minCoord.x+2, maxCoord.y-minCoord.y+2)
+        shift = Point(-minCoord.x, -minCoord.y)
         start = start.plus(shift)
         rope.forEach { trail.add(it.plus(shift)) }
         // grid data
-        (dimensions.second-1 downTo 0).forEach { y ->
+        (dimensions.y-1 downTo 0).forEach { y ->
             mutableListOf<Char>().also {
-                (0 until dimensions.first).forEach { x ->
+                (0 until dimensions.x).forEach { x ->
                     if (mode == 'r')    // rope
                         when {
-                            (Pair(x, y) == trail[0]) -> it.add('H')
-                            trail.indexOf(Pair(x, y)) >= 0 -> it.add((trail.indexOf(Pair(x, y))%10).toString().first())
-                            Pair(x, y) == start -> it.add('s')
+                            (Point(x, y) == trail[0]) -> it.add('H')
+                            trail.indexOf(Point(x, y)) >= 0 -> it.add((trail.indexOf(Point(x, y))%10).toString().first())
+                            Point(x, y) == start -> it.add('s')
                             else -> it.add('.')
                         }
                     else                // trail
                         when {
-                            Pair(x, y) == start -> it.add('s')
-                            trail.indexOf(Pair(x, y)) >= 0 -> it.add('#')
+                            Point(x, y) == start -> it.add('s')
+                            trail.indexOf(Point(x, y)) >= 0 -> it.add('#')
                             else -> it.add('.')
                         }
                 }

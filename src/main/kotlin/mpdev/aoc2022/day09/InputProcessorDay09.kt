@@ -5,9 +5,9 @@ import mpdev.aoc2022.common.InputProcessor
 import mpdev.aoc2022.utils.matchRegExp
 import mpdev.aoc2022.utils.regexMatch
 
-class InputProcessorDay09: InputProcessor<InputDay09>() {
+class InputProcessorDay09: InputProcessor<Day09>() {
 
-    override fun process(input: List<String>): InputDay09 {
+    override fun process(input: List<String>): Day09 {
         val dataList: MutableList<Pair<Char,Int>> = mutableListOf()
         input.forEach {line ->
             when {
@@ -18,6 +18,6 @@ class InputProcessorDay09: InputProcessor<InputDay09>() {
                 else -> throw InputDataException("day 9: bad input line: $line")
             }
         }
-        return InputDay09(Rope(mutableListOf()), dataList)
+        return Day09(Rope(mutableListOf()), dataList)
     }
 }

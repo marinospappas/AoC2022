@@ -40,7 +40,8 @@ class AnimationObject {
     }
 
     fun removeLastPixel() {
-        items.last().data.removeLast()
+        if (items.last().data.isNotEmpty())
+            items.last().data.removeLast()
     }
 
     fun repeatFromItem(itemIndex: Int) {

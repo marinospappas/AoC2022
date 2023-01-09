@@ -40,7 +40,7 @@ class AnimationPanel(val animationObject: AnimationObject) : JPanel(), KeyListen
 
     override fun keyPressed(e: KeyEvent) {
         when (e.keyCode) {
-            KeyEvent.VK_ESCAPE -> exitProcess(0)
+            KeyEvent.VK_ESCAPE -> animationManager.isRunning = false // exitProcess(0)
             KeyEvent.VK_ENTER -> animationObject.waitForEnter = false
         }
     }
